@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html class="no-css3-filters no-focus-outline" dir="ltr" lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   Slipknot | Spotify - Listen Free
+  </title>
+  <meta content="Listen to Slipknot on Spotify. Artist · 8.3M monthly listeners." name="description">
+   <meta content="notranslate" property="google"/>
+   <meta content="174829003346" property="fb:app_id"/>
+   <meta content="Slipknot" property="og:title"/>
+   <meta content="Artist · 8.3M monthly listeners." property="og:description"/>
+   <meta content="https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8" property="og:url"/>
+   <meta content="https://i.scdn.co/image/ab6761610000e5eb8e6164f9f60da15dd7d4129f" property="og:image"/>
+   <meta content="profile" property="og:type"/>
+   <meta content="Spotify" property="og:site_name"/>
+   <meta content="Spotify" property="al:android:app_name"/>
+   <meta content="com.spotify.music" property="al:android:package"/>
+   <meta content="spotify://artist/05fG473iIaoy82BF1aGhL8" property="al:android:url"/>
+   <meta content="Spotify" property="al:ios:app_name"/>
+   <meta content="324684580" property="al:ios:app_store_id"/>
+   <meta content="spotify://artist/05fG473iIaoy82BF1aGhL8" property="al:ios:url"/>
+   <meta content="@spotify" property="twitter:site"/>
+   <meta content="Slipknot" property="twitter:title"/>
+   <meta content="Artist · 8.3M monthly listeners." property="twitter:description"/>
+   <meta content="https://i.scdn.co/image/ab6761610000e5eb8e6164f9f60da15dd7d4129f" property="twitter:image"/>
+   <meta content="summary" property="twitter:card"/>
+   <link href="https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8" rel="canonical"/>
+   <link href="https://open.spotify.com/oembed?url=https%3A%2F%2Fopen.spotify.com%2Fartist%2F05fG473iIaoy82BF1aGhL8" rel="alternate" type="application/json+oembed"/>
+   <link href="android-app://com.spotify.music/spotify/artist/05fG473iIaoy82BF1aGhL8" rel="alternate"/>
+   <script type="application/ld+json">
+    {"@context":"http://schema.googleapis.com/","@type":"MusicGroup","@id":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8","url":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8","name":"Slipknot","description":"Listen to Slipknot on Spotify. Artist \u00B7 8.3M monthly listeners.","datePublished":null,"potentialAction":{"@type":"ListenAction","target":[{"@type":"EntryPoint","urlTemplate":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8?autoplay=true","actionPlatform":["http://schema.org/DesktopWebPlatform","http://schema.org/IOSPlatform","http://schema.googleapis.com/GoogleAudioCast","http://schema.googleapis.com/GoogleVideoCast"]},"android-app://com.spotify.music/spotify/artist/05fG473iIaoy82BF1aGhL8/play"],"expectsAcceptanceOf":{"@type":"Offer","category":"free","eligibleRegion":[]}}}
+   </script>
+   <meta content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover" name="viewport"/>
+   <script data-testid="config" id="config" type="application/json">
+    {"app_name":"open_page","market":"CH","locale":{"locale":"en","rtl":false,"textDirection":"ltr"},"gtmId":"GTM-PZHN3VD","optimizeId":"GTM-W53X654","userCountry":null,"isPremium":false,"correlationId":"69bb11396dcc0786c9daf6c3ae01a552","retargetingPixels":null}
+   </script>
+   <script id="baba" type="application/json">
+    []
+   </script>
+   <link href="https://open.scdn.co/cdn/build/open/open.88b39525.css" rel="stylesheet"/>
+   <style type="text/css">
+   </style>
+   <link href="https://open.scdn.co/cdn/images/favicon.0c211e2e.png " rel="icon"/>
+   <link href="https://open.scdn.co/cdn/images/touch-icon-144.dbd8dd2a.png" rel="apple-touch-icon-precomposed" sizes="144x144"/>
+   <link href="https://open.scdn.co/cdn/images/touch-icon-114.2fdb1eb2.png" rel="apple-touch-icon-precomposed" sizes="114x114"/>
+   <link href="https://open.scdn.co/cdn/images/touch-icon-72.cffecbdb.png" rel="apple-touch-icon-precomposed" sizes="72x72"/>
+   <link href="https://open.scdn.co/cdn/images/touch-icon-57.2d68aabb.png" rel="apple-touch-icon-precomposed"/>
+  </meta>
+ </head>
+ <body id="body">
+  <div class="page">
+   <script>
+    (function() {
+    var setFont = function() {
+        document.documentElement.className += ' fonts-loaded';
+    };
+    if (document.fonts && document.fonts.load) {
+        var fontsToLoad = ['200 1em \'spotify-circular\'', '600 1em \'spotify-circular\''];
+
+        
+        
+        
+        Promise.all(
+            fontsToLoad.map(function(font) {
+                return document.fonts.load(font);
+            })
+        ).then(setFont).catch(setFont);
+    } else {
+        setFont();
+    }
+})();
+   </script>
+   <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="spotify-logo" viewbox="0 0 1000 300">
+     <path d="M8 147C8 65 73 0 155 0s148 65 148 147-66 148-148 148S8 229 8 147zm202 69c10 6 20-10 10-16-39-24-88-30-144-17-12 3-7 21 5 18 51-12 94-6 129 15zm15-40c13 8 25-11 12-19-46-28-112-36-166-20-14 4-7 26 7 22 47-14 107-7 147 17zM71 113c45-14 124-10 172 18 15 9 29-15 14-24-55-33-142-36-194-20-17 5-9 31 8 26zm308 4c0 9 4 13 30 19 31 8 44 19 44 40 0 25-19 42-49 42-21 0-40-8-56-22-1-1-1-1 0-2l14-17c1-1 1-1 2 0 14 12 26 17 41 17 13 0 22-6 22-15 0-8-5-13-29-19-29-7-45-16-45-41 0-24 19-40 47-40 19 0 35 5 49 16 1 1 1 2 0 3l-13 17c0 1-1 2-2 1-12-9-23-14-35-14s-20 7-20 15zm109 9c9-10 19-15 32-15 24 0 48 18 48 53s-24 54-48 54c-13 0-23-5-32-15v41c0 1-1 2-2 2h-22c-1 0-2-1-2-2V115c0-1 1-2 2-2h22c1 0 2 1 2 2v11zm27 69c16 0 27-13 27-31s-11-30-27-30-27 13-27 30 11 31 27 31zm60-30c0-30 24-54 55-54s55 23 55 53-24 54-55 54-55-23-55-53zm27-1c0 17 12 31 28 31 17 0 29-12 29-30 0-17-13-31-29-31s-28 12-28 30zm128 54c-20 0-31-10-31-31v-51h-11c-1 0-1-1-1-2v-19c0-1 0-2 1-2h11V87c0-1 1-1 2-1h23c1 0 2 0 2 1v26h25c1 0 1 1 1 2v19c0 1 0 2-1 2h-25v47c0 7 3 11 10 11 3 0 16-4 16-2v19c0 5-17 7-22 7zM865 78v19c0 3-12-1-15-1-8 0-12 5-12 14v3h39c1 0 2 0 2 1l27 70 24-70c0-1 1-1 2-1h23c1 0 2 1 2 2l-40 103c-8 21-17 29-34 29-3 0-27-4-25-9l7-17c0-1 2-2 3-1 4 2 8 4 12 4 5 0 9-2 13-10l-33-78h-21v78c0 1-1 2-2 2h-23c-1 0-1-1-1-2v-78h-11c-1 0-2-1-2-2v-20c0-1 1-1 2-1h11v-5c0-22 11-34 32-34 7 0 20 1 20 4zm-100 35h23c1 0 1 1 1 2v99c0 1 0 2-1 2h-23c-1 0-2-1-2-2v-99c0-1 1-2 2-2zm-5-29c0-9 7-16 16-16s17 7 17 16-8 16-17 16-16-7-16-16zm200 45c0-9 7-16 16-16s17 7 17 16-8 16-17 16-16-7-16-16zm2 0c0 8 6 14 14 14s15-6 15-14-7-15-15-15-14 7-14 15zm23 8h-4l-4-6h-4v6h-3v-17h7c4 0 7 2 7 5s-2 4-4 5zm-12-14v5h4c2 0 4-1 4-3s-2-2-4-2h-4z" fill="currentColor">
+     </path>
+    </symbol>
+    <symbol id="icon-play" viewbox="0 0 85 100">
+     <path d="M81 44.6c5 3 5 7.8 0 10.8L9 98.7c-5 3-9 .7-9-5V6.3c0-5.7 4-8 9-5l72 43.3z" fill="currentColor">
+     </path>
+    </symbol>
+    <symbol id="icon-pause" viewbox="0 0 60 100">
+     <path d="M0 8c0-5 3-8 8-8s9 3 9 8v84c0 5-4 8-9 8s-8-3-8-8V8zm43 0c0-5 3-8 8-8s8 3 8 8v84c0 5-3 8-8 8s-8-3-8-8V8z" fill="currentColor">
+     </path>
+    </symbol>
+    <symbol id="icon-explicit" viewbox="0 0 20 20">
+     <path d="M9 9V7h4V5H7v10h6v-2H9v-2h4V9H9zM0 2.994C0 1.34 1.343 0 2.994 0h14.012C18.66 0 20 1.343 20 2.994v14.012C20 18.66 18.657 20 17.006 20H2.994C1.34 20 0 18.657 0 17.006V2.994z" fill="currentColor">
+     </path>
+    </symbol>
+    <symbol id="icon-close" viewbox="0 0 2016 2016">
+     <path d="M1681 1512q35 35 35 84.5t-35 84.5-84.5 35-84.5-35l-504-504-504 504q-35 35-84.5 35t-84.5-35-35-84.5 35-84.5l504-504-504-504q-35-35-35-84.5t35-84.5q34-35 84-35 51 0 85 35l504 504 504-504q34-35 85-35 50 0 84 35 35 35 35 84.5t-35 84.5l-504 504 504 504z" fill="currentColor">
+     </path>
+    </symbol>
+   </svg>
+   <div class="notice notice-info padding-notch" id="cookie-notice">
+    <p>
+     We and
+     <a href="https://www.spotify.com/us/legal/cookies-vendor-list/" rel="noopener" target="_blank">
+      our partners
+     </a>
+     use cookies to personalize your experience, to show you ads based on your interests, and for measurement and analytics purposes. By using our website and our services, you agree to our use of cookies as described in our
+     <a href="https://www.spotify.com/legal/cookies-policy/" rel="noopener" target="_blank">
+      Cookie Policy
+     </a>
+     .
+    </p>
+    <button aria-label="Close" type="button">
+     ×
+    </button>
+   </div>
+   <div class="notice notice-warning padding-notch" id="browser-support-notice">
+    <p>
+     This browser doesn't support Spotify Web Player.
+     <a href="https://support.spotify.com/using_spotify/the_basics/webplayer">
+      Switch browsers
+     </a>
+     or
+     <a href="https://www.spotify.com/download">
+      download Spotify
+     </a>
+     for your desktop.
+    </p>
+   </div>
+   <header class="view">
+    <div class="bg lazy-image" data-src="https://i.scdn.co/image/ab6761610000e5eb8e6164f9f60da15dd7d4129f">
+    </div>
+    <div class="overlay">
+    </div>
+    <div class="wrapper padding-notch">
+     <div id="main-header">
+      <a class="logo-link" href="/browse">
+       <svg>
+        <use xlink:href="#spotify-logo" xmlns:xlink="http://www.w3.org/1999/xlink">
+        </use>
+       </svg>
+      </a>
+     </div>
+     <h1 class="view-header">
+      Slipknot
+     </h1>
+     <button class="btn btn-green js-action-button" data-log-action="play-spotify" data-track-type="button-header">
+      <spanthink class="js-action-label">
+       Play on Spotify
+      </spanthink>
+     </button>
+    </div>
+    <div class="wrapper padding-notch">
+     <h2 class="subview-title">
+      Popular
+     </h2>
+     <div class="tracklist-container">
+      <ol class="tracklist js-track-list playable-context hide-artists">
+       <li class="tracklist-row js-track-row tracklist-row--track track-has-preview" data-position="1" role="button" tabindex="0">
+        <div class="tracklist-col position-outer">
+         <div class="play-pause middle-align">
+          <svg aria-label="Play" class="svg-play" role="button">
+           <use xlink:href="#icon-play" xmlns:xlink="http://www.w3.org/1999/xlink">
+           </use>
+          </svg>
+          <svg aria-label="Pause" class="svg-pause" role="button">
+           <use xlink:href="#icon-pause" xmlns:xlink="http://www.w3.org/1999/xlink">
+           </use>
+          </svg>
+         </div>
+         <div class="tracklist-col__track-number position middle-align">
+          1.
+         </div>
+        </div>
+        <div class="tracklist-col name">
+         <div class="middle-align track-name-wrapper">
+          <span class="track-name" dir="auto">
+           Duality
+          </span>
+         </div>
+        </div>
+        <div class="tracklist-col explicit">
+        </div>
+        <div class="tracklist-col duration">
+         <div class="middle-align">
+          <span class="total-duration">
+           4:12
+          </span>
+          <span class="preview-duration">
+           0:30
+          </span>
+         </div>
+        </div>
+        <div class="progress-bar-outer">
+         <div class="progress-bar">
+         </div>
+        </div>
+       </li>
+       <li class="tracklist-row js-track-row tracklist-row--track track-has-preview" data-position="2" role="button" tabindex="0">
+        <div class="tracklist-col position-outer">
+         <div class="play-pause middle-align">
+          <svg aria-label="Play" class="svg-play" role="button">
+           <use xlink:href="#icon-play" xmlns:xlink="http://www.w3.org/1999/xlink">
+           </use>
+          </svg>
+          <svg aria-label="Pause" class="svg-pause" role="button">
+           <use xlink:href="#icon-pause" xmlns:xlink="http://www.w3.org/1999/xlink">
+           </use>
+          </svg>
+         </div>
+         <div class="tracklist-col__track-number position middle-align">
+          2.
+         </div>
+        </div>
+        <div class="tracklist-col name">
+         <div class="middle-align track-name-wrapper">
+          <span class="track-name" dir="auto">
+           Before I Forget
+          </span>
+         </div>
+        </div>
+        <div class="tracklist-col explicit">
+        </div>
+        <div class="tracklist-col duration">
+         <div class="middle-align">
+          <span class="total-duration">
+           4:38
+          </span>
+          <span class="preview-duration">
+           0:30
+          </span>
+         </div>
+        </div>
+        <div class="progress-bar-outer">
+         <div class="progress-bar">
+         </div>
+        </div>
+       </li>
+       <li class="tracklist-row js-track-row tracklist-row--track track-has-preview" data-position="3" role="button" tabindex="0">
+        <div class="tracklist-col position-outer">
+         <div class="play-pause middle-align">
+          <svg aria-label="Play" class="svg-play" role="button">
+           <use xlink:href="#icon-play" xmlns:xlink="http://www.w3.org/1999/xlink">
+           </use>
+          </svg>
+          <svg aria-label="Pause" class="svg-pause" role="button">
+           <use xlink:href="#icon-pause" xmlns:xlink="http://www.w3.org/1999/xlink">
+           </use>
+          </svg>
+         </div>
+         <div class="tracklist-col__track-number position middle-align">
+          3.
+         </div>
+        </div>
+        <div class="tracklist-col name">
+         <div class="middle-align track-name-wrapper">
+          <span class="track-name" dir="auto">
+           Unsainted
+          </span>
+         </div>
+        </div>
+        <div class="tracklist-col explicit">
+         <div class="middle-align">
+          <svg class="icon-explicit" title="Explicit">
+           <use xlink:href="#icon-explicit" xmlns:xlink="http://www.w3.org/1999/xlink">
+           </use>
+          </svg>
+         </div>
+        </div>
+        <div class="tracklist-col duration">
+         <div class="middle-align">
+          <span class="total-duration">
+           4:20
+          </span>
+          <span class="preview-duration">
+           0:30
+          </span>
+         </div>
+        </div>
+        <div class="progress-bar-outer">
+         <div class="progress-bar">
+         </div>
+        </div>
+       </li>
+       <li class="tracklist-row js-track-row tracklist-row--track track-has-preview" data-position="4" role="button" tabindex="0">
+        <div class="tracklist-col position-outer">
+         <div class="play-pause middle-align">
+          <svg aria-label="Play" class="svg-play" role="button">
+           <use xlink:href="#icon-play" xmlns:xlink="http://www.w3.org/1999/xlink">
+           </use>
+          </svg>
+          <svg aria-label="Pause" class="svg-pause" role="button">
+           <use xlink:href="#icon-pause" xmlns:xlink="http://www.w3.org/1999/xlink">
+           </use>
+          </svg>
+         </div>
+         <div class="tracklist-col__track-number position middle-align">
+          4.
+         </div>
+        </div>
+        <div class="tracklist-col name">
+         <div class="middle-align track-name-wrapper">
+          <span class="track-name" dir="auto">
+           Psychosocial
+          </span>
+         </div>
+        </div>
+        <div class="tracklist-col explicit">
+        </div>
+        <div class="tracklist-col duration">
+         <div class="middle-align">
+          <span class="total-duration">
+           4:44
+          </span>
+          <span class="preview-duration">
+           0:30
+          </span>
+         </div>
+        </div>
+        <div class="progress-bar-outer">
+         <div class="progress-bar">
+         </div>
+        </div>
+       </li>
+       <li class="tracklist-row js-track-row tracklist-row--track track-has-preview" data-position="5" role="button" tabindex="0">
+        <div class="tracklist-col position-outer">
+         <div class="play-pause middle-align">
+          <svg aria-label="Play" class="svg-play" role="button">
+           <use xlink:href="#icon-play" xmlns:xlink="http://www.w3.org/1999/xlink">
+           </use>
+          </svg>
+          <svg aria-label="Pause" class="svg-pause" role="button">
+           <use xlink:href="#icon-pause" xmlns:xlink="http://www.w3.org/1999/xlink">
+           </use>
+          </svg>
+         </div>
+         <div class="tracklist-col__track-number position middle-align">
+          5.
+         </div>
+        </div>
+        <div class="tracklist-col name">
+         <div class="middle-align track-name-wrapper">
+          <span class="track-name" dir="auto">
+           The Devil in I
+          </span>
+         </div>
+        </div>
+        <div class="tracklist-col explicit">
+        </div>
+        <div class="tracklist-col duration">
+         <div class="middle-align">
+          <span class="total-duration">
+           5:42
+          </span>
+          <span class="preview-duration">
+           0:30
+          </span>
+         </div>
+        </div>
+        <div class="progress-bar-outer">
+         <div class="progress-bar">
+         </div>
+        </div>
+       </li>
+      </ol>
+      <button class="link js-action-button" data-track-type="view-all-button">
+       View all on Spotify
+      </button>
+     </div>
+    </div>
+   </header>
+   <section class="bio">
+    <div class="wrapper padding-notch">
+     <div class="bio-primary">
+      <span dir="auto">
+       Twenty years ago, nine inspired musicians from Des Moines, Iowa, shattered the scope of what was possible in rock music.
+      </span>
+     </div>
+     <div class="bio-secondary">
+      <span dir="auto">
+       From the moment Slipknot emerged in 1999 with their self-titled debut, it was clear they were like nothing the world had seen before, but were everything they needed. Where a similarly creative act might have burned out or lost their relevance chasing mainstream acceptance, Slipknot has only proven that an enduring commitment to hard work, constant evolution, their craft, and their fans can allow a rock band to not only continue- but to actually push the envelope on what defines heavy metal, and rock in general. With "We are Not Your Kind," Slipknot's first new album in five years, the band deliver when they are needed most. In an increasingly claustrophobic psychic landscape, "We Are Not Your Kind" brings back the violence, to meet the darkness blow for blow. The band’s creative strength and vision propelled "We Are Not Your Kind" to a #1 debut on the Billboard Top 200 chart this past August. Always a global band, the album also debuted at #1 in United Kingdom, Australia, Canada, Japan, Russia, Mexico, Portugal, Ireland, Belgium, Finland, Spain, and in the Top 3 in Germany, France, Norway, Italy, Austria, Switzerland, the Netherlands, and New Zealand.
+      </span>
+     </div>
+    </div>
+   </section>
+   <section class="view more-by insights">
+    <div class="insights__column">
+     <h3 class="insights__column__number">
+      8,254,562
+     </h3>
+     <span class="insights__column__label">
+      Monthly Listeners
+     </span>
+    </div>
+    <div class="insights__column">
+     <h3 class="insights__column__number">
+      7,469,817
+     </h3>
+     <span class="insights__column__label">
+      Followers
+     </span>
+    </div>
+   </section>
+   <section class="view more-by horizontal-list">
+    <h2 class="subview-title">
+     Where people listen
+    </h2>
+    <ul>
+     <li class="horizontal-list__item">
+      <span class="horizontal-list__item__title" dir="auto">
+       Mexico City,
+								MX
+      </span>
+      <span class="horizontal-list__item__subtitle">
+       183,536
+								LISTENERS
+      </span>
+     </li>
+     <li class="horizontal-list__item">
+      <span class="horizontal-list__item__title" dir="auto">
+       São Paulo,
+								BR
+      </span>
+      <span class="horizontal-list__item__subtitle">
+       158,204
+								LISTENERS
+      </span>
+     </li>
+     <li class="horizontal-list__item">
+      <span class="horizontal-list__item__title" dir="auto">
+       Chicago,
+								US
+      </span>
+      <span class="horizontal-list__item__subtitle">
+       132,848
+								LISTENERS
+      </span>
+     </li>
+     <li class="horizontal-list__item">
+      <span class="horizontal-list__item__title" dir="auto">
+       Santiago,
+								CL
+      </span>
+      <span class="horizontal-list__item__subtitle">
+       130,666
+								LISTENERS
+      </span>
+     </li>
+     <li class="horizontal-list__item">
+      <span class="horizontal-list__item__title" dir="auto">
+       Los Angeles,
+								US
+      </span>
+      <span class="horizontal-list__item__subtitle">
+       116,668
+								LISTENERS
+      </span>
+     </li>
+    </ul>
+   </section>
+   <section class="view more-by">
+    <h2 class="subview-title">
+     Albums
+    </h2>
+    <ul class="more-by-grid more-by-grid-8 padding-notch" style="list-style: none">
+     <li>
+      <a alt="We Are Not Your Kind" class="cover" href="/album/754RY5WpZ2LTUZsk8kDBju">
+       <div class="grid-item-image lazy-image" data-src="https://i.scdn.co/image/ab67616d00001e0226f20b4d67c0c7b0f137ce4f">
+       </div>
+       <div>
+        <span dir="auto">
+         We Are Not Your Kind
+        </span>
+       </div>
+      </a>
+     </li>
+     <li>
+      <a alt="We Are Not Your Kind" class="cover" href="/album/6fXgJq5H8oVeyfSalFrLed">
+       <div class="grid-item-image lazy-image" data-src="https://i.scdn.co/image/ab67616d00001e0250ad02b722a1ce60c7ffcf9c">
+       </div>
+       <div>
+        <span dir="auto">
+         We Are Not Your Kind
+        </span>
+       </div>
+      </a>
+     </li>
+     <li>
+      <a alt="Day Of The Gusano (Live)" class="cover" href="/album/09pLzub9F2asXde8dH2UDN">
+       <div class="grid-item-image lazy-image" data-src="https://i.scdn.co/image/ab67616d00001e02fb136dbd6d53eaafcbdc37d3">
+       </div>
+       <div>
+        <span dir="auto">
+         Day Of The Gusano (Live)
+        </span>
+       </div>
+      </a>
+     </li>
+     <li>
+      <a alt=".5: The Gray Chapter" class="cover" href="/album/0pO7TRTo69ENwwKzgE7guN">
+       <div class="grid-item-image lazy-image" data-src="https://i.scdn.co/image/ab67616d00001e02f1c94f060feb7e9a2cf321ef">
+       </div>
+       <div>
+        <span dir="auto">
+         .5: The Gray Chapter
+        </span>
+       </div>
+      </a>
+     </li>
+     <li>
+      <a alt=".5: The Gray Chapter (Special Edition)" class="cover" href="/album/7sQaAG0uKCPPV45R12SWu9">
+       <div class="grid-item-image lazy-image" data-src="https://i.scdn.co/image/ab67616d00001e02b25ef76c43a12d5e13742799">
+       </div>
+       <div>
+        <span dir="auto">
+         .5: The Gray Chapter (Special Edition)
+        </span>
+       </div>
+      </a>
+     </li>
+     <li>
+      <a alt=".5: The Gray Chapter" class="cover" href="/album/3nyxMohQINxnhYwyHvUqVf">
+       <div class="grid-item-image lazy-image" data-src="https://i.scdn.co/image/ab67616d00001e0206e3a56f02aeff58d3a47a10">
+       </div>
+       <div>
+        <span dir="auto">
+         .5: The Gray Chapter
+        </span>
+       </div>
+      </a>
+     </li>
+     <li>
+      <a alt=".5: The Gray Chapter (Special Edition)" class="cover" href="/album/0ApKaazNHf0gzjAYZauexq">
+       <div class="grid-item-image lazy-image" data-src="https://i.scdn.co/image/ab67616d00001e02eed722040c6810f7a7da93ea">
+       </div>
+       <div>
+        <span dir="auto">
+         .5: The Gray Chapter (Special Edition)
+        </span>
+       </div>
+      </a>
+     </li>
+     <li>
+      <a alt="Slipknot (10th Anniversary Edition)" class="cover" href="/album/2dL9Q5AtIv4Rw1L6lKcIUc">
+       <div class="grid-item-image lazy-image" data-src="https://i.scdn.co/image/ab67616d00001e02baf04a1d30db6ac9de26da7d">
+       </div>
+       <div>
+        <span dir="auto">
+         Slipknot (10th Anniversary Edition)
+        </span>
+       </div>
+      </a>
+     </li>
+    </ul>
+    <button class="link js-action-button" data-track-type="view-all-button">
+     View all on Spotify
+    </button>
+   </section>
+   <section class="view more-by">
+    <h2 class="subview-title">
+     Singles
+    </h2>
+    <ul class="more-by-grid more-by-grid-8 padding-notch" style="list-style: none">
+     <li>
+      <a alt="Birth of the Cruel" class="cover" href="/album/4N8kqUByw0ARVBK2m7i77c">
+       <div class="grid-item-image lazy-image" data-src="https://i.scdn.co/image/ab67616d00001e02b42df4edbb07a03a71f15f0e">
+       </div>
+       <div>
+        <span dir="auto">
+         Birth of the Cruel
+        </span>
+       </div>
+      </a>
+     </li>
+     <li>
+      <a alt="Solway Firth / Unsainted" class="cover" href="/album/2dQUFysTBc1bx1e64Ffgq4">
+       <div class="grid-item-image lazy-image" data-src="https://i.scdn.co/image/ab67616d00001e02b6b212ec8f48318ccdd21e8b">
+       </div>
+       <div>
+        <span dir="auto">
+         Solway Firth / Unsainted
+        </span>
+       </div>
+      </a>
+     </li>
+     <li>
+      <a alt="Unsainted" class="cover" href="/album/1rLES4B53hpEkWEWceJAQ0">
+       <div class="grid-item-image lazy-image" data-src="https://i.scdn.co/image/ab67616d00001e0256bf8f94d97b5fede76843bb">
+       </div>
+       <div>
+        <span dir="auto">
+         Unsainted
+        </span>
+       </div>
+      </a>
+     </li>
+     <li>
+      <a alt="All Out Life" class="cover" href="/album/0VAjWVE9kHLq0U5iHiZFRw">
+       <div class="grid-item-image lazy-image" data-src="https://i.scdn.co/image/ab67616d00001e02f9c8260fbf795b28dcab6099">
+       </div>
+       <div>
+        <span dir="auto">
+         All Out Life
+        </span>
+       </div>
+      </a>
+     </li>
+     <li>
+      <a alt="All Out Life" class="cover" href="/album/65QFxYBGGQGGvAcW0YNMXa">
+       <div class="grid-item-image lazy-image" data-src="https://i.scdn.co/image/ab67616d00001e02120ad9d866b0575b2afeeafb">
+       </div>
+       <div>
+        <span dir="auto">
+         All Out Life
+        </span>
+       </div>
+      </a>
+     </li>
+     <li>
+      <a alt="Skeptic" class="cover" href="/album/7JHALwwwEdTFMBVuErlHVS">
+       <div class="grid-item-image lazy-image" data-src="https://i.scdn.co/image/ab67616d00001e027e164e407955bd9a5645bba8">
+       </div>
+       <div>
+        <span dir="auto">
+         Skeptic
+        </span>
+       </div>
+      </a>
+     </li>
+     <li>
+      <a alt="Killpop" class="cover" href="/album/7sTrrT6cKBYqnek7NP4e0A">
+       <div class="grid-item-image lazy-image" data-src="https://i.scdn.co/image/ab67616d00001e027f6dc244baaadf89605fe0b1">
+       </div>
+       <div>
+        <span dir="auto">
+         Killpop
+        </span>
+       </div>
+      </a>
+     </li>
+     <li>
+      <a alt="AOV" class="cover" href="/album/54LYjXb8iDAfcdHeFM9TFC">
+       <div class="grid-item-image lazy-image" data-src="https://i.scdn.co/image/ab67616d00001e02c61813f7ac927fcb8ba8ece5">
+       </div>
+       <div>
+        <span dir="auto">
+         AOV
+        </span>
+       </div>
+      </a>
+     </li>
+    </ul>
+    <button class="link js-action-button" data-track-type="view-all-button">
+     View all on Spotify
+    </button>
+   </section>
+   <section class="view more-by">
+    <h2 class="subview-title">
+     Discovered On
+    </h2>
+    <ul class="more-by-grid more-by-grid-5 padding-notch" style="list-style: none">
+     <li>
+      <a alt="Heavy Quarantine" class="cover" href="/playlist/5hY7M3DlAmrMt1x7OFIWIm">
+       <div class="grid-item-image lazy-image" data-src="https://i.scdn.co/image/ab67706c0000da84ef5ae8efd41409cff77d2471">
+       </div>
+       <div>
+        <span dir="auto">
+         Heavy Quarantine
+        </span>
+       </div>
+      </a>
+     </li>
+     <li>
+      <a alt="Pulse Of The Maggots" class="cover" href="/playlist/6zsN8WrQ1lb3fqQl0cmD5M">
+       <div class="grid-item-image lazy-image" data-src="https://i.scdn.co/image/ab67706c0000da84661d004828b68a147b61be7e">
+       </div>
+       <div>
+        <span dir="auto">
+         Pulse Of The Maggots
+        </span>
+       </div>
+      </a>
+     </li>
+     <li>
+      <a alt="Tribe Leaders Top 50" class="cover" href="/playlist/0k9rJRxgRUq3OWzbOpLHks">
+       <div class="grid-item-image lazy-image" data-src="https://i.scdn.co/image/ab67706c0000da847bdd0194cea7d21b004ca907">
+       </div>
+       <div>
+        <span dir="auto">
+         Tribe Leaders Top 50
+        </span>
+       </div>
+      </a>
+     </li>
+     <li>
+      <a alt="Knotfest Roadshow 2021" class="cover" href="/playlist/4bEkO8mZOdaHYOW4qxaAai">
+       <div class="grid-item-image lazy-image" data-src="https://i.scdn.co/image/ab67706c0000da84b7361ca7cafcbd918806c097">
+       </div>
+       <div>
+        <span dir="auto">
+         Knotfest Roadshow 2021
+        </span>
+       </div>
+      </a>
+     </li>
+     <li>
+      <a alt="Slipknot Setlist" class="cover" href="/playlist/2VRuNE3t51Q1QfCzaqeg6t">
+       <div class="grid-item-image lazy-image" data-src="https://i.scdn.co/image/ab67706c0000da84e78952c4801210f3d3a35b7c">
+       </div>
+       <div>
+        <span dir="auto">
+         Slipknot Setlist
+        </span>
+       </div>
+      </a>
+     </li>
+    </ul>
+   </section>
+   <section class="upsell" id="upsell" style="background-color: #484058">
+    <div class="bg lazy-image" data-src="https://i.scdn.co/image/ab6761610000e5eb8e6164f9f60da15dd7d4129f" style="background-color: #484058">
+    </div>
+    <div class="overlay">
+    </div>
+    <div class="wrapper padding-notch">
+     <h1>
+      Listen to Slipknot now.
+     </h1>
+     <p>
+      Listen to Slipknot in full in the Spotify app
+     </p>
+     <button class="btn btn-green js-action-button" data-track-type="button-footer">
+      <span class="js-action-label">
+       Play on Spotify
+      </span>
+     </button>
+    </div>
+   </section>
+   <footer>
+    <a class="logo-link" href="/browse">
+     <svg>
+      <use xlink:href="#spotify-logo" xmlns:xlink="http://www.w3.org/1999/xlink">
+      </use>
+     </svg>
+    </a>
+    <p class="legal">
+     <a href="https://www.spotify.com/legal/" rel="noopener" target="_blank">
+      Legal
+     </a>
+     <br/>
+     <a href="https://www.spotify.com/legal/privacy-policy/" rel="noopener" target="_blank">
+      Privacy
+     </a>
+     <br/>
+     <a href="https://www.spotify.com/legal/cookies-policy/" rel="noopener" target="_blank">
+      Cookies
+     </a>
+     <br/>
+     <a href="https://www.spotify.com/legal/privacy-policy/#s3" rel="noopener" target="_blank">
+      About Ads
+     </a>
+    </p>
+   </footer>
+  </div>
+  <div aria-hidden="true" aria-labelledby="choice-modal-title" class="choice-modal js-choice-modal hide" role="dialog">
+   <div class="choice-modal-inner">
+    <button aria-label="Close" class="btn-close">
+     <svg>
+      <use xlink:href="#icon-close" xmlns:xlink="http://www.w3.org/1999/xlink">
+      </use>
+     </svg>
+    </button>
+    <span class="modal-title" id="choice-modal-title">
+     To play this content, you'll need the Spotify app.
+    </span>
+    <div class="wrapper-btn">
+     <button class="btn btn-green" id="mobile-download" type="button">
+      Get Spotify
+     </button>
+     <button class="btn btn-transparent" id="mobile-play" type="button">
+      Open Spotify
+     </button>
+    </div>
+   </div>
+  </div>
+  <div aria-hidden="true" aria-labelledby="upsell-modal-title" class="upsell-modal js-upsell-modal hide" role="dialog">
+   <button aria-label="Close" class="btn-close">
+    <svg>
+     <use xlink:href="#icon-close" xmlns:xlink="http://www.w3.org/1999/xlink">
+     </use>
+    </svg>
+   </button>
+   <h3 id="upsell-modal-title">
+    You look like someone who appreciates good music.
+   </h3>
+   <p>
+    Listen to all your favourite artists on any device for free or try the Premium trial.
+   </p>
+   <button class="link">
+    Play on Spotify
+   </button>
+  </div>
+  <script data-testid="spotify-environment">
+   window.SpotifyEnvironment = {
+        autoplay: JSON.parse("false"),
+        context: {
+            uri: "spotify:artist:05fG473iIaoy82BF1aGhL8",
+                        type: "artist"
+        },
+        strings: {
+            'Download Spotify': "Download Spotify",
+            'Play on Spotify': "Play on Spotify",
+            'View on Spotify': "View on Spotify",
+            'Follow on Spotify': "Follow on Spotify"
+        },
+        platform: "undefined",
+        isMobile: false,
+        isBrowserSupportedInWebPlayer: false,
+        usesWebPlayer: false,
+        isSpotified: false,
+                        environment: "production",
+                features: {
+                                }
+    };
+  </script>
+  <script>
+   Spotify = {};
+				Spotify.Entity = {"artist":{"uri":"spotify:artist:05fG473iIaoy82BF1aGhL8","profile":{"name":"Slipknot","playlists":{"items":[{"uri":"spotify:playlist:5hY7M3DlAmrMt1x7OFIWIm","name":"Heavy Quarantine","images":{"items":[{"sources":[{"url":"https://i.scdn.co/image/ab67706c0000da84ef5ae8efd41409cff77d2471","width":640,"height":640}]}]}},{"uri":"spotify:playlist:6zsN8WrQ1lb3fqQl0cmD5M","name":"Pulse Of The Maggots","images":{"items":[{"sources":[{"url":"https://i.scdn.co/image/ab67706c0000da84661d004828b68a147b61be7e","width":640,"height":640}]}]}},{"uri":"spotify:playlist:0k9rJRxgRUq3OWzbOpLHks","name":"Tribe Leaders Top 50","images":{"items":[{"sources":[{"url":"https://i.scdn.co/image/ab67706c0000da847bdd0194cea7d21b004ca907","width":640,"height":640}]}]}},{"uri":"spotify:playlist:4bEkO8mZOdaHYOW4qxaAai","name":"Knotfest Roadshow 2021","images":{"items":[{"sources":[{"url":"https://i.scdn.co/image/ab67706c0000da84b7361ca7cafcbd918806c097","width":640,"height":640}]}]}},{"uri":"spotify:playlist:2VRuNE3t51Q1QfCzaqeg6t","name":"Slipknot Setlist","images":{"items":[{"sources":[{"url":"https://i.scdn.co/image/ab67706c0000da84e78952c4801210f3d3a35b7c","width":640,"height":640}]}]}},{"uri":"spotify:playlist:0qoQ6iHKwNrZ0Zs0cvtHTO","name":"KNOTFEST UK","images":{"items":[{"sources":[{"url":"https://i.scdn.co/image/ab67706c0000da8498ca805ede60233b35674eb5","width":640,"height":640}]}]}},{"uri":"spotify:playlist:29cgCwuogOXM8lottznEAT","name":"KNOTFEST At Sea","images":{"items":[{"sources":[{"url":"https://i.scdn.co/image/ab67706c0000da84f08715a842f4b5fa44c13561","width":640,"height":640}]}]}},{"uri":"spotify:playlist:37i9dQZF1DX3m3SSfMuzNA","name":"This Is Slipknot","images":{"items":[{"sources":[{"url":"https://i.scdn.co/image/ab67706f00000002ff7822d48c90134c3df20522","width":null,"height":null}]}]}}]},"biography":{"text":"Twenty years ago, nine inspired musicians from Des Moines, Iowa, shattered the scope of what was possible in rock music. From the moment Slipknot emerged in 1999 with their self-titled debut, it was clear they were like nothing the world had seen before, but were everything they needed. Where a similarly creative act might have burned out or lost their relevance chasing mainstream acceptance, Slipknot has only proven that an enduring commitment to hard work, constant evolution, their craft, and their fans can allow a rock band to not only continue- but to actually push the envelope on what defines heavy metal, and rock in general. With &quot;We are Not Your Kind,&quot; Slipknot&#39;s first new album in five years, the band deliver when they are needed most. In an increasingly claustrophobic psychic landscape, &quot;We Are Not Your Kind&quot; brings back the violence, to meet the darkness blow for blow. The band’s creative strength and vision propelled &quot;We Are Not Your Kind&quot; to a #1 debut on the Billboard Top 200 chart this past August. Always a global band, the album also debuted at #1 in United Kingdom, Australia, Canada, Japan, Russia, Mexico, Portugal, Ireland, Belgium, Finland, Spain, and in the Top 3 in Germany, France, Norway, Italy, Austria, Switzerland, the Netherlands, and New Zealand."},"externalLinks":{"items":[{"name":"FACEBOOK","url":"https://facebook.com/slipknot"},{"name":"INSTAGRAM","url":"https://instagram.com/slipknot"},{"name":"TWITTER","url":"https://twitter.com/slipknot"}]}},"visuals":{"avatarImage":{"sources":[{"url":"https://i.scdn.co/image/ab6761610000e5eb8e6164f9f60da15dd7d4129f","width":640,"height":640},{"url":"https://i.scdn.co/image/ab6761610000f1788e6164f9f60da15dd7d4129f","width":160,"height":160}]},"headerImage":{"sources":[{"url":"https://i.scdn.co/image/ab6761860000101603525a6a8a93f37fe6c0d230","width":2660,"height":1140}]}},"stats":{"monthlyListeners":8254562,"followers":7469817},"discography":{"topTracks":{"items":[{"track":{"uri":"spotify:track:61mWefnWQOLf90gepjOCb3","name":"Duality","playcount":"364555649","artists":{"items":[{"uri":"spotify:artist:05fG473iIaoy82BF1aGhL8","profile":{"name":"Slipknot"}}]},"album":{"coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e026b3463e7160d333ada4b175a","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d000048516b3463e7160d333ada4b175a","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b2736b3463e7160d333ada4b175a","width":640,"height":640}]}}}},{"track":{"uri":"spotify:track:6wqJeItl3Vc3az4ZicSQAB","name":"Before I Forget","playcount":"278000650","artists":{"items":[{"uri":"spotify:artist:05fG473iIaoy82BF1aGhL8","profile":{"name":"Slipknot"}}]},"album":{"coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e026b3463e7160d333ada4b175a","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d000048516b3463e7160d333ada4b175a","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b2736b3463e7160d333ada4b175a","width":640,"height":640}]}}}},{"track":{"uri":"spotify:track:5mpUKTdskZea0gStWzeHUZ","name":"Unsainted","playcount":"159492565","artists":{"items":[{"uri":"spotify:artist:05fG473iIaoy82BF1aGhL8","profile":{"name":"Slipknot"}}]},"album":{"coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e0226f20b4d67c0c7b0f137ce4f","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d0000485126f20b4d67c0c7b0f137ce4f","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b27326f20b4d67c0c7b0f137ce4f","width":640,"height":640}]}}}},{"track":{"uri":"spotify:track:3RAFcUBrCNaboRXoP3S5t1","name":"Psychosocial","playcount":"324967006","artists":{"items":[{"uri":"spotify:artist:05fG473iIaoy82BF1aGhL8","profile":{"name":"Slipknot"}}]},"album":{"coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e02e7fbc0883149094912559f2c","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d00004851e7fbc0883149094912559f2c","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b273e7fbc0883149094912559f2c","width":640,"height":640}]}}}},{"track":{"uri":"spotify:track:6vhuve6vceQE6yNCcK2rct","name":"The Devil in I","playcount":"218929129","artists":{"items":[{"uri":"spotify:artist:05fG473iIaoy82BF1aGhL8","profile":{"name":"Slipknot"}}]},"album":{"coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e0206e3a56f02aeff58d3a47a10","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d0000485106e3a56f02aeff58d3a47a10","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b27306e3a56f02aeff58d3a47a10","width":640,"height":640}]}}}}]},"latest":null,"popularReleases":{"items":[]},"singles":{"items":[{"releases":{"items":[{"name":"All Out Life","uri":"spotify:album:65QFxYBGGQGGvAcW0YNMXa","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e02120ad9d866b0575b2afeeafb","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d00004851120ad9d866b0575b2afeeafb","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b273120ad9d866b0575b2afeeafb","width":640,"height":640}]},"type":"SINGLE","date":{"year":2018}}]}},{"releases":{"items":[{"name":"The Devil in I","uri":"spotify:album:1LDXWZnALqJHoaPgpGQzqX","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e021a24bbe32559cfa357cbfd0e","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d000048511a24bbe32559cfa357cbfd0e","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b2731a24bbe32559cfa357cbfd0e","width":640,"height":640}]},"type":"SINGLE","date":{"year":2014}}]}},{"releases":{"items":[{"name":"The Negative One","uri":"spotify:album:6w6IWjTgNxph6odfrhXr7T","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e029bcc8dd36f2744af2778fe67","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d000048519bcc8dd36f2744af2778fe67","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b2739bcc8dd36f2744af2778fe67","width":640,"height":640}]},"type":"SINGLE","date":{"year":2014}}]}},{"releases":{"items":[{"name":"Sulfur","uri":"spotify:album:3MHV9OHbWx2vvwAnjCXP5D","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e02298134465521272d92571f88","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d00004851298134465521272d92571f88","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b273298134465521272d92571f88","width":640,"height":640}]},"type":"SINGLE","date":{"year":2009}}]}},{"releases":{"items":[{"name":"Dead Memories","uri":"spotify:album:4zfu3Dy9N57UNJpYWclUbX","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e0276c2bf730da71a630356ae5f","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d0000485176c2bf730da71a630356ae5f","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b27376c2bf730da71a630356ae5f","width":640,"height":640}]},"type":"SINGLE","date":{"year":2008}}]}}]},"albums":{"items":[{"releases":{"items":[{"name":"We Are Not Your Kind","uri":"spotify:album:754RY5WpZ2LTUZsk8kDBju","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e0226f20b4d67c0c7b0f137ce4f","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d0000485126f20b4d67c0c7b0f137ce4f","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b27326f20b4d67c0c7b0f137ce4f","width":640,"height":640}]},"type":"ALBUM","date":{"year":2019}}]}},{"releases":{"items":[{"name":"Day Of The Gusano (Live)","uri":"spotify:album:09pLzub9F2asXde8dH2UDN","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e02fb136dbd6d53eaafcbdc37d3","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d00004851fb136dbd6d53eaafcbdc37d3","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b273fb136dbd6d53eaafcbdc37d3","width":640,"height":640}]},"type":"ALBUM","date":{"year":2017}}]}},{"releases":{"items":[{"name":".5: The Gray Chapter (Special Edition)","uri":"spotify:album:7sQaAG0uKCPPV45R12SWu9","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e02b25ef76c43a12d5e13742799","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d00004851b25ef76c43a12d5e13742799","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b273b25ef76c43a12d5e13742799","width":640,"height":640}]},"type":"ALBUM","date":{"year":2014}}]}},{"releases":{"items":[{"name":".5: The Gray Chapter","uri":"spotify:album:3nyxMohQINxnhYwyHvUqVf","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e0206e3a56f02aeff58d3a47a10","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d0000485106e3a56f02aeff58d3a47a10","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b27306e3a56f02aeff58d3a47a10","width":640,"height":640}]},"type":"ALBUM","date":{"year":2014}}]}},{"releases":{"items":[{"name":"Slipknot (10th Anniversary Edition)","uri":"spotify:album:2dL9Q5AtIv4Rw1L6lKcIUc","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e02baf04a1d30db6ac9de26da7d","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d00004851baf04a1d30db6ac9de26da7d","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b273baf04a1d30db6ac9de26da7d","width":640,"height":640}]},"type":"ALBUM","date":{"year":2009}}]}},{"releases":{"items":[{"name":"All Hope Is Gone","uri":"spotify:album:0hFWapnP7orzXCMwNU5DuA","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e02457163bec7e8e4decf8c6375","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d00004851457163bec7e8e4decf8c6375","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b273457163bec7e8e4decf8c6375","width":640,"height":640}]},"type":"ALBUM","date":{"year":2008}}]}},{"releases":{"items":[{"name":"All Hope Is Gone (10th Anniversary)","uri":"spotify:album:2ISXjEm0D4chvU2IDNvUqk","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e02e7fbc0883149094912559f2c","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d00004851e7fbc0883149094912559f2c","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b273e7fbc0883149094912559f2c","width":640,"height":640}]},"type":"ALBUM","date":{"year":2008}}]}},{"releases":{"items":[{"name":"9.0 Live","uri":"spotify:album:2rdXvZY0IkT1TPuA8SKTix","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e0264facfc100f32f659df9d6b5","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d0000485164facfc100f32f659df9d6b5","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b27364facfc100f32f659df9d6b5","width":640,"height":640}]},"type":"ALBUM","date":{"year":2005}}]}}]},"compilations":{"items":[{"releases":{"items":[{"name":"The Studio Album Collection (1999 - 2008)","uri":"spotify:album:3cuYU41mdXE3oapg7FK61o","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e02ca7321e11e40a78fa5a72546","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d00004851ca7321e11e40a78fa5a72546","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b273ca7321e11e40a78fa5a72546","width":640,"height":640}]},"type":"COMPILATION","date":{"year":2014}}]}},{"releases":{"items":[{"name":"Antennas to Hell (Special Edition)","uri":"spotify:album:2dNADktB0Xh4CHcxRvHvcz","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e02da77dba76fb945fcad684b68","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d00004851da77dba76fb945fcad684b68","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b273da77dba76fb945fcad684b68","width":640,"height":640}]},"type":"COMPILATION","date":{"year":2012}}]}}]}},"relatedContent":{"relatedArtists":{"items":[{"uri":"spotify:artist:7JDSHlDdVTo7aZKdQZ53Vf","profile":{"name":"Static-X"},"visuals":{"avatarImage":{"sources":[{"url":"https://i.scdn.co/image/ab6761610000e5eb7f4a72d9541571d430c157c7","width":640,"height":640},{"url":"https://i.scdn.co/image/ab6761610000f1787f4a72d9541571d430c157c7","width":160,"height":160}]}}},{"uri":"spotify:artist:2Pfv2w8a20xzC7Dr7QXRqM","profile":{"name":"Mudvayne"},"visuals":{"avatarImage":{"sources":[{"url":"https://i.scdn.co/image/ab6761610000e5eb2a429c982c2eba31463947df","width":640,"height":640},{"url":"https://i.scdn.co/image/ab6761610000f1782a429c982c2eba31463947df","width":160,"height":160}]}}},{"uri":"spotify:artist:49qiE8dj4JuNdpYGRPdKbF","profile":{"name":"Stone Sour"},"visuals":{"avatarImage":{"sources":[{"url":"https://i.scdn.co/image/ab6761610000e5ebf4c48660e778eeea3d9f1c5b","width":640,"height":640},{"url":"https://i.scdn.co/image/ab6761610000f178f4c48660e778eeea3d9f1c5b","width":160,"height":160}]}}},{"uri":"spotify:artist:3RNrq3jvMZxD9ZyoOZbQOD","profile":{"name":"Korn"},"visuals":{"avatarImage":{"sources":[{"url":"https://i.scdn.co/image/ab6761610000e5eb7ad313037bf085fe98e589c1","width":640,"height":640},{"url":"https://i.scdn.co/image/ab6761610000f1787ad313037bf085fe98e589c1","width":160,"height":160}]}}},{"uri":"spotify:artist:7fWgqc4HJi3pcHhK8hKg2p","profile":{"name":"Dope"},"visuals":{"avatarImage":{"sources":[{"url":"https://i.scdn.co/image/ab6761610000e5eb750cc5e8908ca2a0c02d73cd","width":640,"height":640},{"url":"https://i.scdn.co/image/ab6761610000f178750cc5e8908ca2a0c02d73cd","width":160,"height":160}]}}},{"uri":"spotify:artist:1E4r4z7ivGUcSAnCbINJ9v","profile":{"name":"Drowning Pool"},"visuals":{"avatarImage":{"sources":[{"url":"https://i.scdn.co/image/8e286c03fa04254d98966b40e2d31549348a433c","width":640,"height":962},{"url":"https://i.scdn.co/image/cac066648bb8d5ae1cc5b81790d9e48bd5c74219","width":64,"height":96}]}}},{"uri":"spotify:artist:0lVlNsuGaOr9vMHCZIAKMt","profile":{"name":"Machine Head"},"visuals":{"avatarImage":{"sources":[{"url":"https://i.scdn.co/image/ab6761610000e5ebb6de016665715c0003ecbdba","width":640,"height":640},{"url":"https://i.scdn.co/image/ab6761610000f178b6de016665715c0003ecbdba","width":160,"height":160}]}}},{"uri":"spotify:artist:5eAWCfyUhZtHHtBdNk56l1","profile":{"name":"System Of A Down"},"visuals":{"avatarImage":{"sources":[{"url":"https://i.scdn.co/image/ab6761610000e5eb60063d3451ade8f9fab397c2","width":640,"height":640},{"url":"https://i.scdn.co/image/ab6761610000f17860063d3451ade8f9fab397c2","width":160,"height":160}]}}}]},"appearsOn":{"items":[{"releases":{"items":[{"name":"100 Greatest Metal","uri":"spotify:album:7APWovsrCERT6OXg8o1CT1","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e0233859038f3f604e12a4abc03","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d0000485133859038f3f604e12a4abc03","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b27333859038f3f604e12a4abc03","width":640,"height":640}]},"type":"ALBUM","date":{"year":2020}}]}},{"releases":{"items":[{"name":"Rock","uri":"spotify:album:5ZNIZY6Dg9sC04xsJEBx0o","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e02a6fbc5e58df593b3bd45db9a","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d00004851a6fbc5e58df593b3bd45db9a","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b273a6fbc5e58df593b3bd45db9a","width":640,"height":640}]},"type":"COMPILATION","date":{"year":2018}}]}},{"releases":{"items":[{"name":"In the End - 00's Rock","uri":"spotify:album:0w6zOTTtIr63UPiMrKbkPC","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e02f017bcfa6f7cf17579be8009","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d00004851f017bcfa6f7cf17579be8009","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b273f017bcfa6f7cf17579be8009","width":640,"height":640}]},"type":"ALBUM","date":{"year":2021}}]}},{"releases":{"items":[{"name":"Freddy vs. Jason (Soundtrack)","uri":"spotify:album:2MDGnhN4Y9zVr1ExBxvude","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e02e89f494cf9497bb23a329ed6","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d00004851e89f494cf9497bb23a329ed6","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b273e89f494cf9497bb23a329ed6","width":640,"height":640}]},"type":"COMPILATION","date":{"year":2003}}]}},{"releases":{"items":[{"name":"Playlist: Indie","uri":"spotify:album:6jsmc90xmrN8XWWES19aTG","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e02df665fadf4b1460bd51c1377","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d00004851df665fadf4b1460bd51c1377","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b273df665fadf4b1460bd51c1377","width":640,"height":640}]},"type":"ALBUM","date":{"year":2019}}]}},{"releases":{"items":[{"name":"The Heart of Roadrunner Records","uri":"spotify:album:2E0suLcy0lvq0SJXWyWO2l","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e02d683bd4f05ba19f0f0a8aa2f","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d00004851d683bd4f05ba19f0f0a8aa2f","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b273d683bd4f05ba19f0f0a8aa2f","width":640,"height":640}]},"type":"COMPILATION","date":{"year":2003}}]}},{"releases":{"items":[{"name":"The Longest Snowboarding Album, Ever.","uri":"spotify:album:6xsJD9qRk9jocBNn1OAb82","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e02fd41c30e5b1ed38066282421","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d00004851fd41c30e5b1ed38066282421","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b273fd41c30e5b1ed38066282421","width":640,"height":640}]},"type":"COMPILATION","date":{"year":2019}}]}},{"releases":{"items":[{"name":"Scream 3 (Original Motion Picture Soundtrack)","uri":"spotify:album:4422oCJAixI2FXa9ur3qdn","coverArt":{"sources":[{"url":"https://i.scdn.co/image/ab67616d00001e02a198618ada5e8922df59e0f4","width":300,"height":300},{"url":"https://i.scdn.co/image/ab67616d00004851a198618ada5e8922df59e0f4","width":64,"height":64},{"url":"https://i.scdn.co/image/ab67616d0000b273a198618ada5e8922df59e0f4","width":640,"height":640}]},"type":"COMPILATION","date":{"year":2000}}]}}]},"featuring":{"items":[{"uri":"spotify:playlist:37i9dQZF1DX3m3SSfMuzNA","name":"This Is Slipknot","images":{"items":[{"sources":[{"url":"https://i.scdn.co/image/ab67706f00000002ff7822d48c90134c3df20522","width":null,"height":null}]}]}},{"uri":"spotify:playlist:37i9dQZF1E4m433mhB66fa","name":"Slipknot Radio","images":{"items":[{"sources":[{"url":"https://seeded-session-images.scdn.co/v1/img/artist/05fG473iIaoy82BF1aGhL8/en","width":null,"height":null}]}]}},{"uri":"spotify:playlist:37i9dQZF1DXe6bgV3TmZOL","name":"Adrenaline Workout","images":{"items":[{"sources":[{"url":"https://i.scdn.co/image/ab67706f00000002929e39d3550da276515b31f2","width":null,"height":null}]}]}},{"uri":"spotify:playlist:37i9dQZF1DWXNFSTtym834","name":"00s Metal Classics","images":{"items":[{"sources":[{"url":"https://i.scdn.co/image/ab67706f00000002bdd30d764dba603d5e8ce18d","width":null,"height":null}]}]}},{"uri":"spotify:playlist:37i9dQZF1DWZUTt0fNaCPB","name":"Running to Rock 170-190 BPM","images":{"items":[{"sources":[{"url":"https://i.scdn.co/image/ab67706f000000022b6a4f0a0f453f9b52601dde","width":null,"height":null}]}]}},{"uri":"spotify:playlist:37i9dQZF1DXcfZ6moR6J0G","name":"Nu Metal Generation","images":{"items":[{"sources":[{"url":"https://i.scdn.co/image/ab67706f00000002000177378eb82e218aa0498f","width":null,"height":null}]}]}},{"uri":"spotify:playlist:37i9dQZF1DWWOaP4H0w5b0","name":"Metal Essentials","images":{"items":[{"sources":[{"url":"https://i.scdn.co/image/ab67706f000000021e192cf416d6921f47a0eae4","width":null,"height":null}]}]}},{"uri":"spotify:playlist:37i9dQZF1DWV67mFOgnpbl","name":"Party Hard","images":{"items":[{"sources":[{"url":"https://i.scdn.co/image/ab67706f000000020aedfa51a02afc69b9104efa","width":null,"height":null}]}]}}]}}},"uri":"spotify:artist:05fG473iIaoy82BF1aGhL8","name":"Slipknot","type":"artist","monthlyListeners":8254562,"followers":{"total":7469817},"description":"Twenty years ago, nine inspired musicians from Des Moines, Iowa, shattered the scope of what was possible in rock music. From the moment Slipknot emerged in 1999 with their self-titled debut, it was clear they were like nothing the world had seen before, but were everything they needed. Where a similarly creative act might have burned out or lost their relevance chasing mainstream acceptance, Slipknot has only proven that an enduring commitment to hard work, constant evolution, their craft, and their fans can allow a rock band to not only continue- but to actually push the envelope on what defines heavy metal, and rock in general. With &quot;We are Not Your Kind,&quot; Slipknot&#39;s first new album in five years, the band deliver when they are needed most. In an increasingly claustrophobic psychic landscape, &quot;We Are Not Your Kind&quot; brings back the violence, to meet the darkness blow for blow. The band’s creative strength and vision propelled &quot;We Are Not Your Kind&quot; to a #1 debut on the Billboard Top 200 chart this past August. Always a global band, the album also debuted at #1 in United Kingdom, Australia, Canada, Japan, Russia, Mexico, Portugal, Ireland, Belgium, Finland, Spain, and in the Top 3 in Germany, France, Norway, Italy, Austria, Switzerland, the Netherlands, and New Zealand.","images":[{"url":"https://i.scdn.co/image/ab6761610000e5eb8e6164f9f60da15dd7d4129f","width":640,"height":640},{"url":"https://i.scdn.co/image/ab6761610000f1788e6164f9f60da15dd7d4129f","width":160,"height":160}],"top_tracks":{"0":{"album":{"album_type":"album","artists":[{"external_urls":{"spotify":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8"},"href":"https://api.spotify.com/v1/artists/05fG473iIaoy82BF1aGhL8","id":"05fG473iIaoy82BF1aGhL8","name":"Slipknot","type":"artist","uri":"spotify:artist:05fG473iIaoy82BF1aGhL8"}],"external_urls":{"spotify":"https://open.spotify.com/album/4ZDBQSIDIZRUBOG2OHcN3T"},"href":"https://api.spotify.com/v1/albums/4ZDBQSIDIZRUBOG2OHcN3T","id":"4ZDBQSIDIZRUBOG2OHcN3T","images":[{"height":640,"url":"https://i.scdn.co/image/ab67616d0000b2736b3463e7160d333ada4b175a","width":640},{"height":300,"url":"https://i.scdn.co/image/ab67616d00001e026b3463e7160d333ada4b175a","width":300},{"height":64,"url":"https://i.scdn.co/image/ab67616d000048516b3463e7160d333ada4b175a","width":64}],"name":"Vol. 3: The Subliminal Verses","release_date":"2004","release_date_precision":"year","total_tracks":22,"type":"album","uri":"spotify:album:4ZDBQSIDIZRUBOG2OHcN3T"},"artists":[{"external_urls":{"spotify":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8"},"href":"https://api.spotify.com/v1/artists/05fG473iIaoy82BF1aGhL8","id":"05fG473iIaoy82BF1aGhL8","name":"Slipknot","type":"artist","uri":"spotify:artist:05fG473iIaoy82BF1aGhL8"}],"disc_number":1,"duration_ms":252613,"explicit":false,"external_ids":{"isrc":"NLA320420785"},"external_urls":{"spotify":"https://open.spotify.com/track/61mWefnWQOLf90gepjOCb3"},"href":"https://api.spotify.com/v1/tracks/61mWefnWQOLf90gepjOCb3","id":"61mWefnWQOLf90gepjOCb3","is_local":false,"is_playable":true,"name":"Duality","popularity":76,"preview_url":"https://p.scdn.co/mp3-preview/0d69e64bedfe9428d4cb07ee9b134b38e0230c6d?cid=a46f5c5745a14fbf826186da8da5ecc3","track_number":4,"type":"track","uri":"spotify:track:61mWefnWQOLf90gepjOCb3"},"1":{"album":{"album_type":"album","artists":[{"external_urls":{"spotify":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8"},"href":"https://api.spotify.com/v1/artists/05fG473iIaoy82BF1aGhL8","id":"05fG473iIaoy82BF1aGhL8","name":"Slipknot","type":"artist","uri":"spotify:artist:05fG473iIaoy82BF1aGhL8"}],"external_urls":{"spotify":"https://open.spotify.com/album/4ZDBQSIDIZRUBOG2OHcN3T"},"href":"https://api.spotify.com/v1/albums/4ZDBQSIDIZRUBOG2OHcN3T","id":"4ZDBQSIDIZRUBOG2OHcN3T","images":[{"height":640,"url":"https://i.scdn.co/image/ab67616d0000b2736b3463e7160d333ada4b175a","width":640},{"height":300,"url":"https://i.scdn.co/image/ab67616d00001e026b3463e7160d333ada4b175a","width":300},{"height":64,"url":"https://i.scdn.co/image/ab67616d000048516b3463e7160d333ada4b175a","width":64}],"name":"Vol. 3: The Subliminal Verses","release_date":"2004","release_date_precision":"year","total_tracks":22,"type":"album","uri":"spotify:album:4ZDBQSIDIZRUBOG2OHcN3T"},"artists":[{"external_urls":{"spotify":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8"},"href":"https://api.spotify.com/v1/artists/05fG473iIaoy82BF1aGhL8","id":"05fG473iIaoy82BF1aGhL8","name":"Slipknot","type":"artist","uri":"spotify:artist:05fG473iIaoy82BF1aGhL8"}],"disc_number":1,"duration_ms":278600,"explicit":false,"external_ids":{"isrc":"NLA320420824"},"external_urls":{"spotify":"https://open.spotify.com/track/6wqJeItl3Vc3az4ZicSQAB"},"href":"https://api.spotify.com/v1/tracks/6wqJeItl3Vc3az4ZicSQAB","id":"6wqJeItl3Vc3az4ZicSQAB","is_local":false,"is_playable":true,"name":"Before I Forget","popularity":74,"preview_url":"https://p.scdn.co/mp3-preview/835a766a2ae7f61480c38e5b97443520fecc325d?cid=a46f5c5745a14fbf826186da8da5ecc3","track_number":10,"type":"track","uri":"spotify:track:6wqJeItl3Vc3az4ZicSQAB"},"2":{"album":{"album_type":"album","artists":[{"external_urls":{"spotify":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8"},"href":"https://api.spotify.com/v1/artists/05fG473iIaoy82BF1aGhL8","id":"05fG473iIaoy82BF1aGhL8","name":"Slipknot","type":"artist","uri":"spotify:artist:05fG473iIaoy82BF1aGhL8"}],"external_urls":{"spotify":"https://open.spotify.com/album/754RY5WpZ2LTUZsk8kDBju"},"href":"https://api.spotify.com/v1/albums/754RY5WpZ2LTUZsk8kDBju","id":"754RY5WpZ2LTUZsk8kDBju","images":[{"height":640,"url":"https://i.scdn.co/image/ab67616d0000b27326f20b4d67c0c7b0f137ce4f","width":640},{"height":300,"url":"https://i.scdn.co/image/ab67616d00001e0226f20b4d67c0c7b0f137ce4f","width":300},{"height":64,"url":"https://i.scdn.co/image/ab67616d0000485126f20b4d67c0c7b0f137ce4f","width":64}],"name":"We Are Not Your Kind","release_date":"2019-08-09","release_date_precision":"day","total_tracks":14,"type":"album","uri":"spotify:album:754RY5WpZ2LTUZsk8kDBju"},"artists":[{"external_urls":{"spotify":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8"},"href":"https://api.spotify.com/v1/artists/05fG473iIaoy82BF1aGhL8","id":"05fG473iIaoy82BF1aGhL8","name":"Slipknot","type":"artist","uri":"spotify:artist:05fG473iIaoy82BF1aGhL8"}],"disc_number":1,"duration_ms":260773,"explicit":true,"external_ids":{"isrc":"NLA321900089"},"external_urls":{"spotify":"https://open.spotify.com/track/5mpUKTdskZea0gStWzeHUZ"},"href":"https://api.spotify.com/v1/tracks/5mpUKTdskZea0gStWzeHUZ","id":"5mpUKTdskZea0gStWzeHUZ","is_local":false,"is_playable":true,"name":"Unsainted","popularity":72,"preview_url":"https://p.scdn.co/mp3-preview/9d19125cbc494e8ea8d20a347f592e563c9167fb?cid=a46f5c5745a14fbf826186da8da5ecc3","track_number":2,"type":"track","uri":"spotify:track:5mpUKTdskZea0gStWzeHUZ"},"3":{"album":{"album_type":"album","artists":[{"external_urls":{"spotify":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8"},"href":"https://api.spotify.com/v1/artists/05fG473iIaoy82BF1aGhL8","id":"05fG473iIaoy82BF1aGhL8","name":"Slipknot","type":"artist","uri":"spotify:artist:05fG473iIaoy82BF1aGhL8"}],"external_urls":{"spotify":"https://open.spotify.com/album/2ISXjEm0D4chvU2IDNvUqk"},"href":"https://api.spotify.com/v1/albums/2ISXjEm0D4chvU2IDNvUqk","id":"2ISXjEm0D4chvU2IDNvUqk","images":[{"height":640,"url":"https://i.scdn.co/image/ab67616d0000b273e7fbc0883149094912559f2c","width":640},{"height":300,"url":"https://i.scdn.co/image/ab67616d00001e02e7fbc0883149094912559f2c","width":300},{"height":64,"url":"https://i.scdn.co/image/ab67616d00004851e7fbc0883149094912559f2c","width":64}],"name":"All Hope Is Gone (10th Anniversary)","release_date":"2008-08-20","release_date_precision":"day","total_tracks":28,"type":"album","uri":"spotify:album:2ISXjEm0D4chvU2IDNvUqk"},"artists":[{"external_urls":{"spotify":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8"},"href":"https://api.spotify.com/v1/artists/05fG473iIaoy82BF1aGhL8","id":"05fG473iIaoy82BF1aGhL8","name":"Slipknot","type":"artist","uri":"spotify:artist:05fG473iIaoy82BF1aGhL8"}],"disc_number":1,"duration_ms":284120,"explicit":false,"external_ids":{"isrc":"NLA320886993"},"external_urls":{"spotify":"https://open.spotify.com/track/3RAFcUBrCNaboRXoP3S5t1"},"href":"https://api.spotify.com/v1/tracks/3RAFcUBrCNaboRXoP3S5t1","id":"3RAFcUBrCNaboRXoP3S5t1","is_local":false,"is_playable":true,"name":"Psychosocial","popularity":72,"preview_url":"https://p.scdn.co/mp3-preview/47a08dcd59d609598a575f5e9718c17b007e0112?cid=a46f5c5745a14fbf826186da8da5ecc3","track_number":4,"type":"track","uri":"spotify:track:3RAFcUBrCNaboRXoP3S5t1"},"4":{"album":{"album_type":"album","artists":[{"external_urls":{"spotify":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8"},"href":"https://api.spotify.com/v1/artists/05fG473iIaoy82BF1aGhL8","id":"05fG473iIaoy82BF1aGhL8","name":"Slipknot","type":"artist","uri":"spotify:artist:05fG473iIaoy82BF1aGhL8"}],"external_urls":{"spotify":"https://open.spotify.com/album/3nyxMohQINxnhYwyHvUqVf"},"href":"https://api.spotify.com/v1/albums/3nyxMohQINxnhYwyHvUqVf","id":"3nyxMohQINxnhYwyHvUqVf","images":[{"height":640,"url":"https://i.scdn.co/image/ab67616d0000b27306e3a56f02aeff58d3a47a10","width":640},{"height":300,"url":"https://i.scdn.co/image/ab67616d00001e0206e3a56f02aeff58d3a47a10","width":300},{"height":64,"url":"https://i.scdn.co/image/ab67616d0000485106e3a56f02aeff58d3a47a10","width":64}],"name":".5: The Gray Chapter","release_date":"2014-10-15","release_date_precision":"day","total_tracks":14,"type":"album","uri":"spotify:album:3nyxMohQINxnhYwyHvUqVf"},"artists":[{"external_urls":{"spotify":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8"},"href":"https://api.spotify.com/v1/artists/05fG473iIaoy82BF1aGhL8","id":"05fG473iIaoy82BF1aGhL8","name":"Slipknot","type":"artist","uri":"spotify:artist:05fG473iIaoy82BF1aGhL8"}],"disc_number":1,"duration_ms":342821,"explicit":false,"external_ids":{"isrc":"NLA321400348"},"external_urls":{"spotify":"https://open.spotify.com/track/6vhuve6vceQE6yNCcK2rct"},"href":"https://api.spotify.com/v1/tracks/6vhuve6vceQE6yNCcK2rct","id":"6vhuve6vceQE6yNCcK2rct","is_local":false,"is_playable":true,"name":"The Devil in I","popularity":53,"preview_url":"https://p.scdn.co/mp3-preview/7403b6a13701d54ed89cd5134b38997971123938?cid=a46f5c5745a14fbf826186da8da5ecc3","track_number":4,"type":"track","uri":"spotify:track:6vhuve6vceQE6yNCcK2rct"},"5":{"album":{"album_type":"album","artists":[{"external_urls":{"spotify":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8"},"href":"https://api.spotify.com/v1/artists/05fG473iIaoy82BF1aGhL8","id":"05fG473iIaoy82BF1aGhL8","name":"Slipknot","type":"artist","uri":"spotify:artist:05fG473iIaoy82BF1aGhL8"}],"external_urls":{"spotify":"https://open.spotify.com/album/2dL9Q5AtIv4Rw1L6lKcIUc"},"href":"https://api.spotify.com/v1/albums/2dL9Q5AtIv4Rw1L6lKcIUc","id":"2dL9Q5AtIv4Rw1L6lKcIUc","images":[{"height":640,"url":"https://i.scdn.co/image/ab67616d0000b273baf04a1d30db6ac9de26da7d","width":640},{"height":300,"url":"https://i.scdn.co/image/ab67616d00001e02baf04a1d30db6ac9de26da7d","width":300},{"height":64,"url":"https://i.scdn.co/image/ab67616d00004851baf04a1d30db6ac9de26da7d","width":64}],"name":"Slipknot (10th Anniversary Edition)","release_date":"2009-09-09","release_date_precision":"day","total_tracks":25,"type":"album","uri":"spotify:album:2dL9Q5AtIv4Rw1L6lKcIUc"},"artists":[{"external_urls":{"spotify":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8"},"href":"https://api.spotify.com/v1/artists/05fG473iIaoy82BF1aGhL8","id":"05fG473iIaoy82BF1aGhL8","name":"Slipknot","type":"artist","uri":"spotify:artist:05fG473iIaoy82BF1aGhL8"}],"disc_number":1,"duration_ms":147840,"explicit":false,"external_ids":{"isrc":"NLA329980194"},"external_urls":{"spotify":"https://open.spotify.com/track/2gscB6kDOmrv1P6qs2KXE3"},"href":"https://api.spotify.com/v1/tracks/2gscB6kDOmrv1P6qs2KXE3","id":"2gscB6kDOmrv1P6qs2KXE3","is_local":false,"is_playable":true,"name":"Wait and Bleed","popularity":70,"preview_url":"https://p.scdn.co/mp3-preview/7c1a811854a00fa916aee06ab0b56ef9901723a4?cid=a46f5c5745a14fbf826186da8da5ecc3","track_number":4,"type":"track","uri":"spotify:track:2gscB6kDOmrv1P6qs2KXE3"},"6":{"album":{"album_type":"album","artists":[{"external_urls":{"spotify":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8"},"href":"https://api.spotify.com/v1/artists/05fG473iIaoy82BF1aGhL8","id":"05fG473iIaoy82BF1aGhL8","name":"Slipknot","type":"artist","uri":"spotify:artist:05fG473iIaoy82BF1aGhL8"}],"external_urls":{"spotify":"https://open.spotify.com/album/754RY5WpZ2LTUZsk8kDBju"},"href":"https://api.spotify.com/v1/albums/754RY5WpZ2LTUZsk8kDBju","id":"754RY5WpZ2LTUZsk8kDBju","images":[{"height":640,"url":"https://i.scdn.co/image/ab67616d0000b27326f20b4d67c0c7b0f137ce4f","width":640},{"height":300,"url":"https://i.scdn.co/image/ab67616d00001e0226f20b4d67c0c7b0f137ce4f","width":300},{"height":64,"url":"https://i.scdn.co/image/ab67616d0000485126f20b4d67c0c7b0f137ce4f","width":64}],"name":"We Are Not Your Kind","release_date":"2019-08-09","release_date_precision":"day","total_tracks":14,"type":"album","uri":"spotify:album:754RY5WpZ2LTUZsk8kDBju"},"artists":[{"external_urls":{"spotify":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8"},"href":"https://api.spotify.com/v1/artists/05fG473iIaoy82BF1aGhL8","id":"05fG473iIaoy82BF1aGhL8","name":"Slipknot","type":"artist","uri":"spotify:artist:05fG473iIaoy82BF1aGhL8"}],"disc_number":1,"duration_ms":315177,"explicit":true,"external_ids":{"isrc":"NLA321900097"},"external_urls":{"spotify":"https://open.spotify.com/track/56fiFTRrSiHHH3gBeaTg2P"},"href":"https://api.spotify.com/v1/tracks/56fiFTRrSiHHH3gBeaTg2P","id":"56fiFTRrSiHHH3gBeaTg2P","is_local":false,"is_playable":true,"name":"Nero Forte","popularity":67,"preview_url":"https://p.scdn.co/mp3-preview/0ced99ffeb05d59987f4581dbc8e1fb3adc44568?cid=a46f5c5745a14fbf826186da8da5ecc3","track_number":5,"type":"track","uri":"spotify:track:56fiFTRrSiHHH3gBeaTg2P"},"7":{"album":{"album_type":"album","artists":[{"external_urls":{"spotify":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8"},"href":"https://api.spotify.com/v1/artists/05fG473iIaoy82BF1aGhL8","id":"05fG473iIaoy82BF1aGhL8","name":"Slipknot","type":"artist","uri":"spotify:artist:05fG473iIaoy82BF1aGhL8"}],"external_urls":{"spotify":"https://open.spotify.com/album/2ISXjEm0D4chvU2IDNvUqk"},"href":"https://api.spotify.com/v1/albums/2ISXjEm0D4chvU2IDNvUqk","id":"2ISXjEm0D4chvU2IDNvUqk","images":[{"height":640,"url":"https://i.scdn.co/image/ab67616d0000b273e7fbc0883149094912559f2c","width":640},{"height":300,"url":"https://i.scdn.co/image/ab67616d00001e02e7fbc0883149094912559f2c","width":300},{"height":64,"url":"https://i.scdn.co/image/ab67616d00004851e7fbc0883149094912559f2c","width":64}],"name":"All Hope Is Gone (10th Anniversary)","release_date":"2008-08-20","release_date_precision":"day","total_tracks":28,"type":"album","uri":"spotify:album:2ISXjEm0D4chvU2IDNvUqk"},"artists":[{"external_urls":{"spotify":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8"},"href":"https://api.spotify.com/v1/artists/05fG473iIaoy82BF1aGhL8","id":"05fG473iIaoy82BF1aGhL8","name":"Slipknot","type":"artist","uri":"spotify:artist:05fG473iIaoy82BF1aGhL8"}],"disc_number":1,"duration_ms":276146,"explicit":false,"external_ids":{"isrc":"NLA320887000"},"external_urls":{"spotify":"https://open.spotify.com/track/2vPZ4Lklyu75zBR3SgbFNI"},"href":"https://api.spotify.com/v1/tracks/2vPZ4Lklyu75zBR3SgbFNI","id":"2vPZ4Lklyu75zBR3SgbFNI","is_local":false,"is_playable":true,"name":"Snuff","popularity":64,"preview_url":"https://p.scdn.co/mp3-preview/90ae4a9672a3030f19ddfda4498492bb1ff5dfb6?cid=a46f5c5745a14fbf826186da8da5ecc3","track_number":11,"type":"track","uri":"spotify:track:2vPZ4Lklyu75zBR3SgbFNI"},"8":{"album":{"album_type":"album","artists":[{"external_urls":{"spotify":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8"},"href":"https://api.spotify.com/v1/artists/05fG473iIaoy82BF1aGhL8","id":"05fG473iIaoy82BF1aGhL8","name":"Slipknot","type":"artist","uri":"spotify:artist:05fG473iIaoy82BF1aGhL8"}],"external_urls":{"spotify":"https://open.spotify.com/album/5Zs0mNCTs73CqPKbZPWFX9"},"href":"https://api.spotify.com/v1/albums/5Zs0mNCTs73CqPKbZPWFX9","id":"5Zs0mNCTs73CqPKbZPWFX9","images":[{"height":640,"url":"https://i.scdn.co/image/ab67616d0000b273a62eefef8ee83d5e09aa8331","width":640},{"height":300,"url":"https://i.scdn.co/image/ab67616d00001e02a62eefef8ee83d5e09aa8331","width":300},{"height":64,"url":"https://i.scdn.co/image/ab67616d00004851a62eefef8ee83d5e09aa8331","width":64}],"name":"Iowa","release_date":"2001","release_date_precision":"year","total_tracks":33,"type":"album","uri":"spotify:album:5Zs0mNCTs73CqPKbZPWFX9"},"artists":[{"external_urls":{"spotify":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8"},"href":"https://api.spotify.com/v1/artists/05fG473iIaoy82BF1aGhL8","id":"05fG473iIaoy82BF1aGhL8","name":"Slipknot","type":"artist","uri":"spotify:artist:05fG473iIaoy82BF1aGhL8"}],"disc_number":1,"duration_ms":215600,"explicit":true,"external_ids":{"isrc":"NLA320119546"},"external_urls":{"spotify":"https://open.spotify.com/track/0Y2i84QWPFiFHQfEQDgHya"},"href":"https://api.spotify.com/v1/tracks/0Y2i84QWPFiFHQfEQDgHya","id":"0Y2i84QWPFiFHQfEQDgHya","is_local":false,"is_playable":true,"name":"People = Shit","popularity":66,"preview_url":"https://p.scdn.co/mp3-preview/2dd0ee3d74ecbc08faeea522b25bf3ce546f480b?cid=a46f5c5745a14fbf826186da8da5ecc3","track_number":2,"type":"track","uri":"spotify:track:0Y2i84QWPFiFHQfEQDgHya"},"9":{"album":{"album_type":"album","artists":[{"external_urls":{"spotify":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8"},"href":"https://api.spotify.com/v1/artists/05fG473iIaoy82BF1aGhL8","id":"05fG473iIaoy82BF1aGhL8","name":"Slipknot","type":"artist","uri":"spotify:artist:05fG473iIaoy82BF1aGhL8"}],"external_urls":{"spotify":"https://open.spotify.com/album/4ZDBQSIDIZRUBOG2OHcN3T"},"href":"https://api.spotify.com/v1/albums/4ZDBQSIDIZRUBOG2OHcN3T","id":"4ZDBQSIDIZRUBOG2OHcN3T","images":[{"height":640,"url":"https://i.scdn.co/image/ab67616d0000b2736b3463e7160d333ada4b175a","width":640},{"height":300,"url":"https://i.scdn.co/image/ab67616d00001e026b3463e7160d333ada4b175a","width":300},{"height":64,"url":"https://i.scdn.co/image/ab67616d000048516b3463e7160d333ada4b175a","width":64}],"name":"Vol. 3: The Subliminal Verses","release_date":"2004","release_date_precision":"year","total_tracks":22,"type":"album","uri":"spotify:album:4ZDBQSIDIZRUBOG2OHcN3T"},"artists":[{"external_urls":{"spotify":"https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8"},"href":"https://api.spotify.com/v1/artists/05fG473iIaoy82BF1aGhL8","id":"05fG473iIaoy82BF1aGhL8","name":"Slipknot","type":"artist","uri":"spotify:artist:05fG473iIaoy82BF1aGhL8"}],"disc_number":1,"duration_ms":224320,"explicit":false,"external_ids":{"isrc":"NLA320420826"},"external_urls":{"spotify":"https://open.spotify.com/track/0O7lENhqOySbsL743G7PqD"},"href":"https://api.spotify.com/v1/tracks/0O7lENhqOySbsL743G7PqD","id":"0O7lENhqOySbsL743G7PqD","is_local":false,"is_playable":true,"name":"Vermilion, Pt. 2","popularity":65,"preview_url":"https://p.scdn.co/mp3-preview/35379fc3575ae35a055aefc598d41dbee41f1f2c?cid=a46f5c5745a14fbf826186da8da5ecc3","track_number":11,"type":"track","uri":"spotify:track:0O7lENhqOySbsL743G7PqD"}}};
+  </script>
+  <script async="" src="https://open.scdn.co/cdn/build/open/open.be0146ab.js">
+  </script>
+  <script async="" src="https://open.scdn.co/cdn/build/open/vendor~open.e75f48fb.js">
+  </script>
+  <!-- Begin comScore Tag -->
+  <script>
+   var _comscore = _comscore || [];
+_comscore.push({ c1: "2", c2: "15654041" });
+(function() {
+  var s = document.createElement("script"), el =
+    document.getElementsByTagName("script")[0]; s.async = true;
+  s.src = "https://sb.scorecardresearch.com/beacon.js";
+  el.parentNode.insertBefore(s, el);
+})();
+  </script>
+  <!-- End comScore Tag -->
+  <script>
+   function getCookie(name) {
+  const v = document.cookie.match(`(^|;) ?${name}=([^;]*)(;|$)`);
+  return v ? v[2] : null;
+}
+
+const isQualaroo = getCookie('qualarooTimer');
+if (isQualaroo) {
+  window._kiq = window._kiq || [];
+  (function() {
+    setTimeout(function() {
+      const d = document;
+      const f = d.getElementsByTagName('script')[0];
+      const s = d.createElement('script');
+      s.type = 'text/javascript';
+      s.async = true;
+      s.src = '//s3.amazonaws.com/ki.js/51746/b0R.js';
+      s.addEventListener('load', function() {
+        const spcid = getCookie('sp_t');
+        window._kiq.push(['identify', spcid]);
+      });
+      f.parentNode.insertBefore(s, f);
+    }, 1);
+  })();
+}
+
+(function () {
+  var buttons = {
+    "mobile-login": 'login',
+    "mobile-continue-on-web": 'signup',
+    "mobile-download": 'download-app',
+  };
+
+  for (var key of Object.keys(buttons)) {
+    var button = document.getElementById(key)
+    if (button) {
+      button.addEventListener('click', function(e) {
+        gtag('event', buttons[e.target.id], {
+          'event_category': 'click',
+          'event_label': '/button',
+          'value': null,
+        });
+      });
+    }
+  }
+})();
+  </script>
+ </body>
+</html>
