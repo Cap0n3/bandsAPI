@@ -9,9 +9,9 @@ from bs4 import BeautifulSoup
 import itertools
 import re
 
-bandName = "Knocked Loose"
-query = bandName.replace(' ', '_')
-URL = f"https://en.wikipedia.org/wiki/{query}"
+BAND = "Metallica" # Change name here
+QUERY = BAND.replace(' ', '_')
+URL = f"https://en.wikipedia.org/wiki/{QUERY}"
 
 resp = requests.get(URL)
 
@@ -26,7 +26,7 @@ if resp.status_code == 200:
     # Get all infos
     infos = infoBoxTable.find_all(class_="infobox-data")
 
-    # Dict that'll contain all infos
+    # === EXTRACT INFO FROM RIGHT TABLE === #
     infosDict = {}
     
     for label, info in itertools.zip_longest(infoLabels, infos):
@@ -43,8 +43,6 @@ if resp.status_code == 200:
             infosDict[label.text] = cleanText
     
     print(infosDict)
-    #for info in infos:
-    #    print(info)
 
 elif resp.status_code == 404:
     print("No wikipedia for this band")
