@@ -10,10 +10,14 @@ import itertools
 import re
 
 BAND = "Metallica" # Change name here
+
+# === QUERY === #
 QUERY = BAND.replace(' ', '_')
 URL = f"https://en.wikipedia.org/wiki/{QUERY}"
-
-resp = requests.get(URL)
+# desktop user-agent
+USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:65.0) Gecko/20100101 Firefox/65.0"
+headers = {"user-agent" : USER_AGENT}
+resp = requests.get(URL, headers=headers)
 
 if resp.status_code == 200:
     soup = BeautifulSoup(resp.content, "html.parser")
