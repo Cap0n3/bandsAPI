@@ -47,7 +47,7 @@ def getBandCard(response):
     # Get all infos
     infos = infoBoxTable.find_all(class_="infobox-data")
 
-    # Dict that'll contain all infos
+    # === EXTRACT INFO FROM RIGHT TABLE === #
     infosDict = {}
     
     for label, info in itertools.zip_longest(infoLabels, infos):
@@ -80,5 +80,4 @@ if resp.status_code == 200:
     print(getBandCard(resp))
 
 elif resp.status_code == 404:
-
     print("No wikipedia for this band")
