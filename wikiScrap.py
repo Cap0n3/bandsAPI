@@ -9,14 +9,35 @@ from bs4 import BeautifulSoup
 import itertools
 import re
 
-bandName = "Knocked Loose"
-query = bandName.replace(' ', '_')
-URL = f"https://en.wikipedia.org/wiki/{query}"
+# ===================================== #
+# =============== UTILS =============== #
+# ===================================== #
+def disambiguate(url):
+    '''
+        Function used to disambiguate url. For instance 'Nirvana' could mean buddhist concept of heaven 
+        or the american band. In this case wikipedia redirects to link https://en.wikipedia.org/wiki/Nirvana_(disambiguation)
+        for user to choose the exact searched term. 
+        
+        If there is an ambiguity, Wikipedia will refer ro band's page url like this : 
+        https://en.wikipedia.org/wiki/Nirvana_(band)
 
-resp = requests.get(URL)
+        Or if there's another band elsewhere named the same (to do !!!) :
+        https://en.wikipedia.org/wiki/Nirvana_(British_band)
 
-if resp.status_code == 200:
-    soup = BeautifulSoup(resp.content, "html.parser")
+        @params     {str}       URL to query
+        @returns    {object}    Response 
+    '''
+    # Test URL
+    response = requests.get(url)
+    if response.status_code == 404:
+        newURL = url.replace('_(band)', '')
+        return requests.get(newURL)
+    elif response.status_code == 200:
+        return response
+        
+
+def getBandCard(response):
+    soup = BeautifulSoup(response.content, "html.parser")
     # Get Info box table on the right
     infoBoxTable = soup.find(class_="infobox vcard plainlist")
     
@@ -42,9 +63,22 @@ if resp.status_code == 200:
         else:
             infosDict[label.text] = cleanText
     
-    print(infosDict)
-    #for info in infos:
-    #    print(info)
+    return infosDict
+
+
+# ==================================== #
+# =============== MAIN =============== #
+# ==================================== #
+bandName = "Knocked Loose"
+format = bandName.replace(' ', '_')
+query = format + "_(band)" # For disambiguation (may also refer to other things)
+URL = f"https://en.wikipedia.org/wiki/{query}"
+
+resp = disambiguate(URL)
+
+if resp.status_code == 200:
+    print(getBandCard(resp))
 
 elif resp.status_code == 404:
+
     print("No wikipedia for this band")
