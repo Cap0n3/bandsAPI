@@ -36,8 +36,7 @@ def disambiguate(url):
         return response
         
 
-def getBandCard(response):
-    soup = BeautifulSoup(response.content, "html.parser")
+def getBandCard(soup):
     # Get Info box table on the right
     infoBoxTable = soup.find(class_="infobox vcard plainlist")
     
@@ -77,7 +76,17 @@ URL = f"https://en.wikipedia.org/wiki/{query}"
 resp = disambiguate(URL)
 
 if resp.status_code == 200:
-    print(getBandCard(resp))
+    soup = BeautifulSoup(resp.content, "html.parser")
+    bandWikiCard = getBandCard(soup)
+    
+    # Get all text content
+    content = soup.find("div", {"id": "mw-content-text"})
+
+    # HERE not working ...
+    firstTitle = content.h2
+    siblings = firstTitle.find_next_sibling("h2")
+
+    print(siblings)
 
 elif resp.status_code == 404:
     print("No wikipedia for this band")
