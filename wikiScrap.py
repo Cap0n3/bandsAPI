@@ -79,14 +79,16 @@ if resp.status_code == 200:
     soup = BeautifulSoup(resp.content, "html.parser")
     bandWikiCard = getBandCard(soup)
     
-    # Get all text content
-    content = soup.find("div", {"id": "mw-content-text"})
+    # Navigate DOM (to find everything below Discography)
+    discoSpan = soup.find_all("span", id="Discography")
+    discoTitle = discoSpan[0].find_parents("h2")
+    allSiblings = discoTitle[0].find_next_siblings()
+    
+    # Find a way to filter this ...
+    print(allSiblings)
+    
 
-    # HERE not working ...
-    firstTitle = content.h2
-    siblings = firstTitle.find_next_sibling("h2")
-
-    print(siblings)
+    #print(discoTitle[0].find_next_siblings())
 
 elif resp.status_code == 404:
     print("No wikipedia for this band")
