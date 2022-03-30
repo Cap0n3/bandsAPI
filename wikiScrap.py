@@ -65,10 +65,40 @@ def getBandCard(soup):
     return infosDict
 
 
+def getDiscography(soup):
+    '''
+    This func scraps discography section in wikipeda (if there's one). 
+    It seems that wikipedia puts term "Discography" in <h2> and is followed 
+    by an <ul> containing albums. (Not fully tested)
+
+    Parameters:
+        soup (object): soup of page.
+    Returns:
+        dict:discography
+    '''
+    
+    # Navigate DOM (to find everything below Discography)
+    try:
+        discoSpan = soup.find_all("span", id="Discographyy")
+        if len(discoSpan) == 0:
+            raise NameError
+    except NameError:
+        print("ERROR : No span with id='Discography' was found !")
+    else:
+        discoTitle = discoSpan[0].find_parents("h2")
+        allSiblings = discoTitle[0].find_next_siblings()
+        # Filter tags
+        for node in allSiblings:
+            tagName = node.name
+            if tagName == "h2":
+                break
+            elif tagName == "ul" or tagName == "li":
+                print(node.text)
+
 # ==================================== #
 # =============== MAIN =============== #
 # ==================================== #
-bandName = "Knocked Loose"
+bandName = "Metallica"
 format = bandName.replace(' ', '_')
 query = format + "_(band)" # For disambiguation (may also refer to other things)
 URL = f"https://en.wikipedia.org/wiki/{query}"
@@ -78,17 +108,10 @@ resp = disambiguate(URL)
 if resp.status_code == 200:
     soup = BeautifulSoup(resp.content, "html.parser")
     bandWikiCard = getBandCard(soup)
-    
-    # Navigate DOM (to find everything below Discography)
-    discoSpan = soup.find_all("span", id="Discography")
-    discoTitle = discoSpan[0].find_parents("h2")
-    allSiblings = discoTitle[0].find_next_siblings()
-    
-    # Find a way to filter this ...
-    print(allSiblings)
-    
+    bandDiscography = getDiscography(soup)
 
-    #print(discoTitle[0].find_next_siblings())
+    print(bandDiscography)
+    
 
 elif resp.status_code == 404:
     print("No wikipedia for this band")
