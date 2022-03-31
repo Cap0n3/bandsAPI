@@ -8,6 +8,7 @@ import requests
 from bs4 import BeautifulSoup
 import itertools
 import re
+import json
 
 # ===================================== #
 # =============== UTILS =============== #
@@ -37,6 +38,13 @@ def disambiguate(url):
         
 
 def getBandCard(soup):
+    '''
+    This funcs extract wiki card (left side of page) with essential infos of band.
+    Parameters:
+        soup (object) : page's soup
+    Returns:
+        Dict : Dictionnary containing all infos
+    '''
     # Get Info box table on the right
     infoBoxTable = soup.find(class_="infobox vcard plainlist")
     
@@ -50,8 +58,8 @@ def getBandCard(soup):
     infosDict = {}
     
     for label, info in itertools.zip_longest(infoLabels, infos):
-        # Remove links (like [1][2] ...) from title 
-        cleanText = re.sub('\[\d\]', '', info.text)
+        # Remove links (like [1][2] ...) from title
+        cleanText = re.sub('\[\d+\]', '', info.text)
         
         # Place elements separated by new line in array
         if info.text.find("\n") >= 0:
@@ -65,21 +73,21 @@ def getBandCard(soup):
     return infosDict
 
 
-def getDiscography(soup):
+def getUlDiscography(soup):
     '''
-    This func scraps discography section in wikipeda (if there's one). 
-    It seems that wikipedia puts term "Discography" in <h2> and is followed 
-    by an <ul> containing albums. (Not fully tested)
+    This func scraps 'Discography' section in wikipeda, more specificly it scaps all <ul> tags 
+    in between heading "Discography" (<h2>) and next heading <h2>. Often discography 
+    is contained in an unordered list but it's not always the case.
 
     Parameters:
         soup (object): soup of page.
     Returns:
-        dict:discography
+        list:discography
     '''
     
     # Navigate DOM (to find everything below Discography)
     try:
-        discoSpan = soup.find_all("span", id="Discographyy")
+        discoSpan = soup.find_all("span", id="Discography")
         if len(discoSpan) == 0:
             raise NameError
     except NameError:
@@ -87,18 +95,31 @@ def getDiscography(soup):
     else:
         discoTitle = discoSpan[0].find_parents("h2")
         allSiblings = discoTitle[0].find_next_siblings()
+        discography = []
         # Filter tags
         for node in allSiblings:
             tagName = node.name
             if tagName == "h2":
                 break
-            elif tagName == "ul" or tagName == "li":
-                print(node.text)
+            elif tagName == "ul":
+                albums = node.find_all("li")
+                for album in albums:
+                    cleanedText = re.sub('\[\d+\]', '', album.text)
+                    discography.append(cleanedText)
+
+        # Check of section is correctly formatted.
+        if len(discography) == 0:
+            print("It seems that section 'Discography' is formatted differently, could be a table instaed of <ul> ?")
+            return None
+        else:
+            return discography
 
 # ==================================== #
 # =============== MAIN =============== #
 # ==================================== #
-bandName = "Metallica"
+
+# Check Melvins for table instead of <ul> (in Discography)
+bandName = "Queens of the stone age"
 format = bandName.replace(' ', '_')
 query = format + "_(band)" # For disambiguation (may also refer to other things)
 URL = f"https://en.wikipedia.org/wiki/{query}"
@@ -107,11 +128,14 @@ resp = disambiguate(URL)
 
 if resp.status_code == 200:
     soup = BeautifulSoup(resp.content, "html.parser")
-    bandWikiCard = getBandCard(soup)
-    bandDiscography = getDiscography(soup)
-
-    print(bandDiscography)
+    mainBandDict = getBandCard(soup)
+    bandDiscography = getUlDiscography(soup)
+    # Add discography to main band dictionnary
+    mainBandDict["Discography"] = bandDiscography
     
-
+    # Convert it to json (Check weird characters)
+    prettyDict = json.dumps(mainBandDict, indent=4)
+    print(prettyDict)
+    
 elif resp.status_code == 404:
-    print("No wikipedia for this band")
+    print("No wikipedia for this band, check spelling of band name.")
