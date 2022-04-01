@@ -13,20 +13,57 @@ import json
 # ===================================== #
 # =============== UTILS =============== #
 # ===================================== #
+def formatTagToText(tag):
+    '''
+    This func converts bs4 tags to readable text, get rid of
+    hidden spans and format text if any weird characters is found.
+    
+    Parameters
+    ----------
+    tag : bs4.element.Tag
+        Tags to clean and convert
+    
+    Returns
+    -------
+    string
+        Cleaned text string
+
+    '''
+    # Get rid of span with style="display: none" (it there's one)
+    if tag.span != None:
+        attrValue = tag.span.get_attribute_list('style')
+        if attrValue[0] != None and attrValue[0] == "display:none":
+            tag.span.string = ""
+
+    # Remove links (like [1][2] ...) from title
+    cleanText = re.sub('\[\d+\]', '', tag.text)
+
+    # Get rid of weird non-ascii chars
+    cleanText = cleanText.replace('–', '-')
+
+    return cleanText
+
 def disambiguate(url):
     '''
-        Function used to disambiguate url. For instance 'Nirvana' could mean buddhist concept of heaven 
-        or the american band. In this case wikipedia redirects to link https://en.wikipedia.org/wiki/Nirvana_(disambiguation)
-        for user to choose the exact searched term. 
-        
-        If there is an ambiguity, Wikipedia will refer ro band's page url like this : 
-        https://en.wikipedia.org/wiki/Nirvana_(band)
+    Function used to disambiguate url. For instance 'Nirvana' could mean buddhist concept of heaven 
+    or the american band. In this case wikipedia redirects to link https://en.wikipedia.org/wiki/Nirvana_(disambiguation)
+    for user to choose the exact searched term. 
+    
+    If there is an ambiguity, Wikipedia will refer ro band's page url like this : 
+    https://en.wikipedia.org/wiki/Nirvana_(band)
 
-        Or if there's another band elsewhere named the same (to do !!!) :
-        https://en.wikipedia.org/wiki/Nirvana_(British_band)
+    Or if there's another band elsewhere named the same (to do !!!) :
+    https://en.wikipedia.org/wiki/Nirvana_(British_band)
 
-        @params     {str}       URL to query
-        @returns    {object}    Response 
+    Parameters
+    ----------
+    string     
+        URL to query
+    
+    Returns
+    ------- 
+    class requests.models.Response
+        HTTP Response 
     '''
     # Test URL
     response = requests.get(url)
@@ -36,14 +73,19 @@ def disambiguate(url):
     elif response.status_code == 200:
         return response
         
-
 def getBandCard(soup):
     '''
     This funcs extract wiki card (left side of page) with essential infos of band.
-    Parameters:
-        soup (object) : page's soup
-    Returns:
-        Dict : Dictionnary containing all infos
+    
+    Parameters
+    ----------
+    soup : class bs4.BeautifulSoup
+        Page's soup
+    
+    Returns
+    -------
+    Dict
+        Dictionnary containing all infos
     '''
     # Get Info box table on the right
     infoBoxTable = soup.find(class_="infobox vcard plainlist")
@@ -58,9 +100,9 @@ def getBandCard(soup):
     infosDict = {}
     
     for label, info in itertools.zip_longest(infoLabels, infos):
-        # Remove links (like [1][2] ...) from title
-        cleanText = re.sub('\[\d+\]', '', info.text)
-        
+        # Tag to Text & string formatting #
+        cleanText = formatTagToText(info)
+
         # Place elements separated by new line in array
         if info.text.find("\n") >= 0:
             arr = cleanText.split("\n")
@@ -72,17 +114,21 @@ def getBandCard(soup):
     
     return infosDict
 
-
 def getUlDiscography(soup):
     '''
     This func scraps 'Discography' section in wikipeda, more specificly it scaps all <ul> tags 
     in between heading "Discography" (<h2>) and next heading <h2>. Often discography 
     is contained in an unordered list but it's not always the case.
 
-    Parameters:
-        soup (object): soup of page.
-    Returns:
-        list:discography
+    Parameters
+    ----------
+    soup : class bs4.BeautifulSoup
+        Page's beautiful soup.
+    
+    Returns
+    -------
+    list
+        Discography list
     '''
     
     # Navigate DOM (to find everything below Discography)
