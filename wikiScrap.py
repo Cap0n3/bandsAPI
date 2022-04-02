@@ -14,7 +14,8 @@ import json
 # =============== UTILS =============== #
 # ===================================== #
 def formatTagToText(tag):
-    '''
+    ''' TO RE-EVALUTATE !!!! Keep for span removal but nothing else ?
+
     This func converts bs4 tags to readable text, get rid of
     hidden spans and format text if any weird characters is found.
     
@@ -87,32 +88,47 @@ def getBandCard(soup):
     Dict
         Dictionnary containing all infos
     '''
+
     # Get Info box table on the right
     infoBoxTable = soup.find(class_="infobox vcard plainlist")
     
-    # Get all title label
-    infoLabels = infoBoxTable.find_all(class_="infobox-label")
+    tableRows = infoBoxTable.find_all("tr")
     
-    # Get all infos
-    infos = infoBoxTable.find_all(class_="infobox-data")
+    headCellsList = [row.th for row in tableRows]
+    cellsList = [row.td for row in tableRows]
+    resultDict = {}
 
-    # === EXTRACT INFO FROM RIGHT TABLE === #
-    infosDict = {}
-    
-    for label, info in itertools.zip_longest(infoLabels, infos):
-        # Tag to Text & string formatting #
-        cleanText = formatTagToText(info)
+    # ====== Infos extraction ====== #
+    # Lambda Func to clean text from links like [3] or [23]
+    cleanText = lambda strToClean : re.sub('\[\d+\]', '', strToClean)
 
-        # Place elements separated by new line in array
-        if info.text.find("\n") >= 0:
-            arr = cleanText.split("\n")
-            # Remove empty element from array
-            filteredArr = [el for el in arr if el!='']
-            infosDict[label.text] = filteredArr
-        else:
-            infosDict[label.text] = cleanText
+    for label, info in itertools.zip_longest(headCellsList, cellsList):
+        # First extract titles <th> text
+        title = label.text if label != None else "None"
+        if title == "":
+            title = "No Title"
+        
+        # Second, deal with content in <td>
+        content = ""
+        if info != None:
+            unorderedList = info.ul
+            # It's just text, no <ul>
+            if unorderedList == None:
+                content = cleanText(info.text)
+                resultDict[title] = content
+            else:
+                # It's <ul> so extract list elements
+                elementList = []
+                listEl = unorderedList.find_all("li")
+                for el in listEl:
+                    elementList.append(cleanText(el.text))
+                resultDict[title] = elementList
     
-    return infosDict
+    # Filter out entry with "None" key (Probalbly image in card)
+    if "None" in resultDict:
+        resultDict.pop("None")
+    
+    return resultDict
 
 def getUlDiscography(soup):
     '''
@@ -165,7 +181,7 @@ def getUlDiscography(soup):
 # ==================================== #
 
 # Check Melvins for table instead of <ul> (in Discography)
-bandName = "Queens of the stone age"
+bandName = "Knocked Loose"
 format = bandName.replace(' ', '_')
 query = format + "_(band)" # For disambiguation (may also refer to other things)
 URL = f"https://en.wikipedia.org/wiki/{query}"
@@ -176,11 +192,12 @@ if resp.status_code == 200:
     soup = BeautifulSoup(resp.content, "html.parser")
     mainBandDict = getBandCard(soup)
     bandDiscography = getUlDiscography(soup)
+    
     # Add discography to main band dictionnary
     mainBandDict["Discography"] = bandDiscography
     
     # Convert it to json (Check weird characters)
-    prettyDict = json.dumps(mainBandDict, indent=4)
+    prettyDict = json.dumps(mainBandDict, indent=4, ensure_ascii=False)
     print(prettyDict)
     
 elif resp.status_code == 404:
