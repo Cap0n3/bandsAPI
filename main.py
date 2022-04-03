@@ -2,9 +2,6 @@ import json
 import os
 from BandAPI.BandWiki import BandWiki
 
-
-PATH = os.path.dirname(os.path.realpath(__file__))
-
 BAND_LIST = ["Nirvana", "Queens of the stone age", "Knocked Loose", "Korn"]
 
 if __name__ == "__main__":
