@@ -8,8 +8,6 @@ import requests
 from bs4 import BeautifulSoup
 import itertools
 import re
-import json
-
 
 class BandWiki:
     def __init__(self, bandName):
@@ -55,10 +53,10 @@ class BandWiki:
         or the american band. In this case wikipedia redirects to link https://en.wikipedia.org/wiki/Nirvana_(disambiguation)
         for user to choose the exact searched term. 
         
-        If there is an ambiguity, Wikipedia will refer ro band's page url like this : 
+        If there is an ambiguity, Wikipedia will refer to band's page url like this : 
         https://en.wikipedia.org/wiki/Nirvana_(band)
 
-        Or if there's another band elsewhere named the same (to do !!!) :
+        Or if there's another band elsewhere with the same name (to do !!!) :
         https://en.wikipedia.org/wiki/Nirvana_(British_band)
 
         Parameters
@@ -182,10 +180,18 @@ class BandWiki:
             else:
                 return discography
 
-    # ==================================== #
-    # =============== MAIN =============== #
-    # ==================================== #
     def getAllInfos(self):
+        '''
+        This method is the main method of class BandWiki, it'll call necessary methods to construct final infos 
+        for bands by merging differents dictionnaries returned by these methods.
+
+        It also call BeautifulSoup to scrap wikipedia and handle response status if something goes wrong.
+
+        Returns
+        -------
+        Dict
+            Main dictionnary with all relevant infos scrapped of wikipedia 
+        '''
         # Check Melvins for table instead of <ul> (in Discography)
         format = self.bandName.replace(' ', '_')
         query = format + "_(band)" # For disambiguation (may also refer to other things)
@@ -195,16 +201,13 @@ class BandWiki:
 
         if resp.status_code == 200:
             soup = BeautifulSoup(resp.content, "html.parser")
-            mainBandDict = self.getBandCard(soup)
+            mainResultDict = self.getBandCard(soup)
             bandDiscography = self.getUlDiscography(soup)
             
-            # Add discography to main band dictionnary
-            mainBandDict["Discography"] = bandDiscography
+            # Add discography to main result dictionnary
+            mainResultDict["Discography"] = bandDiscography
             
-            # Convert it to json (Check weird characters)
-            prettyDict = json.dumps(mainBandDict, indent=4, ensure_ascii=False)
-            
-            return prettyDict
+            return mainResultDict
             
         elif resp.status_code == 404:
             raise AttributeError("No wikipedia for this band, check spelling of band name.")
