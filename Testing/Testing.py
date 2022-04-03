@@ -61,7 +61,7 @@ class test_BandWiki(unittest.TestCase):
         resultDict = self.bandDataObj.getAllInfos()
         self.assertDictEqual(resultDict, TEST_MAIN_DICT)
 
-    @unittest.skip("To check dictionnaries, comment this line")
+    #@unittest.skip("To check dictionnaries, comment this line")
     def test_OutputDict(self):
         '''
         This test method is not regular, I just need it to test outputs for several

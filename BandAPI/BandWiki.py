@@ -10,7 +10,7 @@ class BandWiki:
     # ===================================== #
     # =============== UTILS =============== #
     # ===================================== #
-    def formatTagToText(self, tag):
+    def formatTagToText(self, _tag):
         ''' TO RE-EVALUTATE !!!! Keep for span removal but nothing else ?
 
         This func converts bs4 tags to readable text, get rid of
@@ -28,20 +28,20 @@ class BandWiki:
 
         '''
         # Get rid of span with style="display: none" (it there's one)
-        if tag.span != None:
+        if _tag.span != None:
             attrValue = tag.span.get_attribute_list('style')
             if attrValue[0] != None and attrValue[0] == "display:none":
-                tag.span.string = ""
+                _tag.span.string = ""
 
         # # Remove links (like [1][2] ...) from title
-        # cleanText = re.sub('\[\d+\]', '', tag.text)
+        # cleanText = re.sub('\[\d+\]', '', _tag.text)
 
         # # Get rid of weird non-ascii chars
         # cleanText = cleanText.replace('–', '-')
 
-        return tag.text
+        return _tag.text
 
-    def disambiguate(self, url):
+    def disambiguate(self, _baseURL):
         '''
         Function used to disambiguate url. For instance 'Nirvana' could mean buddhist concept of heaven 
         or the american band. In this case wikipedia redirects to link https://en.wikipedia.org/wiki/Nirvana_(disambiguation)
@@ -63,21 +63,26 @@ class BandWiki:
         class requests.models.Response
             HTTP Response 
         '''
+        # Format URL
+        format = self.bandName.replace(' ', '_')
+        query = format + "_(band)" # For disambiguation (may also refer to other things)
+        URL = _baseURL + query
+
         # Test URL
-        response = requests.get(url)
+        response = requests.get(URL)
         if response.status_code == 404:
-            newURL = url.replace('_(band)', '')
+            newURL = URL.replace('_(band)', '')
             return requests.get(newURL)
         elif response.status_code == 200:
             return response
             
-    def getBandCard(self, soup):
+    def getBandCard(self, _soup):
         '''
         This funcs extract wiki card (left side of page) with essential infos of band.
         
         Parameters
         ----------
-        soup : class bs4.BeautifulSoup
+        _soup : class bs4.BeautifulSoup
             Page's soup
         
         Returns
@@ -87,7 +92,7 @@ class BandWiki:
         '''
 
         # Get Info box table on the right
-        infoBoxTable = soup.find(class_="infobox vcard plainlist")
+        infoBoxTable = _soup.find(class_="infobox vcard plainlist")
         
         tableRows = infoBoxTable.find_all("tr")
         
@@ -128,7 +133,7 @@ class BandWiki:
         
         return resultDict
 
-    def getUlDiscography(self, soup):
+    def getUlDiscography(self, _soup):
         '''
         This func scraps 'Discography' section in wikipeda, more specificly it scaps all <ul> tags 
         in between heading "Discography" (<h2>) and next heading <h2>. Often discography 
@@ -136,7 +141,7 @@ class BandWiki:
 
         Parameters
         ----------
-        soup : class bs4.BeautifulSoup
+        _soup : class bs4.BeautifulSoup
             Page's beautiful soup.
         
         Returns
@@ -144,10 +149,12 @@ class BandWiki:
         list
             Discography list
         '''
-        
+        # Utils
+        removeLinks = lambda txt : re.sub('\[\d+\]', '', txt)
+
         # Navigate DOM (to find everything below Discography)
         try:
-            discoSpan = soup.find_all("span", id="Discography")
+            discoSpan = _soup.find_all("span", id="Discography")
             if len(discoSpan) == 0:
                 raise NameError
         except NameError:
@@ -164,7 +171,13 @@ class BandWiki:
                 elif tagName == "ul":
                     albums = node.find_all("li")
                     for album in albums:
-                        cleanedText = re.sub('\[\d+\]', '', album.text)
+                        cleanedText = removeLinks(album.text)
+                        discography.append(cleanedText)
+                # Sometimes <ul> is wrapped in a div
+                elif tagName == "div":
+                    albums = node.find_all("li")
+                    for album in albums:
+                        cleanedText = removeLinks(album.text)
                         discography.append(cleanedText)
 
             # Check of section is correctly formatted.
@@ -186,12 +199,15 @@ class BandWiki:
         Dict
             Main dictionnary with all relevant infos scrapped of wikipedia 
         '''
-        # Check Melvins for table instead of <ul> (in Discography)
-        format = self.bandName.replace(' ', '_')
-        query = format + "_(band)" # For disambiguation (may also refer to other things)
-        URL = f"https://en.wikipedia.org/wiki/{query}"
+        
+        # format = self.bandName.replace(' ', '_')
+        # query = format + "_(band)" # For disambiguation (may also refer to other things)
+        # URL = f"https://en.wikipedia.org/wiki/{query}"
+        
+        # WORKING HERE
+        baseURL = "https://en.wikipedia.org/wiki/"
 
-        resp = self.disambiguate(URL)
+        resp = self.disambiguate(baseURL)
 
         if resp.status_code == 200:
             soup = BeautifulSoup(resp.content, "html.parser")
