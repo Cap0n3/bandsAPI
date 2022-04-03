@@ -7,9 +7,6 @@ class BandWiki:
     def __init__(self, bandName):
         self.bandName = bandName
 
-    # ===================================== #
-    # =============== UTILS =============== #
-    # ===================================== #
     def formatTagToText(self, _tag):
         ''' TO RE-EVALUTATE !!!! Keep for span removal but nothing else ?
 
