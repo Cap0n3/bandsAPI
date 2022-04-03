@@ -23,7 +23,7 @@ PATH = os.path.dirname(os.path.realpath(__file__))
 #=== Test Data reference ===#
 #===========================#
 
-BAND_LIST = ["Nirvana", "Queens of the stone age", "Knocked Loose", "Korn"]
+BAND_LIST = ["Nirvana", "Queens of the stone age", "Knocked Loose", "Korn", "Mastodon", "Melvins", "Pearl jam", "Graveyard"]
 
 TEST_MAIN_DICT = {
     'Origin': 'Aberdeen, Washington, U.S.', 

@@ -155,7 +155,7 @@ class BandWiki:
             if len(discoSpan) == 0:
                 raise NameError
         except NameError:
-            print("ERROR : No span with id='Discography' was found !")
+            print(f"ERROR : No span with id='Discography' was found for '{self.bandName}' !")
         else:
             discoTitle = discoSpan[0].find_parents("h2")
             allSiblings = discoTitle[0].find_next_siblings()
@@ -179,7 +179,7 @@ class BandWiki:
 
             # Check of section is correctly formatted.
             if len(discography) == 0:
-                print("It seems that section 'Discography' is formatted differently, could be a table instaed of <ul> ?")
+                print(f"ERROR : It seems that section 'Discography' is formatted differently for '{self.bandName}' band page, could be a table instead of <ul> ?")
                 return None
             else:
                 return discography
