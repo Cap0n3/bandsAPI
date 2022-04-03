@@ -11,7 +11,7 @@ import re
 import json
 
 
-class BandData:
+class BandWiki:
     def __init__(self, bandName):
         self.bandName = bandName
 

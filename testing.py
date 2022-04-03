@@ -1,12 +1,12 @@
 import unittest
 
-from BandAPI.BandScrap import BandData
+from BandAPI.BandWiki import BandWiki
 
 class test_main(unittest.TestCase):
 
     # === Object === #
     def setUp(self):
-        self.bandDataObj = BandData("Nirvana")
+        self.bandDataObj = BandWiki("Nirvana")
     
     def tearDown(self):
         # Object destruction
