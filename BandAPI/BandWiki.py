@@ -1,9 +1,3 @@
-'''
-Scrape wikipedia for band infos.
-
-Link Format : https://en.wikipedia.org/wiki/<band_Name>
-'''
-
 import requests
 from bs4 import BeautifulSoup
 import itertools
