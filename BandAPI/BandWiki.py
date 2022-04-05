@@ -160,7 +160,7 @@ class BandWiki:
             discoTitle = discoSpan[0].find_parents("h2")
             allSiblings = discoTitle[0].find_next_siblings()
             discography = []
-            
+
             # Filter tags
             for node in allSiblings:
                 tagName = node.name
@@ -177,6 +177,19 @@ class BandWiki:
                     for album in albums:
                         cleanedText = removeLinks(album.text)
                         discography.append(cleanedText)
+                elif tagName == "table":
+                    rows = node.find_all("tr")
+                    newRowArray = []
+                    # Create new array with index (to skip first row of table)
+                    for row in enumerate(rows):
+                        newRowArray.append(row)
+                    # Iterate array and skip first row (to skip title)
+                    for el in newRowArray:
+                        if el[0] == 0:
+                            pass
+                        else:
+                            print(el[1].text)
+                    
 
             # Check of section is correctly formatted.
             if len(discography) == 0:
