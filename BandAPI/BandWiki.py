@@ -160,6 +160,7 @@ class BandWiki:
             discoTitle = discoSpan[0].find_parents("h2")
             allSiblings = discoTitle[0].find_next_siblings()
             discography = []
+            
             # Filter tags
             for node in allSiblings:
                 tagName = node.name
