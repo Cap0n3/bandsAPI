@@ -177,18 +177,38 @@ class BandWiki:
                     for album in albums:
                         cleanedText = removeLinks(album.text)
                         discography.append(cleanedText)
+                # Sometimes it's a table
                 elif tagName == "table":
                     rows = node.find_all("tr")
-                    newRowArray = []
+                    # Extract first all columns titles (first row)
+                    columnTitles = rows[0].contents
+                    # Remove possible \n in column element
+                    columnTitles = list(filter(lambda x: False if x == "\n" else True, columnTitles))
+                    
+                    # Find where is "Title" column (to finish)
+                    for title in columnTitles:
+                        # Remove residual \n in text
+                        cleanedTitle = title.text.replace('\n', '')
+                        if cleanedTitle == "Title":
+                            print(cleanedTitle)
+
+                    # for title in filtered_elList:
+                    #     print(title)
+
+                    # for row in rows:
+                    #     elList = row.contents
+                    #     filtered_elList = list(filter(lambda x: False if x == "\n" else True, elList))
+                    #     print(filtered_elList[0].text)
+                    # newRowArray = []
                     # Create new array with index (to skip first row of table)
-                    for row in enumerate(rows):
-                        newRowArray.append(row)
-                    # Iterate array and skip first row (to skip title)
-                    for el in newRowArray:
-                        if el[0] == 0:
-                            pass
-                        else:
-                            print(el[1].text)
+                    # for row in enumerate(rows):
+                    #     newRowArray.append(row)
+                    # # Iterate array and skip first row (to skip title)
+                    # for el in newRowArray:
+                    #     if el[0] == 0:
+                    #         pass
+                    #     else:
+                    #         print(el[1].text)
                     
 
             # Check of section is correctly formatted.
