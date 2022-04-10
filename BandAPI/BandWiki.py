@@ -180,17 +180,44 @@ class BandWiki:
                 # Sometimes it's a table
                 elif tagName == "table":
                     rows = node.find_all("tr")
-                    # Extract first all columns titles (first row)
+                    # Extract all first columns titles (first row)
                     columnTitles = rows[0].contents
                     # Remove possible \n in column element
                     columnTitles = list(filter(lambda x: False if x == "\n" else True, columnTitles))
                     
-                    # Find where is "Title" column (to finish)
-                    for title in columnTitles:
+                    # Find where is "Title" column and find its index
+                    for title in enumerate(columnTitles):
                         # Remove residual \n in text
-                        cleanedTitle = title.text.replace('\n', '')
+                        cleanedTitle = title[1].text.replace('\n', '')
+                        # Get index of column
                         if cleanedTitle == "Title":
-                            print(cleanedTitle)
+                            columnIndex = title[0]
+                    
+                    # Loop through title column and get results
+                    albumList = []
+                    for index, row in enumerate(rows, 0):
+                        elList = row.contents
+                        filtered_elList = list(filter(lambda x: False if x == "\n" else True, elList))
+                        # Skip first row (where word "Title" is)
+                        if index != 0:
+                            albumName = filtered_elList[columnIndex].text.replace('\n', '')
+                            albumList.append(removeLinks(albumName))
+
+                    # HERE - Works with Graveyard but not Melvins ...
+                    print(albumList)
+                        
+                    # Iterate array and skip first row (to skip title)
+                    # for el in newRowArray:
+                    #     if el[0] == 0:
+                    #         pass
+                    #     else:
+                    #         print(el[1].text)
+                    
+                    # Get "Title" column
+                    # for row in rows:
+                    #     elList = row.contents
+                    #     filtered_elList = list(filter(lambda x: False if x == "\n" else True, elList))
+                    #     print(filtered_elList[columnIndex].text.replace('\n', ''))
 
                     # for title in filtered_elList:
                     #     print(title)
