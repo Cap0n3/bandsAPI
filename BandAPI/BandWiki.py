@@ -204,6 +204,7 @@ class BandWiki:
                             albumList.append(removeLinks(albumName))
 
                     # HERE - Works with Graveyard but not Melvins ...
+                    # BECAUSE OF ROWSPAN => SEE in Misc/tmp
                     print(albumList)
                         
                     # Iterate array and skip first row (to skip title)
