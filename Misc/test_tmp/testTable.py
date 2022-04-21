@@ -5,7 +5,7 @@ import re
 
 # For Windows (relative path) 
 dirname = os.path.dirname(__file__)
-filename = os.path.join(dirname, 'debugTable_case2.html')
+filename = os.path.join(dirname, 'debugTable_case3.html')
 
 def removeNewLines(lst):
     '''
