@@ -55,9 +55,11 @@ for rowIndex, row in enumerate(allRows):
             }
             rowSpans.append(valDict)
 
+
 # Step 2 : Construct Table representation
 for columnIndex in range(numberOfColumns):
     tmpColList = []
+    
     for rowIndex, row in enumerate(allRows):
         #Extract row chilren
         rowChildren = row.contents
@@ -65,14 +67,24 @@ for columnIndex in range(numberOfColumns):
         cleanRowChildren = removeNewLines(rowChildren)
         # Check if there's missing elements in row (due to rowspan)
         if len(cleanRowChildren) != numberOfColumns:
-            # Where are we ?
+            # Where are we ? How many rowspans ?
             currentCol = columnIndex
             currentRow = rowIndex
-            # Check against current pos against rowspans found in step 1
-            for dict in rowSpans:
+            rowSpanLength = len(rowSpans)
+            # Check current pos against rowspans found in step 1 to get value
+            for index, dict in enumerate(rowSpans):
                 if dict['col'] == currentCol and dict['row'] == currentRow - 1:
-                    print("There's a merged cell here ! Cell row : " + str(currentRow) + " Col : " + str(currentCol))
+                    # There's a merged cell here
+                    tmpColList.append(dict['tagTxt'])
+                    # Delete rowspan entry in list
+                    del rowSpans[index]
+                elif dict['col'] != currentCol and dict['row'] == currentRow - 1:
+                    # Find index of cell and push in list
+                    element = cleanRowChildren[currentCol - rowSpanLength].text.replace('\n', '')
+                    tmpColList.append(element)
+
         else:
+            # Extract element
             element = cleanRowChildren[columnIndex].text.replace('\n', '')
             tmpColList.append(element)            
     tableRepr.append(tmpColList)
