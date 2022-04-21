@@ -55,11 +55,9 @@ for rowIndex, row in enumerate(allRows):
             }
             rowSpans.append(valDict)
 
-
 # Step 2 : Construct Table representation
 for columnIndex in range(numberOfColumns):
     tmpColList = []
-    
     for rowIndex, row in enumerate(allRows):
         #Extract row chilren
         rowChildren = row.contents
@@ -82,7 +80,6 @@ for columnIndex in range(numberOfColumns):
                     # Find index of cell and push in list
                     element = cleanRowChildren[currentCol - rowSpanLength].text.replace('\n', '')
                     tmpColList.append(element)
-
         else:
             # Extract element
             element = cleanRowChildren[columnIndex].text.replace('\n', '')
