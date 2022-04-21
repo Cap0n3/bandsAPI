@@ -80,6 +80,7 @@ for columnIndex in range(numberOfColumns):
                     # Find index of cell and push in list
                     element = cleanRowChildren[currentCol - rowSpanLength].text.replace('\n', '')
                     tmpColList.append(element)
+                    print(currentCol - rowSpanLength)
         else:
             # Extract element
             element = cleanRowChildren[columnIndex].text.replace('\n', '')
