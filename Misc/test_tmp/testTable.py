@@ -5,7 +5,7 @@ import re
 
 # For Windows (relative path) 
 dirname = os.path.dirname(__file__)
-filename = os.path.join(dirname, 'debugTable_case2.html')
+filename = os.path.join(dirname, 'debugTable_case3.html')
 
 def removeNewLines(lst):
     '''
@@ -55,11 +55,9 @@ for rowIndex, row in enumerate(allRows):
             }
             rowSpans.append(valDict)
 
-
 # Step 2 : Construct Table representation
 for columnIndex in range(numberOfColumns):
     tmpColList = []
-    
     for rowIndex, row in enumerate(allRows):
         #Extract row chilren
         rowChildren = row.contents
@@ -82,7 +80,7 @@ for columnIndex in range(numberOfColumns):
                     # Find index of cell and push in list => HERE
                     element = cleanRowChildren[currentCol - rowSpanLength].text.replace('\n', '')
                     tmpColList.append(element)
-
+                    print(currentCol - rowSpanLength)
         else:
             # Extract element
             element = cleanRowChildren[columnIndex].text.replace('\n', '')
