@@ -93,20 +93,20 @@ for rowIndex, row in enumerate(allRows):
         refIndexSet = set(refIndexList)
         # We have our orphans indexes !
         orphansIndex = list(refIndexSet.difference(rowSpansIndexSet))
+        print("Orphan Index : "  + str(orphansIndex))
         # Push orphan element in it's dict
-        for orphan in orphansIndex:
+        for index, orphan in enumerate(orphansIndex):
             # First, insert missing elements in dict
             for i, missing in enumerate(rowSpansIndexList):
                 dictOfRowspans = rowspanList[i]
                 # Insert tagTxt data in missing elements
                 resDict[headerTitles[missing]] = dictOfRowspans['tagTxt']
             # Second, insert orphan element in dict
-            for elements in cleanRowChildren:
-                cleanElement = elements.text.replace('\n', '')
-                # Create result dictionnary with according title
-                resDict[headerTitles[orphan]] = cleanElement
-            # Push dict in table representation
-            tableRepr.append(resDict)
+            element = cleanRowChildren[index]
+            cleanElement = element.text.replace('\n', '')
+            resDict[headerTitles[orphan]] = cleanElement
+        # Push dict in table representation
+        tableRepr.append(resDict)
 
     # No rowspans
     elif nbOfElements == numberOfColumns:
