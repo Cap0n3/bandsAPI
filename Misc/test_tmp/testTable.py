@@ -79,7 +79,7 @@ for columnIndex in range(numberOfColumns):
                     # Delete rowspan entry in list
                     del rowSpans[index]
                 elif dict['col'] != currentCol and dict['row'] == currentRow - 1:
-                    # Find index of cell and push in list
+                    # Find index of cell and push in list => HERE
                     element = cleanRowChildren[currentCol - rowSpanLength].text.replace('\n', '')
                     tmpColList.append(element)
 
