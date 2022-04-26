@@ -5,7 +5,7 @@ import re
 
 # For Windows (relative path) 
 dirname = os.path.dirname(__file__)
-filename = os.path.join(dirname, 'debugTable_case3.html')
+filename = os.path.join(dirname, 'debugTable_case4.html')
 
 def removeNewLines(lst):
     '''
@@ -70,7 +70,7 @@ for rowIndex, row in enumerate(allRows):
     cleanRowChildren = removeNewLines(rowChildren)
     # How many elements are in <tr>
     nbOfElements = len(cleanRowChildren)
-    # Is there any rowspan ? If yes, which elements ?
+    # Is there any rowspan ? If yes, get infos (pos, content, rowspans) in dict
     for colIndex, el in enumerate(cleanRowChildren):
         if el.get('rowspan') != None:
             rowspanDict = {
@@ -83,15 +83,15 @@ for rowIndex, row in enumerate(allRows):
             rowspanList.append(rowspanDict)
     # If there's less elements in <tr>, then it's an indicator that cells have been merged !
     if len(cleanRowChildren) != numberOfColumns: 
-        # Check where was element with rowspans and get their indexes (corr to columns)
-        rowSpansIndexList = [rowspan['col'] for rowspan in rowspanList]
+        # Check where was element with rowspans in previous row and get their column indexes
+        rowSpansIndexList = [rowspan['col'] for rowspan in rowspanList if rowspan['row'] == rowIndex - 1]
         # Create a reference index list of columns to compare it with rowSpansIndexList
         refIndexList = [i for i in range(numberOfColumns)]
-        # Compare two lists to guess where to put <tr> orphans elements
-        # Convert list to set (to do difference)
+        # Compare two lists to guess where to put <tr> "orphans" elements
+        # Convert list to set (to do group difference)
         rowSpansIndexSet = set(rowSpansIndexList)
         refIndexSet = set(refIndexList)
-        # We have our orphans indexes !
+        # Ok, we have our orphans column indexes !
         orphansIndex = list(refIndexSet.difference(rowSpansIndexSet))
         print("Orphan Index : "  + str(orphansIndex))
         # Push orphan element in it's dict
@@ -126,7 +126,8 @@ for rowIndex, row in enumerate(allRows):
                 resDict[headerTitles[index]] = cleanElement
             # Push dict in table representation
             tableRepr.append(resDict)
-     
+
+print(rowspanList)  
 print(tableRepr)
 
 
