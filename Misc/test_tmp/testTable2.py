@@ -5,7 +5,7 @@ import re
 
 # For Windows (relative path) 
 dirname = os.path.dirname(__file__)
-filename = os.path.join(dirname, 'debugTable_case3.html')
+filename = os.path.join(dirname, 'debugTable_case4.html')
 
 def removeNewLines(lst):
     '''
@@ -48,27 +48,47 @@ for rowIndex, row in enumerate(allRows):
     cleanRowChildren = removeNewLines(rowChildren)
     # Always skip titles row
     if rowIndex != 0:
-        # Go through elements in row
+        # === 1. First, go through elements in row and find rowspans ===
         for colIndex, element in enumerate(cleanRowChildren):
             # Check for rowspan attribute in row elements
             if element.get('rowspan') != None:
                 # Get number of rowspans
                 rowspanNumber = element.get('rowspan')
-                # Check if it's first row (TO ADAPT LATER)
+                # Clean element
+                cleanElement = element.text.replace('\n', '')
+                # If first row, simply insert element in column index
                 if rowIndex == 1:
                     # Insert element in list x times according to rowspan
                     for spans in range(int(rowspanNumber)):
-                        cleanElement = element.text.replace('\n', '')
                         tableRepr[colIndex].append(cleanElement)
-            # If there's no rowspan
-            elif element.get('rowspan') == None:
+                # More complex, must find at what column this rowspan element is in table
+                elif rowIndex != 1:
+                    # Check if a spot is available somewhere in lists at current row
+                    pass
+                    # HERE !!! Case to implement !
+        
+        # === 2. Second, find elements in row with no rowspans ===
+        for element in cleanRowChildren:
+            if element.get('rowspan') == None:
+                # Clean element
+                cleanElement = element.text.replace('\n', '')
                 # Check if a spot is available somewhere in lists at current row
-                for index in range(numberOfColumns):
-                    # Check if index exists, if not then put element in list free spot and break
-                    if not 0 <= index < len(tableRepr[colIndex]):
-                        cleanElement = element.text.replace('\n', '')
-                        tableRepr[colIndex].append(cleanElement)
+                for colList in tableRepr:
+                    try:
+                        # Check if index exists
+                        colList[rowIndex]
+                    except IndexError:
+                        # If not then spot is available for element
+                        colList.insert(rowIndex, cleanElement)
+                        # Spot has been found, break loop
                         break
+                    else:
+                        # Continue searching a spot in lists
+                        continue
+        
+        # For debugging
+        # if rowIndex == 2:
+        #     break
 
 print(tableRepr)
 
