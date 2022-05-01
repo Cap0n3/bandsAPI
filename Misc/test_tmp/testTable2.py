@@ -46,9 +46,9 @@ for rowIndex, row in enumerate(allRows):
     rowChildren = row.contents
     # Remove \n char in children list
     cleanRowChildren = removeNewLines(rowChildren)
-    # Always skip titles row
-    if rowIndex != 0:
-        # === 1. First, go through elements in row and find rowspans ===
+    # === PREPARE FIRST ROW OF LIST === #
+    if rowIndex == 1:
+        # 1. First, go through elements in row and find rowspans
         for colIndex, element in enumerate(cleanRowChildren):
             # Check for rowspan attribute in row elements
             if element.get('rowspan') != None:
@@ -61,13 +61,8 @@ for rowIndex, row in enumerate(allRows):
                     # Insert element in list x times according to rowspan
                     for spans in range(int(rowspanNumber)):
                         tableRepr[colIndex].append(cleanElement)
-                # More complex, must find at what column this rowspan element is in table
-                elif rowIndex != 1:
-                    # Check if a spot is available somewhere in lists at current row
-                    pass
-                    # HERE !!! Case to implement !
         
-        # === 2. Second, find elements in row with no rowspans ===
+        # 2. Second, find elements in row with no rowspans
         for element in cleanRowChildren:
             if element.get('rowspan') == None:
                 # Clean element
@@ -85,9 +80,44 @@ for rowIndex, row in enumerate(allRows):
                     else:
                         # Continue searching a spot in lists
                         continue
-        
+    
+    # === CONTINUE TO FILL ROWS IN LIST === #
+    elif rowIndex > 1:
+        for element in cleanRowChildren:
+            cleanElement = element.text.replace('\n', '')
+            if element.get('rowspan') != None:
+                for colList in tableRepr:
+                    try:
+                        # Check if index exists
+                        colList[rowIndex]
+                    except IndexError:
+                        # If not then spot is available for element
+                        # Get rowspan numbers
+                        rowspanNumber = int(element.get('rowspan'))
+                        # Insert element in list x times according to rowspan
+                        for spans in range(int(rowspanNumber)):
+                            colList.insert(rowIndex + rowspanNumber, cleanElement)
+                        # Spot has been found, break loop
+                        break
+                    else:
+                        # Continue searching a spot in lists
+                        continue
+            # If no rowspans
+            if element.get('rowspan') == None:
+                for colList in tableRepr:
+                    try:
+                        # Check if index exists
+                        colList[rowIndex]
+                    except IndexError:
+                        # If not then spot is available for element
+                        colList.insert(rowIndex, cleanElement)
+                        # Spot has been found, break loop
+                        break
+                    else:
+                        # Continue searching a spot in lists
+                        continue
         # For debugging
-        # if rowIndex == 2:
+        # if rowIndex == 3:
         #     break
 
 print(tableRepr)
