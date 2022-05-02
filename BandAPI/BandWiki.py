@@ -130,6 +130,114 @@ class BandWiki:
         
         return resultDict
 
+    def extractTable(self, _soup):
+        def removeNewLines(lst):
+            '''
+            This function return a filtered list cleaned of new line chars.
+
+            Params
+            ------
+            lst : list
+                list to filter
+            
+            Returns
+            -------
+            list
+                filtered list
+            '''
+            return list(filter(lambda x: False if x == "\n" else True, lst))
+        
+        allRows = _soup.find_all("tr")
+
+        # Get header row (with titles) to count number of columns in table
+        headerRow = removeNewLines(allRows[0].contents)
+
+        tableRepr = []
+
+        # insert header titles in new lists
+        for title in headerRow:
+            tmpList = [title.text.replace('\n', '')]
+            tableRepr.append(tmpList)
+
+
+        for rowIndex, row in enumerate(allRows):
+            rowChildren = row.contents
+            # Remove \n char in children list
+            cleanRowChildren = removeNewLines(rowChildren)
+            # === PREPARE FIRST ROW OF LIST === #
+            if rowIndex == 1:
+                # 1. First, go through elements in row and find rowspans
+                for colIndex, element in enumerate(cleanRowChildren):
+                    # Check for rowspan attribute in row elements
+                    if element.get('rowspan') != None:
+                        # Get number of rowspans
+                        rowspanNumber = element.get('rowspan')
+                        # Clean element
+                        cleanElement = element.text.replace('\n', '')
+                        # If first row, simply insert element in column index
+                        if rowIndex == 1:
+                            # Insert element in list x times according to rowspan
+                            for spans in range(int(rowspanNumber)):
+                                tableRepr[colIndex].append(cleanElement)
+                
+                # 2. Second, find elements in row with no rowspans
+                for element in cleanRowChildren:
+                    if element.get('rowspan') == None:
+                        # Clean element
+                        cleanElement = element.text.replace('\n', '')
+                        # Check if a spot is available somewhere in lists at current row
+                        for colList in tableRepr:
+                            try:
+                                # Check if index exists
+                                colList[rowIndex]
+                            except IndexError:
+                                # If not then spot is available for element
+                                colList.insert(rowIndex, cleanElement)
+                                # Spot has been found, break loop
+                                break
+                            else:
+                                # Continue searching a spot in lists
+                                continue
+            
+            # === CONTINUE TO FILL ROWS IN LIST === #
+            elif rowIndex > 1:
+                for element in cleanRowChildren:
+                    cleanElement = element.text.replace('\n', '')
+                    if element.get('rowspan') != None:
+                        for colList in tableRepr:
+                            try:
+                                # Check if index exists
+                                colList[rowIndex]
+                            except IndexError:
+                                # If not then spot is available for element
+                                # Get rowspan numbers
+                                rowspanNumber = int(element.get('rowspan'))
+                                # Insert element in list x times according to rowspan
+                                for spans in range(int(rowspanNumber)):
+                                    colList.insert(rowIndex + rowspanNumber, cleanElement)
+                                # Spot has been found, break loop
+                                break
+                            else:
+                                # Continue searching a spot in lists
+                                continue
+                    # If no rowspans
+                    if element.get('rowspan') == None:
+                        for colList in tableRepr:
+                            try:
+                                # Check if index exists
+                                colList[rowIndex]
+                            except IndexError:
+                                # If not then spot is available for element
+                                colList.insert(rowIndex, cleanElement)
+                                # Spot has been found, break loop
+                                break
+                            else:
+                                # Continue searching a spot in lists
+                                continue
+        
+        # Convert results to more readable dictionnaries !
+        return tableRepr
+
     def getUlDiscography(self, _soup):
         '''
         This func scraps 'Discography' section in wikipeda, more specificly it scaps all <ul> tags 
@@ -177,68 +285,10 @@ class BandWiki:
                     for album in albums:
                         cleanedText = removeLinks(album.text)
                         discography.append(cleanedText)
-                # Sometimes it's a table
+                # Sometimes it's a <table>
                 elif tagName == "table":
-                    rows = node.find_all("tr")
-                    # Extract all first columns titles (first row)
-                    columnTitles = rows[0].contents
-                    # Remove possible \n in column element
-                    columnTitles = list(filter(lambda x: False if x == "\n" else True, columnTitles))
-                    
-                    # Find where is "Title" column and find its index
-                    for title in enumerate(columnTitles):
-                        # Remove residual \n in text
-                        cleanedTitle = title[1].text.replace('\n', '')
-                        # Get index of column
-                        if cleanedTitle == "Title":
-                            columnIndex = title[0]
-                    
-                    # Loop through title column and get results
-                    albumList = []
-                    for index, row in enumerate(rows, 0):
-                        elList = row.contents
-                        filtered_elList = list(filter(lambda x: False if x == "\n" else True, elList))
-                        # Skip first row (where word "Title" is)
-                        if index != 0:
-                            albumName = filtered_elList[columnIndex].text.replace('\n', '')
-                            albumList.append(removeLinks(albumName))
-
-                    # HERE - Works with Graveyard but not Melvins ...
-                    # BECAUSE OF ROWSPAN => SEE in Misc/tmp
-                    print(albumList)
-                        
-                    # Iterate array and skip first row (to skip title)
-                    # for el in newRowArray:
-                    #     if el[0] == 0:
-                    #         pass
-                    #     else:
-                    #         print(el[1].text)
-                    
-                    # Get "Title" column
-                    # for row in rows:
-                    #     elList = row.contents
-                    #     filtered_elList = list(filter(lambda x: False if x == "\n" else True, elList))
-                    #     print(filtered_elList[columnIndex].text.replace('\n', ''))
-
-                    # for title in filtered_elList:
-                    #     print(title)
-
-                    # for row in rows:
-                    #     elList = row.contents
-                    #     filtered_elList = list(filter(lambda x: False if x == "\n" else True, elList))
-                    #     print(filtered_elList[0].text)
-                    # newRowArray = []
-                    # Create new array with index (to skip first row of table)
-                    # for row in enumerate(rows):
-                    #     newRowArray.append(row)
-                    # # Iterate array and skip first row (to skip title)
-                    # for el in newRowArray:
-                    #     if el[0] == 0:
-                    #         pass
-                    #     else:
-                    #         print(el[1].text)
-                    
-
+                    discography.append(self.extractTable(node))
+            
             # Check of section is correctly formatted.
             if len(discography) == 0:
                 print(f"ERROR : It seems that section 'Discography' is formatted differently for '{self.bandName}' band page, could be a table instead of <ul> ?")

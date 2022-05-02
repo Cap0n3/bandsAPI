@@ -5,7 +5,7 @@ import re
 
 # For Windows (relative path) 
 dirname = os.path.dirname(__file__)
-filename = os.path.join(dirname, 'debugTable_case4.html')
+filename = os.path.join(dirname, 'debugTable_case0.html')
 
 def removeNewLines(lst):
     '''
@@ -38,7 +38,7 @@ tableRepr = []
 
 # insert header titles in new lists
 for title in headerRow:
-    tmpList = [title.text]
+    tmpList = [title.text.replace('\n', '')]
     tableRepr.append(tmpList)
 
 

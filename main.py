@@ -7,4 +7,4 @@ if __name__ == "__main__":
     # Convert dict to pretty string for viewing
     # ensure_ascii=False to avoid weird characters are due to JSON.dump
     prettyDict = json.dumps(wikiObj.getAllInfos(), indent=4, ensure_ascii=False)
-    #print(prettyDict)
+    print(prettyDict)
