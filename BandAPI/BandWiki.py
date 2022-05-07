@@ -27,7 +27,7 @@ class BandWiki:
         '''
         # Get rid of span with style="display: none" (it there's one)
         if _tag.span != None:
-            attrValue = tag.span.get_attribute_list('style')
+            attrValue = _tag.span.get_attribute_list('style')
             if attrValue[0] != None and attrValue[0] == "display:none":
                 _tag.span.string = ""
 
