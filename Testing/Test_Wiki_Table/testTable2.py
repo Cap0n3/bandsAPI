@@ -1,11 +1,12 @@
 from inspect import formatannotation
 import os
 from bs4 import BeautifulSoup
+import json
 import re
 
 # For Windows (relative path) 
 dirname = os.path.dirname(__file__)
-filename = os.path.join(dirname, 'debugTable_case0.html')
+filename = os.path.join(dirname, 'debugTable_Melvins.html')
 
 def removeNewLines(lst):
     '''
@@ -120,7 +121,27 @@ for rowIndex, row in enumerate(allRows):
         # if rowIndex == 3:
         #     break
 
-print(tableRepr)
+# === CONVERT LISTS RESULTS TO JSON DICT === #
+titles = [lst[0] for lst in tableRepr]
+colLen = len(tableRepr[0])
+
+resList = []
+
+for i in range(colLen):
+    if i != 0:
+        tmpDict = {}
+        # Extract row data
+        for title, lst in enumerate(tableRepr):
+            dictKey = titles[title]
+            dictVal = lst[i]
+            tmpDict[dictKey] = dictVal
+        #Convert dict to json
+        jsonDict = json.dumps(tmpDict, indent=4)
+        resList.append(jsonDict)
+    
+print(resList[0])
+#print(colLen)
+#print(tableRepr)
 
 
 

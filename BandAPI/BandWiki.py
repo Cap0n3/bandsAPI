@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import itertools
 import re
+import json
 
 class BandWiki:
     def __init__(self, bandName):
@@ -15,13 +16,13 @@ class BandWiki:
         
         Parameters
         ----------
-        tag : bs4.element.Tag
-            Tags to clean and convert
+        `tag` : `bs4.element.Tag`
+            Tags to clean and convert.
         
         Returns
         -------
-        string
-            Cleaned text string
+        `string`
+            Cleaned text string.
 
         '''
         # Get rid of span with style="display: none" (it there's one)
@@ -52,13 +53,18 @@ class BandWiki:
 
         Parameters
         ----------
-        string     
+        `_baseURL` : `string`    
             URL to query
         
         Returns
-        ------- 
-        class requests.models.Response
-            HTTP Response 
+        -------
+        `string`
+            URL with no `_band` string inside.
+
+        OR
+
+        `class requests.models.Response`
+            HTTP Response.
         '''
         # Format URL
         format = self.bandName.replace(' ', '_')
@@ -79,13 +85,13 @@ class BandWiki:
         
         Parameters
         ----------
-        _soup : class bs4.BeautifulSoup
-            Page's soup
+        `_soup` : `class bs4.BeautifulSoup`
+            Page's soup.
         
         Returns
         -------
-        Dict
-            Dictionnary containing all infos
+        `Dict`
+            Dictionnary containing all infos.
         '''
 
         # Get Info box table on the right
@@ -131,6 +137,23 @@ class BandWiki:
         return resultDict
 
     def extractTable(self, _soup):
+        '''
+        This method extract informations contained in html tables and convert it to dictionnaries
+        with keys corresponding to table titles row. Each dictionnary value represent a row of the
+        table.
+
+        > Note : This method is a dependency of `getDiscography()`
+        
+        Parameters
+        ----------
+        `_soup` : `class bs4.BeautifulSoup`
+            Page's soup.
+
+        Returns
+        -------
+        `List`
+            List with dictionnaries inside.
+        '''
         def removeNewLines(lst):
             '''
             This function return a filtered list cleaned of new line chars.
@@ -235,23 +258,38 @@ class BandWiki:
                                 # Continue searching a spot in lists
                                 continue
         
-        # Convert results to more readable dictionnaries !
-        return tableRepr
+        # === CONVERT LISTS RESULTS TO JSON DICT === #
+        titles = [lst[0] for lst in tableRepr]
+        colLen = len(tableRepr[0])
 
-    def getUlDiscography(self, _soup):
+        finalResList = []
+
+        for i in range(colLen):
+            if i != 0:
+                tmpDict = {}
+                # Extract row data
+                for title, lst in enumerate(tableRepr):
+                    dictKey = titles[title]
+                    dictVal = lst[i]
+                    tmpDict[dictKey] = dictVal
+                finalResList.append(tmpDict)
+        
+        return finalResList
+
+    def getDiscography(self, _soup):
         '''
-        This func scraps 'Discography' section in wikipeda, more specificly it scaps all <ul> tags 
-        in between heading "Discography" (<h2>) and next heading <h2>. Often discography 
+        This func scraps 'Discography' section in wikipeda, more specificly it scaps all <ul>
+        and <table> tags in between heading "Discography" (<h2>) and next heading <h2>. Often discography 
         is contained in an unordered list but it's not always the case.
 
         Parameters
         ----------
-        _soup : class bs4.BeautifulSoup
+        `_soup` : `class bs4.BeautifulSoup`
             Page's beautiful soup.
         
         Returns
         -------
-        list
+        `list`
             Discography list
         '''
         # Utils
@@ -287,7 +325,10 @@ class BandWiki:
                         discography.append(cleanedText)
                 # Sometimes it's a <table>
                 elif tagName == "table":
-                    discography.append(self.extractTable(node))
+                    albumList = self.extractTable(node)
+                    # To avoid getting list in a list
+                    for album in albumList:
+                        discography.append(album)
             
             # Check of section is correctly formatted.
             if len(discography) == 0:
@@ -305,7 +346,7 @@ class BandWiki:
 
         Returns
         -------
-        Dict
+        `Dict`
             Main dictionnary with all relevant infos scrapped of wikipedia 
         '''
         
@@ -321,7 +362,7 @@ class BandWiki:
         if resp.status_code == 200:
             soup = BeautifulSoup(resp.content, "html.parser")
             mainResultDict = self.getBandCard(soup)
-            bandDiscography = self.getUlDiscography(soup)
+            bandDiscography = self.getDiscography(soup)
             
             # Add discography to main result dictionnary
             mainResultDict["Discography"] = bandDiscography
