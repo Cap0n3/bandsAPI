@@ -174,21 +174,39 @@ class BandWiki:
 
         # Get header row (with titles) to count number of columns in table
         headerRow = removeNewLines(allRows[0].contents)
-
         tableRepr = []
+        # Start of row infos (not the titles)
+        rowStart = 1 
 
         # insert header titles in new lists
         for title in headerRow:
-            tmpList = [title.text.replace('\n', '')]
-            tableRepr.append(tmpList)
+            tmpList = []
+            # Check for rowspan attribute in title row
+            if title.get('rowspan') != None:
+                # Get number of rowspans
+                rowspanNumber = title.get('rowspan')
+                # Define offset
+                rowStart = int(rowspanNumber)
+                # Push title in list
+                tmpList = [title.text.replace('\n', '')]
+                tableRepr.append(tmpList)
+            else:
+                tmpList = [title.text.replace('\n', '')]
+                tableRepr.append(tmpList)
 
 
         for rowIndex, row in enumerate(allRows):
+            '''
+            If there's rowspans in header cells (titles) there'll be an offset in table representation rows.
+            Note : Offset is used as index below to populate lists in tableRepr, it shoud start at one and then increment.
+            '''
+            rowOffset = rowIndex - (rowStart - 1)
+            # Get content of row
             rowChildren = row.contents
             # Remove \n char in children list
             cleanRowChildren = removeNewLines(rowChildren)
             # === PREPARE FIRST ROW OF LIST === #
-            if rowIndex == 1:
+            if rowIndex == rowStart:
                 # 1. First, go through elements in row and find rowspans
                 for colIndex, element in enumerate(cleanRowChildren):
                     # Check for rowspan attribute in row elements
@@ -198,7 +216,7 @@ class BandWiki:
                         # Clean element
                         cleanElement = element.text.replace('\n', '')
                         # If first row, simply insert element in column index
-                        if rowIndex == 1:
+                        if rowIndex == rowStart:
                             # Insert element in list x times according to rowspan
                             for spans in range(int(rowspanNumber)):
                                 tableRepr[colIndex].append(cleanElement)
@@ -212,32 +230,32 @@ class BandWiki:
                         for colList in tableRepr:
                             try:
                                 # Check if index exists
-                                colList[rowIndex]
+                                colList[rowOffset]
                             except IndexError:
                                 # If not then spot is available for element
-                                colList.insert(rowIndex, cleanElement)
+                                colList.insert(rowOffset, cleanElement)
                                 # Spot has been found, break loop
                                 break
                             else:
                                 # Continue searching a spot in lists
                                 continue
-            
+
             # === CONTINUE TO FILL ROWS IN LIST === #
-            elif rowIndex > 1:
+            elif rowIndex > rowStart:
                 for element in cleanRowChildren:
                     cleanElement = element.text.replace('\n', '')
                     if element.get('rowspan') != None:
                         for colList in tableRepr:
                             try:
                                 # Check if index exists
-                                colList[rowIndex]
+                                colList[rowOffset]
                             except IndexError:
                                 # If not then spot is available for element
                                 # Get rowspan numbers
                                 rowspanNumber = int(element.get('rowspan'))
                                 # Insert element in list x times according to rowspan
                                 for spans in range(int(rowspanNumber)):
-                                    colList.insert(rowIndex + rowspanNumber, cleanElement)
+                                    colList.insert(rowOffset + rowspanNumber, cleanElement)
                                 # Spot has been found, break loop
                                 break
                             else:
@@ -248,10 +266,10 @@ class BandWiki:
                         for colList in tableRepr:
                             try:
                                 # Check if index exists
-                                colList[rowIndex]
+                                colList[rowOffset]
                             except IndexError:
                                 # If not then spot is available for element
-                                colList.insert(rowIndex, cleanElement)
+                                colList.insert(rowOffset, cleanElement)
                                 # Spot has been found, break loop
                                 break
                             else:
@@ -278,8 +296,8 @@ class BandWiki:
 
     def getDiscography(self, _soup):
         '''
-        This func scraps 'Discography' section in wikipeda, more specificly it scaps all <ul>
-        and <table> tags in between heading "Discography" (<h2>) and next heading <h2>. Often discography 
+        This func scraps 'Discography' section in wikipeda, more specificly it scaps all `<ul>`
+        and `<table>` tags in between heading "Discography" `<h2>` and next heading `<h2>`. Often discography 
         is contained in an unordered list but it's not always the case.
 
         Parameters
