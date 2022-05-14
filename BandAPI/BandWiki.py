@@ -78,8 +78,9 @@ class BandWiki:
             return requests.get(newURL)
         elif response.status_code == 200:
             return response
-            
-    def getBandCard(self, _soup):
+
+    @staticmethod    
+    def getBandCard(_soup):
         '''
         This funcs extract wiki card (left side of page) with essential infos of band.
         
@@ -136,18 +137,19 @@ class BandWiki:
         
         return resultDict
 
-    def extractTable(self, _soup):
+    @staticmethod
+    def extractTable(table):
         '''
         This method extract informations contained in html tables and convert it to dictionnaries
         with keys corresponding to table titles row. Each dictionnary value represent a row of the
         table.
 
-        > Note : This method is a dependency of `getDiscography()`
+        Note : This method is a dependency of `getDiscography()`
         
         Parameters
         ----------
-        `_soup` : `class bs4.BeautifulSoup`
-            Page's soup.
+        `table` : `<class 'bs4.element.Tag'>`
+            BS4 table tag.
 
         Returns
         -------
@@ -170,7 +172,7 @@ class BandWiki:
             '''
             return list(filter(lambda x: False if x == "\n" else True, lst))
         
-        allRows = _soup.find_all("tr")
+        allRows = table.find_all("tr")
 
         # Get header row (with titles) to count number of columns in table
         headerRow = removeNewLines(allRows[0].contents)
