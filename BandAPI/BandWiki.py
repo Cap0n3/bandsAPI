@@ -315,6 +315,23 @@ class BandWiki:
         # Utils
         removeLinks = lambda txt : re.sub('\[\d+\]', '', txt)
 
+        def ulToDict(_albums):
+            listOfdict = []
+            for album in _albums:
+                resDict = {}
+                cleanedText = removeLinks(album.text)
+                # Extract year from string (in paranthesis)
+                yearRes = re.findall(r"(\(\d{4}\))", cleanedText)
+                # remove parantesis from result
+                albumYear = re.sub(r"(\(|\))", "", yearRes[0])
+                # Remove (<year>) from text
+                albumName = re.sub(r"(\(\d{4}\))", "", cleanedText)
+                # Populate dict & append to list
+                resDict["Name"] = albumName
+                resDict["Year"] = albumYear
+                listOfdict.append(resDict)
+            return listOfdict
+        
         # Navigate DOM (to find everything below Discography)
         try:
             discoSpan = _soup.find_all("span", id="Discography")
@@ -334,15 +351,15 @@ class BandWiki:
                     break
                 elif tagName == "ul":
                     albums = node.find_all("li")
-                    for album in albums:
-                        cleanedText = removeLinks(album.text)
-                        discography.append(cleanedText)
+                    albumsDict = ulToDict(albums)
+                    for album in albumsDict:
+                        discography.append(album)
                 # Sometimes <ul> is wrapped in a div
                 elif tagName == "div":
                     albums = node.find_all("li")
-                    for album in albums:
-                        cleanedText = removeLinks(album.text)
-                        discography.append(cleanedText)
+                    albumsDict = ulToDict(albums)
+                    for album in albumsDict:
+                        discography.append(album)
                 # Sometimes it's a <table>
                 elif tagName == "table":
                     albumList = self.extractTable(node)
