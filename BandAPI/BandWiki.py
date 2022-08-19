@@ -180,7 +180,7 @@ class BandWiki:
         # Start of row infos (not the titles)
         rowStart = 1 
 
-        # insert header titles in new lists
+        # Insert header titles in new lists (for example : [['Year'], ['Title'], ['Label']])
         for title in headerRow:
             tmpList = []
             # Check for rowspan attribute in title row
@@ -195,8 +195,7 @@ class BandWiki:
             else:
                 tmpList = [title.text.replace('\n', '')]
                 tableRepr.append(tmpList)
-
-
+        
         for rowIndex, row in enumerate(allRows):
             '''
             If there's rowspans in header cells (titles) there'll be an offset in table representation rows.

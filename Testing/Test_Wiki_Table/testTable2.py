@@ -1,3 +1,12 @@
+'''
+This file is a test file for the extractTable() function. It'll test isolated tables 
+in Test_Wiki_Table folder that provoque bugs in the function. 
+
+> Important ! The code below main should be exactly like in BandWiki.py.
+
+For now, every case was covered except for case 7.
+'''
+
 from inspect import formatannotation
 import os
 from bs4 import BeautifulSoup
@@ -6,7 +15,7 @@ import re
 
 # For Windows (relative path) 
 dirname = os.path.dirname(__file__)
-filename = os.path.join(dirname, 'debugTable_Melvins.html')
+filename = os.path.join(dirname, 'debugTable_case6.html')
 
 def removeNewLines(lst):
     '''
@@ -37,7 +46,7 @@ tableRepr = []
 # Start of row infos (not the titles)
 rowStart = 1 
 
-# insert header titles in new lists
+# insert header titles in new lists (for example : [['Year'], ['Title'], ['Label']])
 for title in headerRow:
     tmpList = []
     # Check for rowspan attribute in title row
