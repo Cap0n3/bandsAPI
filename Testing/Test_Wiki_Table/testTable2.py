@@ -15,7 +15,7 @@ import re
 
 # For Windows (relative path) 
 dirname = os.path.dirname(__file__)
-filename = os.path.join(dirname, 'debugTable_case6.html')
+filename = os.path.join(dirname, 'debugTable_case1.html')
 
 def removeNewLines(lst):
     '''
@@ -38,15 +38,25 @@ def removeNewLines(lst):
 with open(filename, 'r') as htmlTestFile:
     soup = BeautifulSoup(htmlTestFile, "html.parser")
 
+# [STEP 1] - Get every rows in selected table (every <tr></tr>)
 allRows = soup.find_all("tr")
 
-# Get header row (with titles) to count number of columns in table
+# [STEP 2] - Get table titles cells, catch any rowspans in first row (define rowstart) & create table list representation
+'''
+1. Get header first row
+2. Catch any rowspan 
+    - If there's not, go directly to 3. 
+    - Define rowStart to be equal to rowspans
+    > Note : rowStart will represent how many <tr> there is before table body (where useful data are) is reached.
+3. Place each cell content (table titles) as first element of a list contained in a nested list 
+like this : [['Year'], ['Album'], ['Label']] (it's our table representation in a list form) 
+'''
 headerRow = removeNewLines(allRows[0].contents)
 tableRepr = []
 # Start of row infos (not the titles)
 rowStart = 1 
 
-# insert header titles in new lists (for example : [['Year'], ['Title'], ['Label']])
+# Catch any rowspans & create table representation (nested list, see point 3.)
 for title in headerRow:
     tmpList = []
     # Check for rowspan attribute in title row
