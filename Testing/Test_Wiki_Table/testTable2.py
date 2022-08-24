@@ -40,7 +40,7 @@ with open(filename, 'r') as htmlTestFile:
 
 # [STEP 1] - Get every rows in selected table (every <tr></tr>)
 allRows = soup.find_all("tr")
-
+print(allRows)
 # [STEP 2] - Get table titles cells, catch any rowspans in first row (define rowstart) & create table list representation
 '''
 1. Get header first row
@@ -53,7 +53,7 @@ like this : [['Year'], ['Album'], ['Label']] (it's our table representation in a
 '''
 headerRow = removeNewLines(allRows[0].contents)
 tableRepr = []
-# Start of row infos (not the titles)
+# Default start index of table row (where data are)
 rowStart = 1 
 
 # Catch any rowspans & create table representation (nested list, see point 3.)
@@ -63,7 +63,7 @@ for title in headerRow:
     if title.get('rowspan') != None:
         # Get number of rowspans
         rowspanNumber = title.get('rowspan')
-        # Define offset
+        # Redefine start index
         rowStart = int(rowspanNumber)
         # Push title in list
         tmpList = [title.text.replace('\n', '')]
@@ -75,17 +75,21 @@ for title in headerRow:
 
 for rowIndex, row in enumerate(allRows):
     '''
-    If there's rowspans in header cells (titles) there'll be an offset in table representation rows.
-    Note : Offset is used as index below to populate lists in tableRepr, it shoud start at one and then increment.
+    rowOffset variable represents current index of row in table list representation with any excess <tr> due to rowspans 
+    in header substracted. It will be used later as index below to populate lists in tableRepr, it shoud 
+    start at ONE and then increment.
+
+    Note : rowOffset is not the same as rowIndex ! Excess <tr> due to rowspans in header are substracted.
     '''
+    # Represent current index of row in table list representation
     rowOffset = rowIndex - (rowStart - 1)
-    # Get content of row
+    # Get data of row
     rowChildren = row.contents
     # Remove \n char in children list
     cleanRowChildren = removeNewLines(rowChildren)
-    # === PREPARE FIRST ROW OF LIST === #
+    # === [STEP 3] PREPARE FIRST ROW OF LIST === #
     if rowIndex == rowStart:
-        # 1. First, go through elements in row and find rowspans
+        # a. First, go through elements in row and find rowspans (if there's any)
         for colIndex, element in enumerate(cleanRowChildren):
             # Check for rowspan attribute in row elements
             if element.get('rowspan') != None:
@@ -95,33 +99,34 @@ for rowIndex, row in enumerate(allRows):
                 cleanElement = element.text.replace('\n', '')
                 # If first row, simply insert element in column index
                 if rowIndex == rowStart:
-                    # Insert element in list x times according to rowspan
+                    # Insert element in table list representation x times according to rowspan
                     for spans in range(int(rowspanNumber)):
                         tableRepr[colIndex].append(cleanElement)
         
-        # 2. Second, find elements in row with no rowspans
+        # b. Second, find elements in row with NO rowspans (if there's any)
         for element in cleanRowChildren:
             if element.get('rowspan') == None:
                 # Clean element
                 cleanElement = element.text.replace('\n', '')
-                # Check if a spot is available somewhere in lists at current row
+                # Check if a spot is available somewhere in table list representation columns (inner lists) at current row
                 for colList in tableRepr:
                     try:
                         # Check if index exists
                         colList[rowOffset]
                     except IndexError:
-                        # If not then spot is available for element
+                        # If index does not exists then a spot is available for this element
                         colList.insert(rowOffset, cleanElement)
                         # Spot has been found, break loop
                         break
                     else:
-                        # Continue searching a spot in lists
+                        # Index already exists, ok continue searching for a spot in columns (lists)
                         continue
 
-    # === CONTINUE TO FILL ROWS IN LIST === #
+    # === [STEP 4] CONTINUE TO FILL ROWS IN LIST === #
     elif rowIndex > rowStart:
         for element in cleanRowChildren:
             cleanElement = element.text.replace('\n', '')
+            # a. If there's rowspans
             if element.get('rowspan') != None:
                 for colList in tableRepr:
                     try:
@@ -139,7 +144,7 @@ for rowIndex, row in enumerate(allRows):
                     else:
                         # Continue searching a spot in lists
                         continue
-            # If no rowspans
+            # b. If there's NO rowspans
             if element.get('rowspan') == None:
                 for colList in tableRepr:
                     try:
