@@ -9,6 +9,8 @@ For now, every case was covered except for case 7.
 
 from inspect import formatannotation
 import os
+import logging
+import sys
 from bs4 import BeautifulSoup
 import json
 import re
@@ -16,6 +18,10 @@ import re
 # For Windows (relative path) 
 dirname = os.path.dirname(__file__)
 filename = os.path.join(dirname, 'debugTable_case1.html')
+
+# Logging init
+logging.basicConfig(level=logging.NOTSET)
+logger = logging.getLogger(__name__)
 
 def removeNewLines(lst):
     '''
@@ -40,7 +46,7 @@ with open(filename, 'r') as htmlTestFile:
 
 # [STEP 1] - Get every rows in selected table (every <tr></tr>)
 allRows = soup.find_all("tr")
-print(allRows)
+
 # [STEP 2] - Get table titles cells, catch any rowspans in first row (define rowstart) & create table list representation
 '''
 1. Get header first row
@@ -56,6 +62,7 @@ tableRepr = []
 # Default start index of table row (where data are)
 rowStart = 1 
 
+# === First loop- Create header of table list === #
 # Catch any rowspans & create table representation (nested list, see point 3.)
 for title in headerRow:
     tmpList = []
@@ -72,14 +79,18 @@ for title in headerRow:
         tmpList = [title.text.replace('\n', '')]
         tableRepr.append(tmpList)
 
+# Log result for header (DEBUG)
+logger.debug(f'Created header of table :\n {tableRepr}\n')
 
 for rowIndex, row in enumerate(allRows):
     '''
-    rowOffset variable represents current index of row in table list representation with any excess <tr> due to rowspans 
+    rowOffset variable represents current row index of row in table list representation with any excess <tr> due to rowspans 
     in header substracted. It will be used later as index below to populate lists in tableRepr, it shoud 
-    start at ONE and then increment.
+    start at ONE (default value) and then increment.
 
-    Note : rowOffset is not the same as rowIndex ! Excess <tr> due to rowspans in header are substracted.
+    Note : rowOffset is not the same as rowIndex or rowStart ! Excess <tr> due to rowspans in header are substracted.
+    For instance, if there was 2 rowspans in header (two <tr>), the first data row index rowIndex will start at 3 where rowOffset 
+    will always start at 1 and then increment. rowOffset represents the row index in table list reprentation.
     '''
     # Represent current index of row in table list representation
     rowOffset = rowIndex - (rowStart - 1)
@@ -103,7 +114,7 @@ for rowIndex, row in enumerate(allRows):
                     for spans in range(int(rowspanNumber)):
                         tableRepr[colIndex].append(cleanElement)
         
-        # b. Second, find elements in row with NO rowspans (if there's any)
+        # b. Second, find elements in row with NO rowspans (if there's any) and insert them where there's space
         for element in cleanRowChildren:
             if element.get('rowspan') == None:
                 # Clean element
@@ -121,7 +132,10 @@ for rowIndex, row in enumerate(allRows):
                     else:
                         # Index already exists, ok continue searching for a spot in columns (lists)
                         continue
-
+        
+        # Log result for first row (DEBUG)
+        logger.debug(f'Created first row of table :\n {tableRepr}\n')
+    
     # === [STEP 4] CONTINUE TO FILL ROWS IN LIST === #
     elif rowIndex > rowStart:
         for element in cleanRowChildren:
@@ -182,4 +196,4 @@ for rowIndex, row in enumerate(allRows):
     
 #print(resList[0])
 #print(colLen)
-print(tableRepr)
+logger.debug(f'Completed table list :\n {tableRepr}\n')
