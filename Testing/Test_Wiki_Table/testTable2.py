@@ -17,7 +17,7 @@ import re
 
 # For Windows (relative path) 
 dirname = os.path.dirname(__file__)
-filename = os.path.join(dirname, 'debugTable_case1.html')
+filename = os.path.join(dirname, 'debugTable_case5.html')
 
 # Logging init
 logging.basicConfig(level=logging.NOTSET)
@@ -50,6 +50,7 @@ with open(filename, 'r') as htmlTestFile:
 # [STEP 1] - Get every rows in selected table (every <tr></tr>)
 allRows = soup.find_all("tr")
 
+print(type(allRows))
 # [STEP 2] - Get table titles cells, catch any rowspans in first row (define rowstart) & create table list representation
 '''
 1. Get header first row
@@ -60,33 +61,81 @@ allRows = soup.find_all("tr")
 3. Place each cell content (table titles) as first element of a list contained in a nested list 
 like this : [['Year'], ['Album'], ['Label']] (it's our table representation in a list form) 
 '''
-# Get very first row of table
-headerRow = removeNewLines(allRows[0].contents)
-# Initiate our table list reprentation
-tableRepr = []
-# Default start index of table row (where data are)
-rowStart = 1 
 
-# === First loop - Create header of table list === #
-# Catch any rowspans & create table representation (nested list, see point 3.)
-for title in headerRow:
-    tmpList = []
-    # Check for rowspan attribute in title row
-    if title.get('rowspan') != None:
-        # Get number of rowspans
-        rowspanNumber = title.get('rowspan')
-        # Redefine start index (the start of actual data in table)
-        rowStart = int(rowspanNumber)
-        # Push title in list
-        tmpList = [title.text.replace('\n', '')]
-        tableRepr.append(tmpList)
-    else:
-        # There's no rowspan for this cell
-        tmpList = [title.text.replace('\n', '')]
-        tableRepr.append(tmpList)
+def createHeaderCells(_allRows):
+    '''
+    The role of this function is to create a table representation header with titles and return 
+    how many <tr> there is before table body (where useful data are) is reached.The header of table 
+    representation is a tricky bit because rowspans or colspans can create a critical offset if not handled properly.
+
+    Parameters
+    ----------
+    `_allRows` : `<class 'bs4.element.ResultSet'>`
+        BS4 result set, look like this : [<tr><td>Year</td><td>Album</td><td>Label</td></tr>, etc...]
+     
+     Returns
+    -------
+    `tuple[dict, int]`
+        Dictionnary of table representation & how many <tr> there is before table body (where useful data are) is reached.
+    '''
+    # Initiate our table dictionnary reprentation + Get very first row of table (raw)
+    tableRepr = {}
+    headerRow = removeNewLines(_allRows[0].contents)
+    # Define default start index of table row (where data are, will depend on if there's rowspans in header cells)
+    _rowStart = 1
+    # Which header cells have no rowspans (will store title of cells)
+    headCellsNoRowpans = []
+    # === First loop - Create header of table dict === #
+    for colIndex, title in enumerate(headerRow):
+        # Check for rowspan attribute in title row
+        if title.get('rowspan') != None:
+            # Get number of rowspans
+            rowspanNumber = title.get('rowspan')
+            # Redefine start index (the start of actual data in table)
+            _rowStart = int(rowspanNumber)
+            # Push title in list
+            colKey = title.text.replace('\n', '')
+            tableRepr[colKey] = []
+        else:
+            # There's no rowspan for this cell, store title for later (useful if there's rowspan in header cells)
+            colKey = title.text.replace('\n', '') # Convert to text + remove new lines
+            headCellsNoRowpans.append(colKey)
+            # Create new key in table dict
+            tableRepr[colKey] = []
+
+    # Was there some rowspans in header cells ?
+    if _rowStart != 1:
+        # First get data in next non spanned row(s)
+        for rowIndex, row in enumerate(_allRows):
+            # Stop if we're outside cell header
+            if rowIndex == _rowStart:
+                break
+            # We don't need first line (we already have titles)
+            if rowIndex > 0:
+                # Get row content
+                rowChildren = row.contents
+                # Remove \n char in children list
+                cleanRowChildren = removeNewLines(rowChildren)
+                try:
+                    len(headCellsNoRowpans) == len(cleanRowChildren)
+                except AssertionError:
+                    logger.warning(f'Two lists should be of same length :\n{headCellsNoRowpans}\n{cleanRowChildren}')
+                else:
+                    for noSpanCellName, cell in zip(headCellsNoRowpans, cleanRowChildren):
+                        # Clean cell data
+                        cellData = cell.text.replace('\n', '')
+                        # Mix it with title
+                        formattedTitle = f'{noSpanCellName} ({cellData})'
+                        # Update dict key with formatted title
+                        tableRepr[formattedTitle] = tableRepr[noSpanCellName]
+                        del tableRepr[noSpanCellName]
+    
+    return tableRepr, _rowStart
+
+table, rowStart = createHeaderCells(allRows)
 
 # Log result for header (DEBUG)
-logger.debug(f'Created header of table :\n {tableRepr}\n')
+logger.debug(f'Created header of table :\n {table}\n')
 
 for rowIndex, row in enumerate(allRows):
     '''
@@ -178,9 +227,6 @@ for rowIndex, row in enumerate(allRows):
                     else:
                         # Continue searching a spot in lists
                         continue
-    # For debugging
-    # if rowIndex == 3:
-    #     break
 
 # === CONVERT LISTS RESULTS TO JSON DICT === #
 # titles = [lst[0] for lst in tableRepr]
