@@ -39,7 +39,10 @@ def removeNewLines(lst):
     '''
     return list(filter(lambda x: False if x == "\n" else True, lst))
 
+# ======================== #
 # ========= MAIN ========= #
+# ======================== #
+
 # Open html file
 with open(filename, 'r') as htmlTestFile:
     soup = BeautifulSoup(htmlTestFile, "html.parser")
@@ -57,12 +60,14 @@ allRows = soup.find_all("tr")
 3. Place each cell content (table titles) as first element of a list contained in a nested list 
 like this : [['Year'], ['Album'], ['Label']] (it's our table representation in a list form) 
 '''
+# Get very first row of table
 headerRow = removeNewLines(allRows[0].contents)
+# Initiate our table list reprentation
 tableRepr = []
 # Default start index of table row (where data are)
 rowStart = 1 
 
-# === First loop- Create header of table list === #
+# === First loop - Create header of table list === #
 # Catch any rowspans & create table representation (nested list, see point 3.)
 for title in headerRow:
     tmpList = []
@@ -70,12 +75,13 @@ for title in headerRow:
     if title.get('rowspan') != None:
         # Get number of rowspans
         rowspanNumber = title.get('rowspan')
-        # Redefine start index
+        # Redefine start index (the start of actual data in table)
         rowStart = int(rowspanNumber)
         # Push title in list
         tmpList = [title.text.replace('\n', '')]
         tableRepr.append(tmpList)
     else:
+        # There's no rowspan for this cell
         tmpList = [title.text.replace('\n', '')]
         tableRepr.append(tmpList)
 
