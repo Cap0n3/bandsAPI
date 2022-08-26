@@ -86,7 +86,7 @@ def createHeaderCells(_allRows):
     # Which header cells have no rowspans (will store title of cells)
     headCellsNoRowpans = []
     # === First loop - Create header of table dict === #
-    for colIndex, title in enumerate(headerRow):
+    for title in headerRow:
         # Check for rowspan attribute in title row
         if title.get('rowspan') != None:
             # Get number of rowspans
