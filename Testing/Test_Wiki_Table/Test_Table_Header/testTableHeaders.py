@@ -50,24 +50,72 @@ with open(filename, 'r') as htmlTestFile:
 # [STEP 1] - Get every rows in selected table (every <tr></tr>)
 allRows = soup.find_all("tr")
 
-# [STEP 2] - Get first row & scan type of cells
-headerRow = removeNewLines(allRows[0].contents)
+# [STEP 2] - Get type of table (simple or multidimensional ?) and number of header rows
+def getTableType(_allRows):
+    '''
+    This function role is to determine table type. Type can be either simple or multidimensional.
+    
+    Here's a simple table:
+    
+    | Name | Age | Genre |
+    |------|-----|-------|
+    | Jack | 23  | Male  |
 
+    Here's a multidimensional table (with header cells at the start of each row) :
 
-for rowIndex, row in enumerate(allRows):
-    thCells = 0
-    tdCells = 0
-    rowContents = row.contents
-    contentCount = len(removeNewLines(rowContents))
-    # Count type cells in row
-    for content in rowContents:
-        if content.name == "th":
-            thCells += 1
-        elif content.name == "td":
-            tdCells += 1
-    # There's only <th> in row (it's a header)
-    if contentCount == thCells:
-        print(f"All <th> at row {str(rowIndex)} : it's a header row !")
+    |        | Dog | Cat | Total |
+    |--------|-----|-----|-------|
+    | Male   | 30  |  10 |   40  |
+    | Female | 40  |  35 |   75  |
+    | Total  | 70  |  45 |   115 |
+
+    Parameters
+    ----------
+    `_allRows` : `<class 'bs4.element.ResultSet'>`
+        BS4 result set, look like this : [<tr><td>Year</td><td>Album</td><td>Label</td></tr>, etc...]
+     
+     Returns
+    -------
+    `tuple[str, int]`
+        Tuple with either "simple" or "multidimensional" string and number of header cells.
+    '''
+    totalHeaderRows = 0 # Row with only <th>
+    titledRow = 0 # Row with one <th> and then <td>
+
+    # Go through 10 first rows to get type of table
+    for rowIndex, row in enumerate(_allRows):
+        thCells = 0
+        tdCells = 0
+        if rowIndex == 9:
+            break
+        # Get row contents
+        rowContents = row.contents
+        contentCount = len(removeNewLines(rowContents))
+        # Count type cells in row
+        for content in rowContents:
+            if content.name == "th":
+                thCells += 1
+            elif content.name == "td":
+                tdCells += 1
+        if contentCount == thCells:
+            # There's only <th> in row (it's a header)
+            totalHeaderRows += 1
+            logger.debug(f"Row {str(rowIndex)} - <th> count = {thCells}, <td> count = {tdCells} at  => it's a header row !")
+        elif thCells == 1 and tdCells == (contentCount - 1):
+            # There's one <th> and the rest are <td>, it's a multidimensional table
+            titledRow += 1
+            logger.debug(f"Row {str(rowIndex)} - <th> count = {thCells}, <td> count = {tdCells} at  => it's a titled row !")
+    # Final condition to decide type of tabe
+    if totalHeaderRows > 0 and titledRow > 0:
+        return ("multidimensional", totalHeaderRows)
+    elif totalHeaderRows > 0 and titledRow == 0:
+        return ("simple", totalHeaderRows)
+
+tableType, rowStart = getTableType(allRows)
+
+# [STEP 3] - Prepare table representation start with header data (for two type of table)
+if tableType == "simple":
+    pass
 
 
 # headerCellScan = []
