@@ -17,11 +17,14 @@ import re
 
 # For Windows (relative path) 
 dirname = os.path.dirname(__file__)
-filename = os.path.join(dirname, 'tableHeader_case1.html')
+filename = os.path.join(dirname, 'tableHeader_case2.html')
 
 # Logging init
 logging.basicConfig(level=logging.NOTSET)
 logger = logging.getLogger(__name__)
+
+def closest(lst, K):    
+    return lst[min(range(len(lst)), key = lambda i: abs(lst[i]-K))]
 
 def removeNewLines(lst):
     '''
@@ -136,6 +139,7 @@ elif rowStart > 1:
     rowChildren = allRows[0].contents
     # Remove \n char in children list
     cleanRowChildren = removeNewLines(rowChildren)
+    print(cleanRowChildren)
     # Loop through elements in FIRST row ==> HERE !!! ONLY NEED FIRST ROW
     for colIndex, cell in enumerate(cleanRowChildren):
         tmpList = []
@@ -148,23 +152,31 @@ elif rowStart > 1:
                 tmpList.append(cellContent)
                 tableHeader.append(tmpList)
             elif totalRowSpans > cellRowspan:
-                # These cells don't take all height and have other cells below them
+                # These cells have rowspans but don't take all height so they have other cells below them
                 pass
         if cell.get('rowspan') == None:
             # No rowspan in this cell
             # First get this (upper) cell
-            uppserCellContent = cell.text.replace('\n', '') # Convert to text + remove new lines
+            upperCellContent = cell.text.replace('\n', '') # Convert to text + remove new lines
             # Then cells underneath
             underCellsContent = [] # To store content from cells underneath
+            # Skip row 1 and go to following rows
             for rowIndex in range(1, totalRowSpans):
                 # Get rows underneath first row
-                belowRow = allRows[rowIndex].contents
-                print(belowRow)
-                belowCellContent = belowRow[colIndex]
+                contentRowList = removeNewLines(allRows[rowIndex].contents)
+                # Get Number of elements in row
+                lengthOfRow = len(contentRowList)
+                # Convert length to a list of indexes
+                indexRangeList = [*range(lengthOfRow)]
+                # Find closest element index of column index (it's necessarly corresponding cell in following rows)
+                closestIndex = closest(indexRangeList, colIndex)
+                # Get element & clean it
+                belowCellContent = contentRowList[closestIndex]
                 cleanBelowCellContent = belowCellContent.text.replace('\n', '')
+                # Add it to list (if there's several following rows)
                 underCellsContent.append(cleanBelowCellContent)
             # Combine data from upper with below cell
-            combinedData = f'{uppserCellContent} ({underCellsContent})'
+            combinedData = f'{upperCellContent} ({underCellsContent})'
             tmpList.append(combinedData)
             tableHeader.append(tmpList)
                         
