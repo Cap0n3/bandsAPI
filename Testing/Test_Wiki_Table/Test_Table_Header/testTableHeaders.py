@@ -132,29 +132,44 @@ if rowStart == 1:
 elif rowStart > 1:
     # There's rowspan in header
     totalRowSpans = rowStart
-    # Loop through header
-    for rowIndex, row in enumerate(allRows):
-            # Stop if we're outside cell header
-            if rowIndex == rowStart:
-                break
-            # Get data of row
-            rowChildren = row.contents
-            # Remove \n char in children list
-            cleanRowChildren = removeNewLines(rowChildren)
-            # Loop through elements in row
-            for colIndex, cell in enumerate(cleanRowChildren):
-                tmpList = []
-                # Check for rowspan attribute in row elements
-                if cell.get('rowspan') != None:
-                    cellRowspan = int(cell.get('rowspan'))
-                    if totalRowSpans == cellRowspan:
-                        # Cells with rowspans that are exactly the total of header rows takes all header height (& have one data)
-                        cellContent = cell.text.replace('\n', '') # Convert to text + remove new lines
-                        tmpList.append(cellContent)
-                        tableHeader.append(tmpList)
-                    elif totalRowSpans > cellRowspan:
-                        # These cells don't take all height and have other cells below them
-                        pass
+    # Get first header row
+    rowChildren = allRows[0].contents
+    # Remove \n char in children list
+    cleanRowChildren = removeNewLines(rowChildren)
+    # Loop through elements in FIRST row ==> HERE !!! ONLY NEED FIRST ROW
+    for colIndex, cell in enumerate(cleanRowChildren):
+        tmpList = []
+        # Check for rowspan attribute in row elements
+        if cell.get('rowspan') != None:
+            cellRowspan = int(cell.get('rowspan'))
+            if totalRowSpans == cellRowspan:
+                # Cells with rowspans that are exactly the total of header rows takes all header height (& have one data)
+                cellContent = cell.text.replace('\n', '') # Convert to text + remove new lines
+                tmpList.append(cellContent)
+                tableHeader.append(tmpList)
+            elif totalRowSpans > cellRowspan:
+                # These cells don't take all height and have other cells below them
+                pass
+        if cell.get('rowspan') == None:
+            # No rowspan in this cell
+            # First get this (upper) cell
+            uppserCellContent = cell.text.replace('\n', '') # Convert to text + remove new lines
+            # Then cells underneath
+            underCellsContent = [] # To store content from cells underneath
+            for rowIndex in range(1, totalRowSpans):
+                # Get rows underneath first row
+                belowRow = allRows[rowIndex].contents
+                print(belowRow)
+                belowCellContent = belowRow[colIndex]
+                cleanBelowCellContent = belowCellContent.text.replace('\n', '')
+                underCellsContent.append(cleanBelowCellContent)
+            # Combine data from upper with below cell
+            combinedData = f'{uppserCellContent} ({underCellsContent})'
+            tmpList.append(combinedData)
+            tableHeader.append(tmpList)
+                        
+
+
 
 print(tableHeader)
 
