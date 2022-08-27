@@ -47,10 +47,10 @@ def removeNewLines(lst):
 with open(filename, 'r') as htmlTestFile:
     soup = BeautifulSoup(htmlTestFile, "html.parser")
 
-# [STEP 1] - Get every rows in selected table (every <tr></tr>)
+# ========= [STEP 1] - Get every rows in selected table (every <tr></tr>) ========= #
 allRows = soup.find_all("tr")
 
-# [STEP 2] - Get type of table (simple or multidimensional ?) and number of header rows
+# ========= [STEP 2] - Get type of table (simple or multidimensional ?) and number of header rows ========= #
 def getTableType(_allRows):
     '''
     This function role is to determine table type. Type can be either simple or multidimensional.
@@ -116,7 +116,7 @@ def getTableType(_allRows):
 
 tableType, rowStart = getTableType(allRows)
 
-# [STEP 3] - Get table header data in a list
+# ========= [STEP 3] - Get table header data in a list ========= #
 tableHeader = []
 # === CASE 1 === #
 if rowStart == 1:
