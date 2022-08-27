@@ -12,6 +12,7 @@ import os
 import logging
 import sys
 from bs4 import BeautifulSoup
+from collections import namedtuple
 import json
 import re
 
@@ -23,8 +24,9 @@ filename = os.path.join(dirname, 'tableHeader_case2.html')
 logging.basicConfig(level=logging.NOTSET)
 logger = logging.getLogger(__name__)
 
-def closest(lst, K):    
-    return lst[min(range(len(lst)), key = lambda i: abs(lst[i]-K))]
+# ===================================== #
+# ========= UTILITY FUNCTIONS ========= #
+# ===================================== #
 
 def removeNewLines(lst):
     '''
@@ -42,6 +44,40 @@ def removeNewLines(lst):
     '''
     return list(filter(lambda x: False if x == "\n" else True, lst))
 
+def scanRow(rowData):
+    '''
+    This function scan any given row and return informations about each cells. These infos are :
+    - Cell column index 
+    - Rowspan 
+    - Colspan
+
+    Params
+    ------
+    lst : list
+        list of row content like [<th rowspan="2">Year</th>, <th rowspan="2">Album</th>].
+    
+    Returns
+    -------
+    list
+        List of named tuples.
+    '''
+    resTable = []
+    print(rowData)
+    CellScan = namedtuple('CellScan', ['cellIndex', 'rowspan', 'colspan'])
+    for colIndex, cell in enumerate(rowData):
+        if cell.get('rowspan') != None:
+            rowspan = int(cell.get('rowspan'))
+            if cell.get('colspan'):
+                colspan = int(cell.get('colspan'))
+            else:
+                colspan = 0
+            cellScan = CellScan(colIndex, rowspan, colspan)
+            resTable.append(cellScan)
+        else:
+            cellScan = CellScan(colIndex, 0, 0)
+            resTable.append(cellScan)
+    return resTable
+
 # ======================== #
 # ========= MAIN ========= #
 # ======================== #
@@ -56,7 +92,8 @@ allRows = soup.find_all("tr")
 # ========= [STEP 2] - Get type of table (simple or multidimensional ?) and number of header rows ========= #
 def getTableType(_allRows):
     '''
-    This function role is to determine table type. Type can be either simple or multidimensional.
+    This function role is to determine table type and give some useful infos about table. 
+    Type can be either simple or multidimensional.
     
     Here's a simple table:
     
@@ -79,8 +116,8 @@ def getTableType(_allRows):
      
      Returns
     -------
-    `tuple[str, int]`
-        Tuple with either "simple" or "multidimensional" string and number of header rows.
+    `tuple[str, int, int]`
+        Tuple with either "simple" or "multidimensional" string, number of header rows and total columns in table.
     '''
     totalHeaderRows = 0 # Row with only <th>
     titledRow = 0 # Row with one <th> and then <td>
@@ -94,6 +131,9 @@ def getTableType(_allRows):
         # Get row contents
         rowContents = row.contents
         contentCount = len(removeNewLines(rowContents))
+        # Store number of columns of table (to return)
+        if rowIndex == 0 : 
+            totalColumns = contentCount
         # Count type cells in row
         for content in rowContents:
             if content.name == "th":
@@ -110,20 +150,20 @@ def getTableType(_allRows):
             logger.debug(f"Row {str(rowIndex)} - <th> count = {thCells}, <td> count = {tdCells} at  => it's a titled row !")
     # Final condition to decide type of table
     if totalHeaderRows > 0 and titledRow == 0:
-        return ("simple", totalHeaderRows)
+        return ("simple", totalHeaderRows, totalColumns)
     elif totalHeaderRows > 0 and titledRow > 0:
-        return ("multidimensional", totalHeaderRows)
+        return ("multidimensional", totalHeaderRows, totalColumns)
     else:
         logger.warning(f'Table type is unknown !')
         raise TypeError("Table type is unknown !")
 
-tableType, rowStart = getTableType(allRows)
+tableType, rowStart, totalTableColumns = getTableType(allRows)
 
 # ========= [STEP 3] - Get table header data in a list ========= #
 tableHeader = []
 # === CASE 1 === #
+# The header has one row, simply get data in row and put it in list
 if rowStart == 1:
-    # Then header has one row, simply get data in row and put it in list
     headerOneRow = removeNewLines(allRows[0].contents)
     for cell in headerOneRow:
         tmpList = []
@@ -132,53 +172,45 @@ if rowStart == 1:
         tableHeader.append(tmpList)
     logger.debug(f'One line header :\n{tableHeader}')
 # === CASE 2 === #
+# The header is complex, it can have rowspans and colspans
 elif rowStart > 1:
     # There's rowspan in header
     totalRowSpans = rowStart
-    # Get first header row
-    rowChildren = allRows[0].contents
-    # Remove \n char in children list
-    cleanRowChildren = removeNewLines(rowChildren)
-    print(cleanRowChildren)
-    # Loop through elements in FIRST row ==> HERE !!! ONLY NEED FIRST ROW
-    for colIndex, cell in enumerate(cleanRowChildren):
-        tmpList = []
-        # Check for rowspan attribute in row elements
-        if cell.get('rowspan') != None:
-            cellRowspan = int(cell.get('rowspan'))
-            if totalRowSpans == cellRowspan:
-                # Cells with rowspans that are exactly the total of header rows takes all header height (& have one data)
-                cellContent = cell.text.replace('\n', '') # Convert to text + remove new lines
-                tmpList.append(cellContent)
-                tableHeader.append(tmpList)
-            elif totalRowSpans > cellRowspan:
-                # These cells have rowspans but don't take all height so they have other cells below them
+    for rowIndex, row in enumerate(allRows):
+        # Get row content
+        rowChildren = removeNewLines(row.contents)
+        # Scan row for rowspan or colspan
+        rowScan = scanRow(rowChildren)
+        print(rowScan)
+        # Loop through elements in row
+        for colIndex, cell in enumerate(rowChildren):
+            tmpList = []
+            # Check for rowspan attribute in row elements
+            if cell.get('rowspan') != None:
+                cellRowspan = int(cell.get('rowspan'))
+                if totalRowSpans == cellRowspan:
+                    # Cells with rowspans that are exactly the total of header rows takes all header height (& have one data)
+                    cellContent = cell.text.replace('\n', '') # Convert to text + remove new lines
+                    tmpList.append(cellContent)
+                    tableHeader.append(tmpList)
+                elif totalRowSpans > cellRowspan:
+                    # Deduce at which row is the cell below & get index of row
+                    belowCellRowIndex = (cellRowspan + (totalRowSpans - cellRowspan)) - 1
+                    # Get row content
+                    belowCellRow = removeNewLines(allRows[belowCellRowIndex].contents)
+                    # Get number element at this row
+                    belowCellRowLength = len(belowCellRow)
+                    # Deduce right index of cell
+                    if totalTableColumns != belowCellRowLength:
+                        # Ok some cells takes up more height in header
+                        pass
+                    
+                    
+
+
+            if cell.get('rowspan') == None:
+                # No rowspan in this cell
                 pass
-        if cell.get('rowspan') == None:
-            # No rowspan in this cell
-            # First get this (upper) cell
-            upperCellContent = cell.text.replace('\n', '') # Convert to text + remove new lines
-            # Then cells underneath
-            underCellsContent = [] # To store content from cells underneath
-            # Skip row 1 and go to following rows
-            for rowIndex in range(1, totalRowSpans):
-                # Get rows underneath first row
-                contentRowList = removeNewLines(allRows[rowIndex].contents)
-                # Get Number of elements in row
-                lengthOfRow = len(contentRowList)
-                # Convert length to a list of indexes
-                indexRangeList = [*range(lengthOfRow)]
-                # Find closest element index of column index (it's necessarly corresponding cell in following rows)
-                closestIndex = closest(indexRangeList, colIndex)
-                # Get element & clean it
-                belowCellContent = contentRowList[closestIndex]
-                cleanBelowCellContent = belowCellContent.text.replace('\n', '')
-                # Add it to list (if there's several following rows)
-                underCellsContent.append(cleanBelowCellContent)
-            # Combine data from upper with below cell
-            combinedData = f'{upperCellContent} ({underCellsContent})'
-            tmpList.append(combinedData)
-            tableHeader.append(tmpList)
                         
 
 
