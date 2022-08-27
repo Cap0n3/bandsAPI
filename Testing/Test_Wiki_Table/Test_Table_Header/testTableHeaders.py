@@ -17,7 +17,7 @@ import re
 
 # For Windows (relative path) 
 dirname = os.path.dirname(__file__)
-filename = os.path.join(dirname, 'tableHeader_case3.html')
+filename = os.path.join(dirname, 'tableHeader_case1.html')
 
 # Logging init
 logging.basicConfig(level=logging.NOTSET)
@@ -77,7 +77,7 @@ def getTableType(_allRows):
      Returns
     -------
     `tuple[str, int]`
-        Tuple with either "simple" or "multidimensional" string and number of header cells.
+        Tuple with either "simple" or "multidimensional" string and number of header rows.
     '''
     totalHeaderRows = 0 # Row with only <th>
     titledRow = 0 # Row with one <th> and then <td>
@@ -105,18 +105,58 @@ def getTableType(_allRows):
             # There's one <th> and the rest are <td>, it's a multidimensional table
             titledRow += 1
             logger.debug(f"Row {str(rowIndex)} - <th> count = {thCells}, <td> count = {tdCells} at  => it's a titled row !")
-    # Final condition to decide type of tabe
-    if totalHeaderRows > 0 and titledRow > 0:
-        return ("multidimensional", totalHeaderRows)
-    elif totalHeaderRows > 0 and titledRow == 0:
+    # Final condition to decide type of table
+    if totalHeaderRows > 0 and titledRow == 0:
         return ("simple", totalHeaderRows)
+    elif totalHeaderRows > 0 and titledRow > 0:
+        return ("multidimensional", totalHeaderRows)
+    else:
+        logger.warning(f'Table type is unknown !')
+        raise TypeError("Table type is unknown !")
 
 tableType, rowStart = getTableType(allRows)
 
-# [STEP 3] - Prepare table representation start with header data (for two type of table)
-if tableType == "simple":
-    pass
+# [STEP 3] - Get table header data in a list
+tableHeader = []
+# === CASE 1 === #
+if rowStart == 1:
+    # Then header has one row, simply get data in row and put it in list
+    headerOneRow = removeNewLines(allRows[0].contents)
+    for cell in headerOneRow:
+        tmpList = []
+        cellContent = cell.text.replace('\n', '') # Convert to text + remove new lines
+        tmpList.append(cellContent)
+        tableHeader.append(tmpList)
+    logger.debug(f'One line header :\n{tableHeader}')
+# === CASE 2 === #
+elif rowStart > 1:
+    # There's rowspan in header
+    totalRowSpans = rowStart
+    # Loop through header
+    for rowIndex, row in enumerate(allRows):
+            # Stop if we're outside cell header
+            if rowIndex == rowStart:
+                break
+            # Get data of row
+            rowChildren = row.contents
+            # Remove \n char in children list
+            cleanRowChildren = removeNewLines(rowChildren)
+            # Loop through elements in row
+            for colIndex, cell in enumerate(cleanRowChildren):
+                tmpList = []
+                # Check for rowspan attribute in row elements
+                if cell.get('rowspan') != None:
+                    cellRowspan = int(cell.get('rowspan'))
+                    if totalRowSpans == cellRowspan:
+                        # Cells with rowspans that are exactly the total of header rows takes all header height (& have one data)
+                        cellContent = cell.text.replace('\n', '') # Convert to text + remove new lines
+                        tmpList.append(cellContent)
+                        tableHeader.append(tmpList)
+                    elif totalRowSpans > cellRowspan:
+                        # These cells don't take all height and have other cells below them
+                        pass
 
+print(tableHeader)
 
 # headerCellScan = []
 
