@@ -117,7 +117,7 @@ def getTableType(_allRows):
      Returns
     -------
     `tuple[str, int, int]`
-        Tuple with either "simple" or "multidimensional" string, number of header rows and total columns in table.
+        Tuple with either "simple" or "multidimensional" string, header length (number of header rows) and total columns in table.
     '''
     totalHeaderRows = 0 # Row with only <th>
     titledRow = 0 # Row with one <th> and then <td>
@@ -157,65 +157,132 @@ def getTableType(_allRows):
         logger.warning(f'Table type is unknown !')
         raise TypeError("Table type is unknown !")
 
-tableType, rowStart, totalTableColumns = getTableType(allRows)
+tableType, headerRowLength, totalTableColumns = getTableType(allRows)
 
 # ========= [STEP 3] - Get table header data in a list ========= #
-tableHeader = []
-# === CASE 1 === #
-# The header has one row, simply get data in row and put it in list
-if rowStart == 1:
-    headerOneRow = removeNewLines(allRows[0].contents)
-    for cell in headerOneRow:
-        tmpList = []
-        cellContent = cell.text.replace('\n', '') # Convert to text + remove new lines
-        tmpList.append(cellContent)
-        tableHeader.append(tmpList)
-    logger.debug(f'One line header :\n{tableHeader}')
-# === CASE 2 === #
-# The header is complex, it can have rowspans and colspans
-elif rowStart > 1:
-    # There's rowspan in header
-    totalRowSpans = rowStart
-    for rowIndex, row in enumerate(allRows):
-        # Get row content
+'''
+This step is important :
+    1. Get first row and take care of rowspan & colspan TO create table list representation
+    2. Start filling tableRepr with other rows
+'''
+tableRepr = []
+headerFirstRow = removeNewLines(allRows[0].contents)
+
+# 1. Get data of first row and create table list reprentation
+for cell in headerFirstRow:
+    columnReprList = []
+    # Check for rowspan attribute in cell
+    if cell.get('rowspan') != None:
+        # Get number of rowspans of cell
+        cellRowspan = int(cell.get('rowspan'))
+        # Insert element n times in column list representation according to rowspan
+        for i in range(cellRowspan):
+            columnReprList.append(cell.text)
+        # Push column list in table representation
+        tableRepr.append(columnReprList)
+    else:
+        columnReprList = [cell.text.replace('\n', '')]
+        tableRepr.append(columnReprList)
+
+# Log result so far
+logger.debug(f"\nTABLE FIRST ROW :\n{tableRepr}")
+
+# Header have multiple cells
+if headerRowLength > 1:
+    # 2. Then that first row is done, insert other row of header (Skip first row (already done))
+    for rowIndex, row in enumerate(allRows[1:]):
+        # Since we skipped first element, row index is out whack so re-adjust rowIndex at correct index
+        rowIndex += 1
+        logger.debug(f"ROW INDEX : {rowIndex}")
+        # Stop at end of table header
+        #if rowIndex == headerRowLength: break
+        # Get row content and clean them
         rowChildren = removeNewLines(row.contents)
-        # Scan row for rowspan or colspan
-        rowScan = scanRow(rowChildren)
-        print(rowScan)
-        # Loop through elements in row
-        for colIndex, cell in enumerate(rowChildren):
-            tmpList = []
-            # Check for rowspan attribute in row elements
-            if cell.get('rowspan') != None:
-                cellRowspan = int(cell.get('rowspan'))
-                if totalRowSpans == cellRowspan:
-                    # Cells with rowspans that are exactly the total of header rows takes all header height (& have one data)
-                    cellContent = cell.text.replace('\n', '') # Convert to text + remove new lines
-                    tmpList.append(cellContent)
-                    tableHeader.append(tmpList)
-                elif totalRowSpans > cellRowspan:
-                    # Deduce at which row is the cell below & get index of row
-                    belowCellRowIndex = (cellRowspan + (totalRowSpans - cellRowspan)) - 1
-                    # Get row content
-                    belowCellRow = removeNewLines(allRows[belowCellRowIndex].contents)
-                    # Get number element at this row
-                    belowCellRowLength = len(belowCellRow)
-                    # Deduce right index of cell
-                    if totalTableColumns != belowCellRowLength:
-                        # Ok some cells takes up more height in header
-                        pass
-                    
-                    
-
-
+        # Loop through elements and insert them in table list representation
+        for cell in rowChildren:
+            # Case 1 - Normal cell with no rowspans
             if cell.get('rowspan') == None:
-                # No rowspan in this cell
-                pass
+                # Check if a spot is available somewhere in column lists at current row
+                for colList in tableRepr:
+                    try:
+                        # Check if index exists
+                        colList[rowIndex]
+                    except IndexError:
+                        # If not then spot is available for element
+                        colList.insert(rowIndex, cell.text)
+                        # Spot has been found, break loop
+                        break
+                    else:
+                        # Continue searching a spot in lists
+                        continue
+            # Case 2 - Cell with rowspans
+            if cell.get('rowspan') != None:
+                # Check if a spot is available somewhere in column lists at current row
+                for colList in tableRepr:
+                    try:
+                        # Check if index exists
+                        colList[rowIndex]
+                    except IndexError:
+                        # If not then spot is available for element
+                        # Get rowspan numbers
+                        rowspanNumber = int(cell.get('rowspan'))
+                        # Insert element in list x times according to rowspan
+                        for spans in range(rowspanNumber):
+                            colList.insert(rowIndex + rowspanNumber, cell.text)
+                        # Spot has been found, break loop
+                        break
+                    else:
+                        # Continue searching a spot in lists
+                        continue
+
+logger.debug(f"\nTABLE FINAL RESULT :\n{tableRepr}")
+
+
+
+# === CASE 2 === #
+# The header have several rows, it can have rowspans and colspans
+# elif headerLength > 1:
+#     # There's rowspan in header
+#     maxRowspans = headerLength
+#     # 1. LOOP THROUGHT ROWS OF HEADER
+#     for rowIndex, row in enumerate(allRows):
+#         # Get out of loop if we're outside header
+#         if rowIndex == headerLength:
+#             break
+#         # Get row content & clean it
+#         rowChildren = removeNewLines(row.contents)
+#         # 2. LOOP THROUGH CELLS IN ROW
+#         for colIndex, cell in enumerate(rowChildren):
+#             columnReprList = []
+#             # OK, cell has a rowspan attribute
+#             if cell.get('rowspan') != None:
+#                 # Get exact value of rowspan
+#                 cellRowspan = int(cell.get('rowspan'))
+#                 # Insert element n times in column list representation according to rowspan
+#                 for i in range(cellRowspan):
+#                     columnReprList.append(cell.text)
+#                 # Add column to table list reprentation
+#                 tableRepr.append(columnReprList)
+#             # OK, cell has no rowspan attribute
+#             elif cell.get('rowspan') == None:
+#                 # Simply insert element at right column index
+#                 # First test if column list reprentation has already been created
+#                 try:
+#                     tableRepr[colIndex]
+#                 except IndexError:
+#                     # Nope column list should be created
+#                     columnReprList.append(cell.text)
+#                     # Add column to table list reprentation
+#                     tableRepr.append(columnReprList)
+#                 else:
+#                     # Yep it already exists, simply insert cell content
+#                     tableRepr[colIndex].append(cell.text)
+                    
                         
 
 
 
-print(tableHeader)
+# print(tableRepr)
 
 # headerCellScan = []
 
