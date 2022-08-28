@@ -165,78 +165,79 @@ This step is important :
     1. Get first row and take care of rowspan & colspan TO create table list representation
     2. Start filling tableRepr with other rows
 '''
-tableRepr = []
-headerFirstRow = removeNewLines(allRows[0].contents)
+def getTableHeader(_allRows):
+    tableRepr = []
+    headerFirstRow = removeNewLines(_allRows[0].contents)
 
-# 1. Get data of first row and create table list reprentation
-for cell in headerFirstRow:
-    columnReprList = []
-    # Check for rowspan attribute in cell
-    if cell.get('rowspan') != None:
-        # Get number of rowspans of cell
-        cellRowspan = int(cell.get('rowspan'))
-        # Insert element n times in column list representation according to rowspan
-        for i in range(cellRowspan):
-            columnReprList.append(cell.text)
-        # Push column list in table representation
-        tableRepr.append(columnReprList)
-    else:
-        columnReprList = [cell.text.replace('\n', '')]
-        tableRepr.append(columnReprList)
+    # 1. Get data of first row and create table list reprentation
+    for cell in headerFirstRow:
+        columnReprList = []
+        # Check for rowspan attribute in cell
+        if cell.get('rowspan') != None:
+            # Get number of rowspans of cell
+            cellRowspan = int(cell.get('rowspan'))
+            # Insert element n times in column list representation according to rowspan
+            for i in range(cellRowspan):
+                columnReprList.append(cell.text)
+            # Push column list in table representation
+            tableRepr.append(columnReprList)
+        else:
+            columnReprList = [cell.text.replace('\n', '')]
+            tableRepr.append(columnReprList)
 
-# Log result so far
-logger.debug(f"\nTABLE FIRST ROW :\n{tableRepr}")
+    # Log result so far
+    logger.debug(f"[getTableHeader] TABLE FIRST ROW :\n{tableRepr}")
 
-# Header have multiple cells
-if headerRowLength > 1:
-    # 2. Then that first row is done, insert other row of header (Skip first row (already done))
-    for rowIndex, row in enumerate(allRows[1:]):
-        # Since we skipped first element, row index is out whack so re-adjust rowIndex at correct index
-        rowIndex += 1
-        logger.debug(f"ROW INDEX : {rowIndex}")
-        # Stop at end of table header
-        #if rowIndex == headerRowLength: break
-        # Get row content and clean them
-        rowChildren = removeNewLines(row.contents)
-        # Loop through elements and insert them in table list representation
-        for cell in rowChildren:
-            # Case 1 - Normal cell with no rowspans
-            if cell.get('rowspan') == None:
-                # Check if a spot is available somewhere in column lists at current row
-                for colList in tableRepr:
-                    try:
-                        # Check if index exists
-                        colList[rowIndex]
-                    except IndexError:
-                        # If not then spot is available for element
-                        colList.insert(rowIndex, cell.text)
-                        # Spot has been found, break loop
-                        break
-                    else:
-                        # Continue searching a spot in lists
-                        continue
-            # Case 2 - Cell with rowspans
-            if cell.get('rowspan') != None:
-                # Check if a spot is available somewhere in column lists at current row
-                for colList in tableRepr:
-                    try:
-                        # Check if index exists
-                        colList[rowIndex]
-                    except IndexError:
-                        # If not then spot is available for element
-                        # Get rowspan numbers
-                        rowspanNumber = int(cell.get('rowspan'))
-                        # Insert element in list x times according to rowspan
-                        for spans in range(rowspanNumber):
-                            colList.insert(rowIndex + rowspanNumber, cell.text)
-                        # Spot has been found, break loop
-                        break
-                    else:
-                        # Continue searching a spot in lists
-                        continue
+    # Header have multiple cells
+    if headerRowLength > 1:
+        # 2. Then that first row is done, insert other row of header (Skip first row (already done))
+        for rowIndex, row in enumerate(_allRows[1:]):
+            # Since we skipped first element, row index is out whack so re-adjust rowIndex at correct index
+            rowIndex += 1
+            # Stop at end of table header
+            #if rowIndex == headerRowLength: break
+            # Get row content and clean them
+            rowChildren = removeNewLines(row.contents)
+            # Loop through elements and insert them in table list representation
+            for cell in rowChildren:
+                # Case 1 - Normal cell with no rowspans
+                if cell.get('rowspan') == None:
+                    # Check if a spot is available somewhere in column lists at current row
+                    for colList in tableRepr:
+                        try:
+                            # Check if index exists
+                            colList[rowIndex]
+                        except IndexError:
+                            # If not then spot is available for element
+                            colList.insert(rowIndex, cell.text)
+                            # Spot has been found, break loop
+                            break
+                        else:
+                            # Continue searching a spot in lists
+                            continue
+                # Case 2 - Cell with rowspans
+                if cell.get('rowspan') != None:
+                    # Check if a spot is available somewhere in column lists at current row
+                    for colList in tableRepr:
+                        try:
+                            # Check if index exists
+                            colList[rowIndex]
+                        except IndexError:
+                            # If not then spot is available for element
+                            # Get rowspan numbers
+                            rowspanNumber = int(cell.get('rowspan'))
+                            # Insert element in list x times according to rowspan
+                            for spans in range(rowspanNumber):
+                                colList.insert(rowIndex + rowspanNumber, cell.text)
+                            # Spot has been found, break loop
+                            break
+                        else:
+                            # Continue searching a spot in lists
+                            continue
 
-logger.debug(f"\nTABLE FINAL RESULT :\n{tableRepr}")
+    logger.debug(f"[getTableHeader] TABLE FINAL RESULT :\n{tableRepr}")
 
+getTableHeader(allRows)
 
 
 # === CASE 2 === #
