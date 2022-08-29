@@ -17,8 +17,8 @@ import json
 import re
 
 # For Windows (relative path) 
-dirname = os.path.dirname(__file__)
-filename = os.path.join(dirname, 'tableHeader_case2.html')
+# dirname = os.path.dirname(__file__)
+# filename = os.path.join(dirname, 'Test_Table_Header/tableHeader_case2.html')
 
 # Logging init
 logging.basicConfig(level=logging.NOTSET)
@@ -83,11 +83,11 @@ def scanRow(rowData):
 # ======================== #
 
 # Open html file
-with open(filename, 'r') as htmlTestFile:
-    soup = BeautifulSoup(htmlTestFile, "html.parser")
+# with open(filename, 'r') as htmlTestFile:
+#     soup = BeautifulSoup(htmlTestFile, "html.parser")
 
 # ========= [STEP 1] - Get every rows in selected table (every <tr></tr>) ========= #
-allRows = soup.find_all("tr")
+# allRows = soup.find_all("tr")
 
 # ========= [STEP 2] - Get type of table (simple or multidimensional ?) and number of header rows ========= #
 def getTableType(_allRows):
@@ -143,11 +143,11 @@ def getTableType(_allRows):
         if contentCount == thCells:
             # There's only <th> in row (it's a header)
             totalHeaderRows += 1
-            logger.debug(f"Row {str(rowIndex)} - <th> count = {thCells}, <td> count = {tdCells} at  => it's a header row !")
+            # logger.debug(f"Row {str(rowIndex)} - <th> count = {thCells}, <td> count = {tdCells} at  => it's a header row !")
         elif thCells == 1 and tdCells == (contentCount - 1):
             # There's one <th> and the rest are <td>, it's a multidimensional table
             titledRow += 1
-            logger.debug(f"Row {str(rowIndex)} - <th> count = {thCells}, <td> count = {tdCells} at  => it's a titled row !")
+            # logger.debug(f"Row {str(rowIndex)} - <th> count = {thCells}, <td> count = {tdCells} at  => it's a titled row !")
     # Final condition to decide type of table
     if totalHeaderRows > 0 and titledRow == 0:
         return ("simple", totalHeaderRows, totalColumns)
@@ -157,8 +157,6 @@ def getTableType(_allRows):
         logger.warning(f'Table type is unknown !')
         raise TypeError("Table type is unknown !")
 
-tableType, headerRowLength, totalTableColumns = getTableType(allRows)
-
 # ========= [STEP 3] - Get table header data in a list ========= #
 '''
 This step is important :
@@ -166,9 +164,9 @@ This step is important :
     2. Start filling tableRepr with other rows
 '''
 def getTableHeader(_allRows):
+    tableType, headerRowLength, totalTableColumns = getTableType(_allRows)
     tableRepr = []
     headerFirstRow = removeNewLines(_allRows[0].contents)
-
     # 1. Get data of first row and create table list reprentation
     for cell in headerFirstRow:
         columnReprList = []
@@ -186,7 +184,7 @@ def getTableHeader(_allRows):
             tableRepr.append(columnReprList)
 
     # Log result so far
-    logger.debug(f"[getTableHeader] TABLE FIRST ROW :\n{tableRepr}")
+    # logger.debug(f"[getTableHeader] TABLE FIRST ROW :\n{tableRepr}")
 
     # Header have multiple cells
     if headerRowLength > 1:
@@ -236,5 +234,6 @@ def getTableHeader(_allRows):
                             continue
 
     logger.debug(f"[getTableHeader] TABLE FINAL RESULT :\n{tableRepr}")
+    return tableRepr
 
-getTableHeader(allRows)
+

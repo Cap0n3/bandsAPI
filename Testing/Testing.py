@@ -11,7 +11,9 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir) 
 
+# Import class & functions
 from BandAPI.BandWiki import BandWiki
+from Test_Wiki_Table import Test_tableHeaderFuncs
 
 #================#
 #=== Settings ===#
@@ -42,6 +44,7 @@ TEST_DISCO_LIST = ['Bleach (1989)', 'Nevermind (1991)', 'In Utero (1993)']
 #========= Testing =========#
 #===========================#
 
+@unittest.skip("Comment here to test")
 class test_BandWiki(unittest.TestCase):
     # Setting Up
     def setUp(self):
@@ -82,6 +85,61 @@ class test_BandWiki(unittest.TestCase):
                 file.write(f"# ================= {band} ================= #\n\n")
                 file.write(prettyDict)
                 file.write(f"\n\n### (DICT END) ###\n\n")
+
+class test_Functions(unittest.TestCase):
+    def setUp(self):
+        # Current folder
+        self.dirname = os.path.dirname(__file__)
+        # Folder path to test table headers
+        self.tableHeaderFilesFolder = os.path.join(self.dirname, "Test_Wiki_Table/Test_Table_Header")
+    
+    def test_getTableHeader(self):
+        # =========== INIT - HERE TO FINE TUNE TEST ============ #
+        # Leave it to None to test all cases, give case to test a particular file (ex : "case1" or "case5")
+        testParticularCase = None
+        # ====================================================== # 
+        # Test cases (expected results), all files in Test_Table_Header folder should be here !
+        testTableHeaders = {
+            "case0" : [['Year'], ['Album'], ['Label'], ['Note']],
+            "case1" : [['Year', 'Year'], ['Album', 'Album'], ['Label', 'Label'], ['Note', 'About']],
+            "case2" : [['Year', 'Year'], ['Album', 'Release'], ['Label', 'Label'], ['Note', 'About']],
+            "case3" : [['Album', 'Release'], ['Year', 'Year'], ['Label', 'Label'], ['Note', 'About']],
+            "case4" : [['Year', 'Year', 'Period'], ['Album', 'Album', 'Release'], ['Label', 'Label', 'Label'], ['Note', 'About', 'Facts']],
+            "case5" : [['Year', 'Year', 'Period'], ['Album', 'Release', 'Record'], ['Label', 'Label', 'Company'], ['Note', 'About', 'Facts']],
+            "case6" : [['Album', 'Album'], ['Details', 'Details'], ['Charts', 'USA'], ['Charts', 'EU'], ['Certifications', 'Certifications']]
+        }
+        # === Test all cases (all files) === #
+        if testParticularCase == None :
+            # Get list of files in dir (and sort them)
+            files = [f for f in sorted(os.listdir(self.tableHeaderFilesFolder))]
+            # Add complete path for all file in list
+            allFiles = map(lambda file: os.path.join(self.tableHeaderFilesFolder, file), files)
+            # Filter out folders from list
+            filteredObj = filter(lambda file: os.path.isfile(file), allFiles)
+            allFiles = list(filteredObj)
+            # Get keys (case number) in list
+            allCasesList = list(testTableHeaders.keys())
+            # Loop throught files and test each one
+            for file, case in zip(allFiles, allCasesList):
+                print(f'\n\n[*] TEST FILE {file} FOR {case}\n')
+                # Open file
+                with open(file, 'r') as htmlTestFile:
+                    soup = BeautifulSoup(htmlTestFile, "html.parser")
+                # Extract rows from soup
+                allRows = soup.find_all("tr")
+                # Test function
+                result = Test_tableHeaderFuncs.getTableHeader(allRows)
+                self.assertEqual(result,  testTableHeaders[case])
+        # === Test one particular case === #
+        elif testParticularCase != None:
+            filename = os.path.join(self.dirname, f'{self.tableHeaderFilesFolder}/tableHeader_{testParticularCase}.html')
+            with open(filename, 'r') as htmlTestFile:
+                soup = BeautifulSoup(htmlTestFile, "html.parser")
+            # Extract rows from soup
+            allRows = soup.find_all("tr")
+            # Test function
+            result = Test_tableHeaderFuncs.getTableHeader(allRows)
+            self.assertEqual(result, testTableHeaders[testParticularCase])
 
 if __name__ == "__main__":
   unittest.main()
