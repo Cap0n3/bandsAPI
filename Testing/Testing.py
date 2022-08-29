@@ -87,16 +87,19 @@ class test_BandWiki(unittest.TestCase):
                 file.write(f"\n\n### (DICT END) ###\n\n")
 
 class test_Functions(unittest.TestCase):
+    '''
+    Test for prototypes methods of BandWiki class.
+    '''
     def setUp(self):
-        # Current folder
+        # Get current folder
         self.dirname = os.path.dirname(__file__)
-        # Folder path to test table headers
+        # Set folder path to test table headers
         self.tableHeaderFilesFolder = os.path.join(self.dirname, "Test_Wiki_Table/Test_Table_Header")
     
     def test_getTableHeader(self):
         # =========== INIT - HERE TO FINE TUNE TEST ============ #
         # Leave it to None to test all cases, give case to test a particular file (ex : "case1" or "case5")
-        testParticularCase = None
+        testParticularCase = "case6"
         # ====================================================== # 
         # Test cases (expected results), all files in Test_Table_Header folder should be here !
         testTableHeaders = {

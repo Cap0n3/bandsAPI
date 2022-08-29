@@ -16,11 +16,16 @@ from collections import namedtuple
 import json
 import re
 
+# ====== UNCOMMENT TO TEST HERE ====== #
 # For Windows (relative path) 
-# dirname = os.path.dirname(__file__)
-# filename = os.path.join(dirname, 'Test_Table_Header/tableHeader_case2.html')
+dirname = os.path.dirname(__file__)
+filename = os.path.join(dirname, 'Test_Table_Header/tableHeader_case6.html')
+# Open html file
+with open(filename, 'r') as htmlTestFile:
+    soup = BeautifulSoup(htmlTestFile, "html.parser")
+allRows = soup.find_all("tr")
 
-# Logging init
+# ====== Logging init ====== #
 logging.basicConfig(level=logging.NOTSET)
 logger = logging.getLogger(__name__)
 
@@ -78,18 +83,10 @@ def scanRow(rowData):
             resTable.append(cellScan)
     return resTable
 
-# ======================== #
-# ========= MAIN ========= #
-# ======================== #
+# ============================== #
+# ========= MAIN FUNCS ========= #
+# ============================== #
 
-# Open html file
-# with open(filename, 'r') as htmlTestFile:
-#     soup = BeautifulSoup(htmlTestFile, "html.parser")
-
-# ========= [STEP 1] - Get every rows in selected table (every <tr></tr>) ========= #
-# allRows = soup.find_all("tr")
-
-# ========= [STEP 2] - Get type of table (simple or multidimensional ?) and number of header rows ========= #
 def getTableType(_allRows):
     '''
     This function role is to determine table type and give some useful infos about table. 
@@ -157,21 +154,21 @@ def getTableType(_allRows):
         logger.warning(f'Table type is unknown !')
         raise TypeError("Table type is unknown !")
 
-# ========= [STEP 3] - Get table header data in a list ========= #
-'''
-This step is important :
-    1. Get first row and take care of rowspan & colspan TO create table list representation
-    2. Start filling tableRepr with other rows
-'''
 def getTableHeader(_allRows):
     tableType, headerRowLength, totalTableColumns = getTableType(_allRows)
     tableRepr = []
     headerFirstRow = removeNewLines(_allRows[0].contents)
-    # 1. Get data of first row and create table list reprentation
+    # 1. Get data of first row and start table list reprentation
     for cell in headerFirstRow:
         columnReprList = []
+        print(cell.get('colspan'))
         # Check for rowspan attribute in cell
-        if cell.get('rowspan') != None:
+        # Case 1 - Normal cell with no rowspans or colspans
+        if cell.get('rowspan') == None and cell.get('colspan') == None:
+            columnReprList = [cell.text.replace('\n', '')] # TO REMOVE ('replace') ===> HERE TO FORMAT !!!
+            tableRepr.append(columnReprList)
+        # Case 2 - Cell with rowspans
+        elif cell.get('rowspan') != None:
             # Get number of rowspans of cell
             cellRowspan = int(cell.get('rowspan'))
             # Insert element n times in column list representation according to rowspan
@@ -179,16 +176,22 @@ def getTableHeader(_allRows):
                 columnReprList.append(cell.text)
             # Push column list in table representation
             tableRepr.append(columnReprList)
-        else:
-            columnReprList = [cell.text.replace('\n', '')]
-            tableRepr.append(columnReprList)
+        # Case 3 - Cell with colspans
+        elif cell.get('colspan') != None:
+            # Get number of colspans of cell
+            cellColspan = int(cell.get('colspan'))
+            # Create new column with element n times (depending on colspans)
+            for colspan in range(cellColspan):
+                columnReprList = []
+                columnReprList.append(cell.text)
+                tableRepr.append(columnReprList)
 
     # Log result so far
-    # logger.debug(f"[getTableHeader] TABLE FIRST ROW :\n{tableRepr}")
+    logger.debug(f"[getTableHeader] TABLE FIRST ROW :\n{tableRepr} (length: {len(tableRepr)})")
 
-    # Header have multiple cells
+    # Header have multiple cells ?
     if headerRowLength > 1:
-        # 2. Then that first row is done, insert other row of header (Skip first row (already done))
+        # 2. Now that first row is done, insert other row of header (Skip first row since already done)
         for rowIndex, row in enumerate(_allRows[1:]):
             # Since we skipped first element, row index is out whack so re-adjust rowIndex at correct index
             rowIndex += 1
@@ -202,19 +205,23 @@ def getTableHeader(_allRows):
                 if cell.get('rowspan') == None:
                     # Check if a spot is available somewhere in column lists at current row
                     for colList in tableRepr:
+                        print(f'VALUE TO BE INSERTED : {cell.text}')
+                        print(f'TESTED TABLE : {colList} AT INDEX {rowIndex}')
                         try:
                             # Check if index exists
                             colList[rowIndex]
                         except IndexError:
+                            print(f"FREE ! INSERT VALUE '{cell.text}' and LEAVE LOOP")
                             # If not then spot is available for element
                             colList.insert(rowIndex, cell.text)
                             # Spot has been found, break loop
                             break
                         else:
+                            print("OCCUPIED")
                             # Continue searching a spot in lists
                             continue
                 # Case 2 - Cell with rowspans
-                if cell.get('rowspan') != None:
+                elif cell.get('rowspan') != None:
                     # Check if a spot is available somewhere in column lists at current row
                     for colList in tableRepr:
                         try:
@@ -232,8 +239,12 @@ def getTableHeader(_allRows):
                         else:
                             # Continue searching a spot in lists
                             continue
+                # Case 3 - Cell with colspan
+                elif cell.get('colspan') != None:
+                    pass
 
     logger.debug(f"[getTableHeader] TABLE FINAL RESULT :\n{tableRepr}")
     return tableRepr
 
-
+# ====== UNCOMMENT TO TEST HERE ====== #
+getTableHeader(allRows)
