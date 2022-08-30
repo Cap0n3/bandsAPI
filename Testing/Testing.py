@@ -98,8 +98,10 @@ class test_Functions(unittest.TestCase):
     
     def test_getTableHeader(self):
         # =========== INIT - HERE TO FINE TUNE TEST ============ #
-        # Leave it to None to test all cases, give case to test a particular file (ex : "case1" or "case5")
-        testParticularCase = "case6"
+        # ====================================================== # 
+        # Leave it to 'None' to test all cases, give case to test a particular file (ex : "case1" or "case5")
+        testParticularCase = "case9"
+        # ====================================================== # 
         # ====================================================== # 
         # Test cases (expected results), all files in Test_Table_Header folder should be here !
         testTableHeaders = {
@@ -109,7 +111,11 @@ class test_Functions(unittest.TestCase):
             "case3" : [['Album', 'Release'], ['Year', 'Year'], ['Label', 'Label'], ['Note', 'About']],
             "case4" : [['Year', 'Year', 'Period'], ['Album', 'Album', 'Release'], ['Label', 'Label', 'Label'], ['Note', 'About', 'Facts']],
             "case5" : [['Year', 'Year', 'Period'], ['Album', 'Release', 'Record'], ['Label', 'Label', 'Company'], ['Note', 'About', 'Facts']],
-            "case6" : [['Album', 'Album'], ['Details', 'Details'], ['Charts', 'USA'], ['Charts', 'EU'], ['Certifications', 'Certifications']]
+            "case6" : [['Album', 'Album'], ['Details', 'Details'], ['Charts', 'USA'], ['Charts', 'EU'], ['Certifications', 'Certifications']],
+            "case7" : [['Album', 'Release'], ['Details', 'Details'], ['Charts', 'USA'], ['Charts', 'EU'], ['Certifications', 'Awards']],
+            "case8" : [['Album', 'Release', 'CD'], ['Details', 'Details', 'Details'], ['Charts', 'USA', 'USA'], ['Charts', 'EU', 'Germany'], ['Certifications', 'Awards', 'Awards']],
+            "case9" : [['Album', 'Release', 'CD'], ['Details', 'Details', 'Details'], ['Charts', 'Charts', 'USA'], ['Charts', 'Charts', 'EU'], ['Certifications', 'Awards', 'Awards']],
+            "case10" : [['Album', 'Release'], ['Details', 'Details'], ['CD Sales', 'EU'], ['Vinyl Sales', 'EU'], ['Certifications', 'Awards']],
         }
         # === Test all cases (all files) === #
         if testParticularCase == None :

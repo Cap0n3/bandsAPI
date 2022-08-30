@@ -83,6 +83,24 @@ def scanRow(rowData):
             resTable.append(cellScan)
     return resTable
 
+def getSpans(cell):
+    '''
+    This function returns number of rowspan or colspan from a given cell.
+
+    Params
+    ------
+    cell : `<class 'bs4.element.Tag'>`
+        BS4 cell from table (like `<th rowspan="2">Year</th>`).
+    
+    Returns
+    -------
+    tuple
+        Tuple with rowspan and colspan (return None if there's no rowspan/colspan)
+    '''
+    rowspan = int(cell.get('rowspan')) if (cell.get('rowspan') != None) else None
+    colspan = int(cell.get('colspan')) if (cell.get('colspan') != None) else None
+    return (rowspan, colspan)
+
 # ============================== #
 # ========= MAIN FUNCS ========= #
 # ============================== #
@@ -158,32 +176,39 @@ def getTableHeader(_allRows):
     tableType, headerRowLength, totalTableColumns = getTableType(_allRows)
     tableRepr = []
     headerFirstRow = removeNewLines(_allRows[0].contents)
-    # 1. Get data of first row and start table list reprentation
+    # === 1. Get data of first row and start table list reprentation === #
     for cell in headerFirstRow:
         columnReprList = []
-        print(cell.get('colspan'))
+        # Get rowspans and colspans (convert to int or return None)
+        rowspan, colspan = getSpans(cell)
         # Check for rowspan attribute in cell
-        # Case 1 - Normal cell with no rowspans or colspans
-        if cell.get('rowspan') == None and cell.get('colspan') == None:
+        # Case 1 - Normal cell with no rowspan or colspan
+        if rowspan == None and colspan == None:
             columnReprList = [cell.text.replace('\n', '')] # TO REMOVE ('replace') ===> HERE TO FORMAT !!!
             tableRepr.append(columnReprList)
-        # Case 2 - Cell with rowspans
-        elif cell.get('rowspan') != None:
-            # Get number of rowspans of cell
-            cellRowspan = int(cell.get('rowspan'))
+        # Case 2 - Cell with rowspan BUT no colspan
+        elif rowspan != None and colspan == None:
             # Insert element n times in column list representation according to rowspan
-            for i in range(cellRowspan):
+            for i in range(rowspan):
                 columnReprList.append(cell.text)
             # Push column list in table representation
             tableRepr.append(columnReprList)
-        # Case 3 - Cell with colspans
-        elif cell.get('colspan') != None:
-            # Get number of colspans of cell
-            cellColspan = int(cell.get('colspan'))
-            # Create new column with element n times (depending on colspans)
-            for colspan in range(cellColspan):
+        # Case 3 - Cell with colspan BUT no rowspan
+        elif colspan != None and rowspan == None:
+            # Create new column list with element n times (depending on colspans)
+            for i in range(colspan):
                 columnReprList = []
                 columnReprList.append(cell.text)
+                tableRepr.append(columnReprList)
+        # Case 4 - Cell with colspan AND rowspan
+        elif colspan != None and rowspan != None:
+            # Create new column list with element n times (depending on colspans)
+            for i in range(colspan):
+                columnReprList = []
+                # Insert element in column list n times (depending on rowspan)
+                for j in range(rowspan):
+                    columnReprList.append(cell.text)
+                # Insert column list
                 tableRepr.append(columnReprList)
 
     # Log result so far
@@ -191,7 +216,7 @@ def getTableHeader(_allRows):
 
     # Header have multiple cells ?
     if headerRowLength > 1:
-        # 2. Now that first row is done, insert other row of header (Skip first row since already done)
+        # === 2. Now that first row is done, insert other row of header (Skip first row since already done) === #
         for rowIndex, row in enumerate(_allRows[1:]):
             # Since we skipped first element, row index is out whack so re-adjust rowIndex at correct index
             rowIndex += 1
