@@ -16,16 +16,24 @@ from collections import namedtuple
 import json
 import re
 
-# ====== UNCOMMENT TO TEST HERE ====== #
+# ============ UNCOMMENT TO TEST HERE ============ #
 # For Windows (relative path) 
 dirname = os.path.dirname(__file__)
-filename = os.path.join(dirname, 'Test_Table_Header/tableHeader_case6.html')
+filename = os.path.join(dirname, 'Test_Table_Header/tableHeader_case11.html')
 # Open html file
 with open(filename, 'r') as htmlTestFile:
     soup = BeautifulSoup(htmlTestFile, "html.parser")
 allRows = soup.find_all("tr")
+# ============================================== #
+# DON'T FORGET TO COMMENT/UNCOMMENT FUNCTION CALL AT THE END
+# ============================================== #
+# ============================================== #
 
+
+# ========================== #
 # ====== Logging init ====== #
+# ========================== #
+
 logging.basicConfig(level=logging.NOTSET)
 logger = logging.getLogger(__name__)
 
@@ -179,7 +187,7 @@ def getTableHeader(_allRows):
     # === 1. Get data of first row and start table list reprentation === #
     for cell in headerFirstRow:
         columnReprList = []
-        # Get rowspans and colspans (convert to int or return None)
+        # Get rowspans and colspans (if any the convert to int or return None)
         rowspan, colspan = getSpans(cell)
         # Check for rowspan attribute in cell
         # Case 1 - Normal cell with no rowspan or colspan
@@ -226,10 +234,13 @@ def getTableHeader(_allRows):
             rowChildren = removeNewLines(row.contents)
             # Loop through elements and insert them in table list representation
             for cell in rowChildren:
-                # Case 1 - Normal cell with no rowspans
-                if cell.get('rowspan') == None:
+                # Get rowspans and colspans (if any the convert to int or return None)
+                rowspan, colspan = getSpans(cell)
+                # Case 1 - Normal cell with no rowspans and no colspan
+                if rowspan == None and colspan == None:
                     # Check if a spot is available somewhere in column lists at current row
                     for colList in tableRepr:
+                        print("<=== CASE 1 - NO ROWSPAN, NO COLSPAN ===>")
                         print(f'VALUE TO BE INSERTED : {cell.text}')
                         print(f'TESTED TABLE : {colList} AT INDEX {rowIndex}')
                         try:
@@ -245,31 +256,59 @@ def getTableHeader(_allRows):
                             print("OCCUPIED")
                             # Continue searching a spot in lists
                             continue
-                # Case 2 - Cell with rowspans
-                elif cell.get('rowspan') != None:
+                # Case 2 - Cell with rowspan BUT no colspan
+                elif rowspan != None and colspan == None:
                     # Check if a spot is available somewhere in column lists at current row
                     for colList in tableRepr:
+                        print("<=== CASE 2 - ROWSPAN, NO COLSPAN ===>")
+                        print(f'VALUE TO BE INSERTED : {cell.text}')
+                        print(f'TESTED TABLE : {colList} AT INDEX {rowIndex}')
                         try:
                             # Check if index exists
                             colList[rowIndex]
                         except IndexError:
+                            print(f"FREE ! INSERT VALUE '{cell.text}' {rowspan} TIMES in column and LEAVE LOOP")
                             # If not then spot is available for element
-                            # Get rowspan numbers
-                            rowspanNumber = int(cell.get('rowspan'))
                             # Insert element in list x times according to rowspan
-                            for spans in range(rowspanNumber):
-                                colList.insert(rowIndex + rowspanNumber, cell.text)
+                            for spans in range(rowspan):
+                                colList.insert(rowIndex + rowspan, cell.text)
                             # Spot has been found, break loop
                             break
                         else:
+                            print("OCCUPIED")
                             # Continue searching a spot in lists
                             continue
-                # Case 3 - Cell with colspan
-                elif cell.get('colspan') != None:
+                # Case 3 - Cell with colspan BUT no rowspan
+                elif colspan != None and rowspan == None:
+                    for colIndex, colList in enumerate(tableRepr):
+                        print("<=== CASE 3 - COLSPAN, NO ROWSPAN ===>")
+                        print(f'VALUE TO BE INSERTED : {cell.text}')
+                        print(f'TESTED TABLE : {colList} AT INDEX {rowIndex}')
+                        try:
+                            # Check if index exists
+                            colList[rowIndex]
+                        except IndexError:
+                            print(f"FREE ! INSERT VALUE '{cell.text}' in {colspan} columns and LEAVE LOOP")
+                            # If not then spot is available for element
+                            # Insert element in list once and in following column lists n times (depending on colspans)
+                            colList.insert(rowIndex, cell.text)
+                            print("INSERTED FIRST VALUE !")
+                            print(f"TRYING TO INSERT VALUE AT COL LIST INDEX {colIndex + (colspan - 1)}")
+                            print(f"CONTENT OF COL LIST : {tableRepr[colIndex + (colspan - 1)]}")
+                            tableRepr[colIndex + (colspan - 1)].insert(rowIndex, cell.text)
+                            # Spot has been found, break loop
+                            break
+                        else:
+                            print("OCCUPIED")
+                            # Continue searching a spot in lists
+                            continue
+            # Case 4 - Cell with colspan AND rowspan
+                elif colspan != None and rowspan != None:
                     pass
+                
 
     logger.debug(f"[getTableHeader] TABLE FINAL RESULT :\n{tableRepr}")
     return tableRepr
 
 # ====== UNCOMMENT TO TEST HERE ====== #
-getTableHeader(allRows)
+# getTableHeader(allRows)

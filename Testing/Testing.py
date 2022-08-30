@@ -100,7 +100,7 @@ class test_Functions(unittest.TestCase):
         # =========== INIT - HERE TO FINE TUNE TEST ============ #
         # ====================================================== # 
         # Leave it to 'None' to test all cases, give case to test a particular file (ex : "case1" or "case5")
-        testParticularCase = "case9"
+        testParticularCase = "case11"
         # ====================================================== # 
         # ====================================================== # 
         # Test cases (expected results), all files in Test_Table_Header folder should be here !
@@ -116,6 +116,7 @@ class test_Functions(unittest.TestCase):
             "case8" : [['Album', 'Release', 'CD'], ['Details', 'Details', 'Details'], ['Charts', 'USA', 'USA'], ['Charts', 'EU', 'Germany'], ['Certifications', 'Awards', 'Awards']],
             "case9" : [['Album', 'Release', 'CD'], ['Details', 'Details', 'Details'], ['Charts', 'Charts', 'USA'], ['Charts', 'Charts', 'EU'], ['Certifications', 'Awards', 'Awards']],
             "case10" : [['Album', 'Release'], ['Details', 'Details'], ['CD Sales', 'EU'], ['Vinyl Sales', 'EU'], ['Certifications', 'Awards']],
+            "case11" : [['Album', 'Album', 'Album'], ['Details', 'Details', 'Infos'], ['CD Sales', 'EU', 'SKU1'], ['Vinyl Sales', 'EU', 'SKU2'], ['Certifications', 'Awards', 'Awards']],
         }
         # === Test all cases (all files) === #
         if testParticularCase == None :
