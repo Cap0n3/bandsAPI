@@ -18,12 +18,12 @@ import re
 
 # ============ UNCOMMENT TO TEST HERE ============ #
 # For Windows (relative path) 
-dirname = os.path.dirname(__file__)
-filename = os.path.join(dirname, 'Test_Table_Header/tableHeader_case11.html')
-# Open html file
-with open(filename, 'r') as htmlTestFile:
-    soup = BeautifulSoup(htmlTestFile, "html.parser")
-allRows = soup.find_all("tr")
+# dirname = os.path.dirname(__file__)
+# filename = os.path.join(dirname, 'Test_Table_Header/tableHeader_case11.html')
+# # Open html file
+# with open(filename, 'r') as htmlTestFile:
+#     soup = BeautifulSoup(htmlTestFile, "html.parser")
+# allRows = soup.find_all("tr")
 # ============================================== #
 # DON'T FORGET TO COMMENT/UNCOMMENT FUNCTION CALL AT THE END
 # ============================================== #
@@ -34,8 +34,23 @@ allRows = soup.find_all("tr")
 # ====== Logging init ====== #
 # ========================== #
 
-logging.basicConfig(level=logging.NOTSET)
+# logging.basicConfig(level=logging.NOTSET)
+# logger = logging.getLogger(__name__)
+
+# Init custom logger
 logger = logging.getLogger(__name__)
+
+# Init & add handler
+stream_handler = logging.StreamHandler(sys.stdout) # To console
+# file_handler = logging.FileHandler('file.log') # To file
+logger.addHandler(stream_handler)
+
+# Set format of log
+log_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+stream_handler.setFormatter(log_format)
+
+# Set min log levels I wanna see
+logger.setLevel(logging.WARNING)
 
 # ===================================== #
 # ========= UTILITY FUNCTIONS ========= #
@@ -181,7 +196,27 @@ def getTableType(_allRows):
         raise TypeError("Table type is unknown !")
 
 def getTableHeader(_allRows):
-    tableType, headerRowLength, totalTableColumns = getTableType(_allRows)
+    '''
+    This function returns only header table in a list reprentation. The table list reprentation is a nested list that lool like 
+    this `[['Year'], ['Album'], ['Label']]` (were "Year", "Album", "Label" are columns in first row). The second row would be
+    inserted in list like that `[['Year', 'Period'], ['Album', 'Release], ['Label', 'Company']]`.
+
+    Note : Duplicated information represents either rowspans or colspans in header table.
+
+    Parameters
+    ----------
+    `_allRows` : `<class 'bs4.element.ResultSet'>`
+        BS4 result set, look like this : [<tr><th>Year</th><th>Album</th><th>Label</th></tr>, etc...]
+     
+     Returns
+    -------
+    `list`
+        Nested list of table columns.
+    '''
+    # Get header row length
+    funcTupleRes = getTableType(_allRows)
+    headerRowLength = funcTupleRes[1]
+    # Init table reprentation
     tableRepr = []
     headerFirstRow = removeNewLines(_allRows[0].contents)
     # === 1. Get data of first row and start table list reprentation === #
@@ -220,7 +255,7 @@ def getTableHeader(_allRows):
                 tableRepr.append(columnReprList)
 
     # Log result so far
-    logger.debug(f"[getTableHeader] TABLE FIRST ROW :\n{tableRepr} (length: {len(tableRepr)})")
+    logger.info(f"[getTableHeader] TABLE FIRST ROW :\n{tableRepr} (length: {len(tableRepr)})")
 
     # Header have multiple cells ?
     if headerRowLength > 1:
@@ -240,34 +275,34 @@ def getTableHeader(_allRows):
                 if rowspan == None and colspan == None:
                     # Check if a spot is available somewhere in column lists at current row
                     for colList in tableRepr:
-                        print("<=== CASE 1 - NO ROWSPAN, NO COLSPAN ===>")
-                        print(f'VALUE TO BE INSERTED : {cell.text}')
-                        print(f'TESTED TABLE : {colList} AT INDEX {rowIndex}')
+                        logger.debug("<=== CASE 1 - NO ROWSPAN, NO COLSPAN ===>")
+                        logger.debug(f'VALUE TO BE INSERTED : {cell.text}')
+                        logger.debug(f'TESTED TABLE : {colList} AT INDEX {rowIndex}')
                         try:
                             # Check if index exists
                             colList[rowIndex]
                         except IndexError:
-                            print(f"FREE ! INSERT VALUE '{cell.text}' and LEAVE LOOP")
+                            logger.debug(f"FREE ! INSERT VALUE '{cell.text}' and LEAVE LOOP")
                             # If not then spot is available for element
                             colList.insert(rowIndex, cell.text)
                             # Spot has been found, break loop
                             break
                         else:
-                            print("OCCUPIED")
+                            logger.debug("OCCUPIED")
                             # Continue searching a spot in lists
                             continue
                 # Case 2 - Cell with rowspan BUT no colspan
                 elif rowspan != None and colspan == None:
                     # Check if a spot is available somewhere in column lists at current row
                     for colList in tableRepr:
-                        print("<=== CASE 2 - ROWSPAN, NO COLSPAN ===>")
-                        print(f'VALUE TO BE INSERTED : {cell.text}')
-                        print(f'TESTED TABLE : {colList} AT INDEX {rowIndex}')
+                        logger.debug("<=== CASE 2 - ROWSPAN, NO COLSPAN ===>")
+                        logger.debug(f'VALUE TO BE INSERTED : {cell.text}')
+                        logger.debug(f'TESTED TABLE : {colList} AT INDEX {rowIndex}')
                         try:
                             # Check if index exists
                             colList[rowIndex]
                         except IndexError:
-                            print(f"FREE ! INSERT VALUE '{cell.text}' {rowspan} TIMES in column and LEAVE LOOP")
+                            logger.debug(f"FREE ! INSERT VALUE '{cell.text}' {rowspan} TIMES in column and LEAVE LOOP")
                             # If not then spot is available for element
                             # Insert element in list x times according to rowspan
                             for spans in range(rowspan):
@@ -275,36 +310,58 @@ def getTableHeader(_allRows):
                             # Spot has been found, break loop
                             break
                         else:
-                            print("OCCUPIED")
+                            logger.debug("OCCUPIED")
                             # Continue searching a spot in lists
                             continue
                 # Case 3 - Cell with colspan BUT no rowspan
                 elif colspan != None and rowspan == None:
                     for colIndex, colList in enumerate(tableRepr):
-                        print("<=== CASE 3 - COLSPAN, NO ROWSPAN ===>")
-                        print(f'VALUE TO BE INSERTED : {cell.text}')
-                        print(f'TESTED TABLE : {colList} AT INDEX {rowIndex}')
+                        logger.debug("<=== CASE 3 - COLSPAN, NO ROWSPAN ===>")
+                        logger.debug(f'VALUE TO BE INSERTED : {cell.text}')
+                        logger.debug(f'TESTED TABLE : {colList} AT INDEX {rowIndex}')
                         try:
                             # Check if index exists
                             colList[rowIndex]
                         except IndexError:
-                            print(f"FREE ! INSERT VALUE '{cell.text}' in {colspan} columns and LEAVE LOOP")
+                            logger.debug(f"FREE ! INSERT VALUE '{cell.text}' in {colspan} columns and LEAVE LOOP")
                             # If not then spot is available for element
                             # Insert element in list once and in following column lists n times (depending on colspans)
                             colList.insert(rowIndex, cell.text)
-                            print("INSERTED FIRST VALUE !")
-                            print(f"TRYING TO INSERT VALUE AT COL LIST INDEX {colIndex + (colspan - 1)}")
-                            print(f"CONTENT OF COL LIST : {tableRepr[colIndex + (colspan - 1)]}")
+                            logger.debug("INSERTED FIRST VALUE !")
+                            logger.debug(f"TRYING TO INSERT VALUE AT COL LIST INDEX {colIndex + (colspan - 1)}")
+                            logger.debug(f"CONTENT OF COL LIST : {tableRepr[colIndex + (colspan - 1)]}")
                             tableRepr[colIndex + (colspan - 1)].insert(rowIndex, cell.text)
                             # Spot has been found, break loop
                             break
                         else:
-                            print("OCCUPIED")
+                            logger.debug("OCCUPIED")
                             # Continue searching a spot in lists
                             continue
             # Case 4 - Cell with colspan AND rowspan
                 elif colspan != None and rowspan != None:
-                    pass
+                    for colIndex, colList in enumerate(tableRepr):
+                        logger.debug("<=== CASE 4 - COLSPAN, ROWSPAN ===>")
+                        logger.debug(f'VALUE TO BE INSERTED : {cell.text}')
+                        logger.debug(f'TESTED TABLE : {colList} AT INDEX {rowIndex}')
+                        try:
+                            # Check if index exists
+                            colList[rowIndex]
+                        except IndexError:
+                            logger.debug(f"FREE ! INSERT VALUE '{cell.text}' in {colspan} columns and LEAVE LOOP")
+                            # If not then spot is available for element
+                            # Insert element in list once and in following column lists n times (depending on colspans)
+                            for spans in range(rowspan):
+                                colList.insert(rowIndex + rowspan, cell.text)
+                                logger.debug("INSERTED FIRST VALUE !")
+                                logger.debug(f"TRYING TO INSERT VALUE AT COL LIST INDEX {colIndex + (colspan - 1)}")
+                                logger.debug(f"CONTENT OF COL LIST : {tableRepr[colIndex + (colspan - 1)]}")
+                                tableRepr[colIndex + (colspan - 1)].insert(rowIndex + rowspan, cell.text)
+                            # Spot has been found, break loop
+                            break
+                        else:
+                            logger.debug("OCCUPIED")
+                            # Continue searching a spot in lists
+                            continue
                 
 
     logger.debug(f"[getTableHeader] TABLE FINAL RESULT :\n{tableRepr}")

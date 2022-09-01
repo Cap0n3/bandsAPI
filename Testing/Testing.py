@@ -1,6 +1,7 @@
 import unittest
 import os
 import sys
+import re
 import inspect
 from bs4 import BeautifulSoup
 import requests
@@ -100,7 +101,7 @@ class test_Functions(unittest.TestCase):
         # =========== INIT - HERE TO FINE TUNE TEST ============ #
         # ====================================================== # 
         # Leave it to 'None' to test all cases, give case to test a particular file (ex : "case1" or "case5")
-        testParticularCase = "case11"
+        testParticularCase = None
         # ====================================================== # 
         # ====================================================== # 
         # Test cases (expected results), all files in Test_Table_Header folder should be here !
@@ -117,7 +118,17 @@ class test_Functions(unittest.TestCase):
             "case9" : [['Album', 'Release', 'CD'], ['Details', 'Details', 'Details'], ['Charts', 'Charts', 'USA'], ['Charts', 'Charts', 'EU'], ['Certifications', 'Awards', 'Awards']],
             "case10" : [['Album', 'Release'], ['Details', 'Details'], ['CD Sales', 'EU'], ['Vinyl Sales', 'EU'], ['Certifications', 'Awards']],
             "case11" : [['Album', 'Album', 'Album'], ['Details', 'Details', 'Infos'], ['CD Sales', 'EU', 'SKU1'], ['Vinyl Sales', 'EU', 'SKU2'], ['Certifications', 'Awards', 'Awards']],
+            "case12" : [['Album', 'Album', 'Album'], ['Details', 'Details', 'Infos'], ['CD Sales', 'EU', 'EU'], ['Vinyl Sales', 'EU', 'EU'], ['Certifications', 'Awards', 'Rewards']],
         }
+        # ====== Utils Functions ====== #
+        def sortByCase(element):
+            '''
+            Function to sort files by case number in list of files.
+            '''
+            res = re.findall(r'case\d+', element)
+            num = re.findall(r'\d+', res[0])
+            return int(num[0])
+        
         # === Test all cases (all files) === #
         if testParticularCase == None :
             # Get list of files in dir (and sort them)
@@ -127,11 +138,13 @@ class test_Functions(unittest.TestCase):
             # Filter out folders from list
             filteredObj = filter(lambda file: os.path.isfile(file), allFiles)
             allFiles = list(filteredObj)
+            # Sort files by case in list (they aren't sorted properly by sorted() above)
+            allFiles.sort(key=sortByCase)
             # Get keys (case number) in list
             allCasesList = list(testTableHeaders.keys())
             # Loop throught files and test each one
             for file, case in zip(allFiles, allCasesList):
-                print(f'\n\n[*] TEST FILE {file} FOR {case}\n')
+                print(f'\n[*] TEST FILE {file} FOR {case}\n')
                 # Open file
                 with open(file, 'r') as htmlTestFile:
                     soup = BeautifulSoup(htmlTestFile, "html.parser")
