@@ -14,7 +14,9 @@ from collections import namedtuple
 import json
 import re
 
-# ============ UNCOMMENT TO TEST HERE ============ #
+# =========================================================== #
+# ================== UNCOMMENT TO TEST HERE ================== #
+# =========================================================== #
 # For Windows (relative path) 
 dirname = os.path.dirname(__file__)
 # filename = os.path.join(dirname, 'Test_Table_Header/11_tableHeader_case11.html')
@@ -23,10 +25,8 @@ filename = os.path.join(dirname, 'Test_Tables/debugTable_case7.html')
 with open(filename, 'r') as htmlTestFile:
     soup = BeautifulSoup(htmlTestFile, "html.parser")
 allRows = soup.find_all("tr")
-# ============================================== #
-# DON'T FORGET TO COMMENT/UNCOMMENT FUNCTION CALL AT THE END
-# ============================================== #
-# ============================================== #
+
+# Note : DON'T FORGET TO COMMENT/UNCOMMENT FUNCTION CALL AT THE END
 
 
 # ========================== #
@@ -170,6 +170,7 @@ class ExtractTable:
         logger.debug(f"[PARAMS] cell : {cell_data}, rowspan/colspan : {rowSpan}/{colSpan}, row index {row_index}, table : {table_repr}, which row : {whichRow}")
         # Clean cell and convert to text
         cleanedCell = cell_data.text.replace('\n', '')
+        # === CONDITION TREE === #
         if whichRow == "firstHeaderRow":
             logger.debug(f"[*] TEST CELL {cell_data}")
             # === CASE 1 - Normal cell with NO rowspans and NO colspan === #
@@ -260,11 +261,13 @@ class ExtractTable:
             columnList = []
             # === CASE 1 - Normal cell with NO rowspans === #
             if rowSpan == None:
+                logger.debug(f"[*] CASE 1 - NO ROWSPAN")
                 columnList.append(cleanedCell)
                 table_repr.append(columnList)
                 logger.debug(f"[OK] Value '{cleanedCell}' inserted in table list representation !")
             # === CASE 2 - Cell WITH rowspan === #
             elif rowSpan != None:
+                logger.debug(f"[*] CASE 2 - ROWSPAN")
                 for i in range(rowSpan):
                     columnList.append(cleanedCell)
                 table_repr.append(columnList)
@@ -281,10 +284,12 @@ class ExtractTable:
                 except IndexError:
                     # === CASE 1 - Normal cell with NO rowspans === #
                     if rowSpan == None:
+                        logger.debug(f"[*] CASE 1 - NO ROWSPAN")
                         table_repr[colIndex].append(cleanedCell)
                         logger.debug(f"[OK] Value '{cleanedCell}' inserted in table list representation !")
                     # === CASE 2 - Cell WITH rowspan === #
                     elif rowSpan != None:
+                        logger.debug(f"[*] CASE 2 - ROWSPAN")
                         for i in range(rowSpan):
                             table_repr[colIndex].append(cleanedCell)
                         logger.debug(f"[OK] Value '{cleanedCell}' inserted {rowSpan} times in table list representation !")
@@ -454,5 +459,5 @@ class ExtractTable:
 tableObj = ExtractTable(allRows)
 tableHeaderList = tableObj.getTableHeader()
 tableBodyList = tableObj.getTableBody()
-#print(tableHeaderList)
+print(tableHeaderList)
 print(tableBodyList)
