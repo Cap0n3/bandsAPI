@@ -14,7 +14,7 @@ sys.path.insert(0, parentdir)
 
 # Import class & functions
 from BandAPI.BandWiki import BandWiki
-from Test_Wiki_Table import Test_tableHeaderFuncs
+from Test_Wiki_Table.Test_tableHeaderFuncs import ExtractTable
 
 #================#
 #=== Settings ===#
@@ -150,8 +150,9 @@ class test_Functions(unittest.TestCase):
                     soup = BeautifulSoup(htmlTestFile, "html.parser")
                 # Extract rows from soup
                 allRows = soup.find_all("tr")
-                # Test function
-                result = Test_tableHeaderFuncs.getTableHeader(allRows)
+                # Test method
+                tableObj = ExtractTable(allRows)
+                result = tableObj.getTableHeader()
                 self.assertEqual(result,  testTableHeaders[case])
         # === Test one particular case === #
         elif testParticularCase != None:
@@ -161,7 +162,8 @@ class test_Functions(unittest.TestCase):
             # Extract rows from soup
             allRows = soup.find_all("tr")
             # Test function
-            result = Test_tableHeaderFuncs.getTableHeader(allRows)
+            tableObj = ExtractTable(allRows)
+            result = tableObj.getTableHeader()
             self.assertEqual(result, testTableHeaders[testParticularCase])
 
 if __name__ == "__main__":
