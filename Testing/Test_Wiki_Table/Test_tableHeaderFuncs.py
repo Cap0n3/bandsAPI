@@ -132,7 +132,7 @@ class ExtractTable:
     @staticmethod 
     def insertRows(cell_data, rowSpan, colSpan, row_index, table_repr, whichRow):
         '''
-        This utility method is the core of `getTableHeader()` and `getTableHeader()` methods, it's here to keep code as DRY as possible.
+        This utility method is the core of both `getTableHeader()` and `getTableHeader()` methods, it's here to keep code as DRY as possible.
         It insert cell data (content cleaned of any new line char) in given table list reprentation and take into account if there's rowspan 
         or colspan in cell attribute. It'll insert n times in same column list if there's a rowspan or insert data in consecutive column list 
         if there's a colspan. When finished it simply returns table list reprentation.
@@ -377,9 +377,9 @@ class ExtractTable:
 
     def getTableHeader(self):
         '''
-        This method returns only header table in a list reprentation. The table list reprentation is a nested list that lool like 
+        This method returns header table in a list reprentation. The "table list reprentation" is a nested list that look like 
         this `[['Year'], ['Album'], ['Label']]` (were "Year", "Album", "Label" are columns in first row). The second row would be
-        inserted in list like that `[['Year', 'Period'], ['Album', 'Release], ['Label', 'Company']]`.
+        inserted in the list like that `[['Year', 'Period'], ['Album', 'Release], ['Label', 'Company']]`.
 
         Note : Duplicated information represents either rowspans or colspans in header table.
 
@@ -391,7 +391,7 @@ class ExtractTable:
         Returns
         -------
         `list`
-            Nested list of table columns.
+            Nested list representing table columns.
         '''
         # Get header row length
         funcTupleRes = self.getTableType()
@@ -430,6 +430,23 @@ class ExtractTable:
         return tableRepr
 
     def getTableBody(self):
+        '''
+        This method returns table body (not header) in a list reprentation. The "table list reprentation" is a nested list that look like 
+        this `[['1991'], ['Bullhead'], ['Lysol Records']]` (were "1991", "Bullhead", "Lysol" are columns in first body row). The second row would be
+        inserted in the list like that `[['1991', '1992'], ['Bullhead', 'Eggnog'], ['Lysol Records', 'Atlantic Records']]`.
+
+        Note : Duplicated information represents rowspans table body. Colspans are not handled with this method.
+
+        Parameters
+        ----------
+        `self.allRows` : `<class 'bs4.element.ResultSet'>`
+            BS4 result set, look like this : [<tr><th>Year</th><th>Album</th><th>Label</th></tr>, etc...]
+        
+        Returns
+        -------
+        `list`
+            Nested list representing table columns.
+        '''
         tableBodyRepr = []
         # Get header row length
         funcTupleRes = self.getTableType()
@@ -441,12 +458,12 @@ class ExtractTable:
             rowChildren = ExtractTable.removeNewLines(row.contents)
             #Loop through elements and insert them in table list representation
             for cell in rowChildren:
-                # Get rowspans and colspans (if any the convert to int or return None)
+                # Get rowspans (if any the convert to int or return None)
                 rowspan, colspan = ExtractTable.getSpans(cell)
                 # If this is the first row
                 if rowIndex == 0:
                     tableBodyRepr = ExtractTable.insertRows(cell, rowspan, colspan, rowIndex, tableBodyRepr, "firstBodyRow")
-                    logger.info(f"Cell entered in first row of table body !")
+                    logger.info(f"Cell entered in the first row of table body !")
                     logger.info(f"{tableBodyRepr}")
                 else:
                     tableBodyRepr = ExtractTable.insertRows(cell, rowspan, colspan, rowIndex, tableBodyRepr, "bodyRow")
@@ -454,10 +471,38 @@ class ExtractTable:
                     logger.info(f"{tableBodyRepr}")
         return tableBodyRepr
 
+    def getTableList(self):
+        '''
+        This method returns a table (header and body) in a list reprentation. The "table list reprentation" is a nested list that look like 
+        this `[['Year', '1991','1992'], ['Album', 'Bullhead', 'Eggnog'], ['Label', 'Boner Records', 'Atlantic Records']]`. Here first element
+        of nested lists represents column title, it can be duplicated if there was either a rowspan or a colspan attribute.
 
+        Note : Duplicated information represents rowspans/colspans.
+        
+        Returns
+        -------
+        `list`
+            Nested list representing table columns.
+        '''
+        # Get table header list
+        tableHeader = self.getTableHeader()
+        # Get table body list
+        tableBody = self.getTableBody()
+        # Check that tables are same length (right number of columns)
+        assert len(tableHeader) == len(tableBody), "Table header & body don't have the same number of columns !"
+        # Join all column lists to create full table reprentation
+        tableRepr = []
+        for colHeaderLst, colBodyLst in zip(tableHeader, tableBody):
+            colHeaderLst.extend(colBodyLst)
+            tableRepr.append(colHeaderLst)
+        return tableRepr
+
+            
 # ====== UNCOMMENT TO TEST HERE ====== #
 tableObj = ExtractTable(allRows)
-tableHeaderList = tableObj.getTableHeader()
-tableBodyList = tableObj.getTableBody()
-print(tableHeaderList)
-print(tableBodyList)
+# tableHeaderList = tableObj.getTableHeader()
+# tableBodyList = tableObj.getTableBody()
+fullTable = tableObj.getTableList()
+# print(tableHeaderList)
+# print(tableBodyList)
+print(fullTable)
