@@ -14,18 +14,20 @@ from collections import namedtuple
 import json
 import re
 
+
+# For Windows (relative path) 
+dirname = os.path.dirname(__file__)
+
 # =========================================================== #
 # ================== UNCOMMENT TO TEST HERE ================== #
 # =========================================================== #
-# For Windows (relative path) 
-dirname = os.path.dirname(__file__)
-# filename = os.path.join(dirname, 'Test_Table_Header/11_tableHeader_case11.html')
-filename = os.path.join(dirname, 'Test_Tables/debugTable_case1.html')
-# Open html file
-with open(filename, 'r') as htmlTestFile:
-    soup = BeautifulSoup(htmlTestFile, "html.parser")
-# Get table tag in soup
-table = soup.find('table')
+# # filename = os.path.join(dirname, 'Test_Table_Header/11_tableHeader_case11.html')
+# filename = os.path.join(dirname, 'Test_Tables/debugTable_case1.html')
+# # Open html file
+# with open(filename, 'r') as htmlTestFile:
+#     soup = BeautifulSoup(htmlTestFile, "html.parser")
+# # Get table tag in soup
+# table = soup.find('table')
 
 # Note : DON'T FORGET TO COMMENT/UNCOMMENT FUNCTION CALL AT THE END
 
@@ -501,10 +503,10 @@ class ExtractTable:
 
             
 # ====== UNCOMMENT TO TEST HERE ====== #
-tableObj = ExtractTable(table)
+# tableObj = ExtractTable(table)
 # tableHeaderList = tableObj.getTableHeader()
 # tableBodyList = tableObj.getTableBody()
-fullTable = tableObj.getTableList()
+# fullTable = tableObj.getTableList()
 # print(tableHeaderList)
 # print(tableBodyList)
-print(fullTable)
+# print(fullTable)

@@ -87,23 +87,40 @@ class test_BandWiki(unittest.TestCase):
                 file.write(prettyDict)
                 file.write(f"\n\n### (DICT END) ###\n\n")
 
-class test_Functions(unittest.TestCase):
+class test_ExtractTable(unittest.TestCase):
     '''
-    Test for prototypes methods of BandWiki class.
+    Test for prototypes methods in ExtractTable class.
     '''
+    @staticmethod
+    def sortByCase(element):
+            '''
+            Utility method to sort files by case number in a list of files. First it'll isolate string case with a number beside like "case12" 
+            in string "/Users/kim0n0/myDev/1_PROJECTS/BandAPI_Project/Testing/Test_Wiki_Table/Test_Table_Header/12_tableHeader_case12.html".
+            
+            Then it'll return only an int representing it's number, for "case12" it would be 12. Can be useful to then sort alist by key 
+            thanks to `sort()` like this :
+            
+            ```python
+            allFiles.sort(key=test_Functions.sortByCase)
+            ```
+            '''
+            res = re.findall(r'case\d+', element)
+            num = re.findall(r'\d+', res[0])
+            return int(num[0])
+    
     def setUp(self):
+        # =========== INIT - HERE TO FINE TUNE TEST ============ #
+        # Put to "ALL" to test all cases OR give case to test a particular file (ex : "case1" or "case5")
+        self.testAllHeaderTables = "ALL"     # To test header tables
+        # ====================================================== # 
         # Get current folder
         self.dirname = os.path.dirname(__file__)
         # Set folder path to test table headers
         self.tableHeaderFilesFolder = os.path.join(self.dirname, "Test_Wiki_Table/Test_Table_Header")
+        
     
     def test_getTableHeader(self):
-        # =========== INIT - HERE TO FINE TUNE TEST ============ #
-        # ====================================================== # 
-        # Leave it to 'None' to test all cases, give case to test a particular file (ex : "case1" or "case5")
-        testParticularCase = None
-        # ====================================================== # 
-        # ====================================================== # 
+        # ========= PARAMS ========= # 
         # Test cases (expected results), all files in Test_Table_Header folder should be here !
         testTableHeaders = {
             "case0" : [['Year'], ['Album'], ['Label'], ['Note']],
@@ -120,51 +137,51 @@ class test_Functions(unittest.TestCase):
             "case11" : [['Album', 'Album', 'Album'], ['Details', 'Details', 'Infos'], ['CD Sales', 'EU', 'SKU1'], ['Vinyl Sales', 'EU', 'SKU2'], ['Certifications', 'Awards', 'Awards']],
             "case12" : [['Album', 'Album', 'Album'], ['Details', 'Details', 'Infos'], ['CD Sales', 'EU', 'EU'], ['Vinyl Sales', 'EU', 'EU'], ['Certifications', 'Awards', 'Rewards']],
         }
-        # ====== Utils Functions ====== #
-        def sortByCase(element):
-            '''
-            Function to sort files by case number in list of files.
-            '''
-            res = re.findall(r'case\d+', element)
-            num = re.findall(r'\d+', res[0])
-            return int(num[0])
-        
-        # === Test all cases (all files) === #
-        # if testParticularCase == None :
-        #     # Get list of files in dir (and sort them)
-        #     files = [f for f in sorted(os.listdir(self.tableHeaderFilesFolder))]
-        #     # Add complete path for all file in list
-        #     allFiles = map(lambda file: os.path.join(self.tableHeaderFilesFolder, file), files)
-        #     # Filter out folders from list
-        #     filteredObj = filter(lambda file: os.path.isfile(file), allFiles)
-        #     allFiles = list(filteredObj)
-        #     # Sort files by case in list (they aren't sorted properly by sorted() above)
-        #     allFiles.sort(key=sortByCase)
-        #     # Get keys (case number) in list
-        #     allCasesList = list(testTableHeaders.keys())
-        #     # Loop throught files and test each one
-        #     for file, case in zip(allFiles, allCasesList):
-        #         print(f'\n[*] TEST FILE {file} FOR {case}\n')
-        #         # Open file
-        #         with open(file, 'r') as htmlTestFile:
-        #             soup = BeautifulSoup(htmlTestFile, "html.parser")
-        #         # Extract table from soup
-        #         table = soup.find('table')
-        #         # Test method
-        #         tableObj = ExtractTable(table)
-        #         result = tableObj.getTableHeader()
-        #         self.assertEqual(result,  testTableHeaders[case])
-        # # === Test one particular case === #
-        # elif testParticularCase != None:
-        #     filename = os.path.join(self.dirname, f'{self.tableHeaderFilesFolder}/tableHeader_{testParticularCase}.html')
-        #     with open(filename, 'r') as htmlTestFile:
-        #         soup = BeautifulSoup(htmlTestFile, "html.parser")
-        #     # Extract table from soup
-        #     table = soup.find('table')
-        #     # Test function
-        #     tableObj = ExtractTable(table)
-        #     result = tableObj.getTableHeader()
-        #     self.assertEqual(result, testTableHeaders[testParticularCase])
+
+        # ========= TEST ========== #
+        # Get list of files in dir (and sort them)
+        files = [f for f in sorted(os.listdir(self.tableHeaderFilesFolder))]
+        # Add complete path for all file in list
+        allFiles = map(lambda file: os.path.join(self.tableHeaderFilesFolder, file), files)
+        # Filter out folders from list
+        filteredObj = filter(lambda file: os.path.isfile(file), allFiles)
+        allFiles = list(filteredObj)
+        # Sort files by case in list (they aren't sorted properly by sorted() above)
+        allFiles.sort(key=test_ExtractTable.sortByCase)
+        # Get keys (case number) in list
+        allCasesList = list(testTableHeaders.keys())
+        # a. Test ALL header tables
+        if self.testAllHeaderTables == "ALL":
+            for file, case in zip(allFiles, testTableHeaders):
+                with self.subTest(msg=f"ERROR ! An error occured with test '{case}'", case_table=testTableHeaders[case], tested_file=file):
+                    # Print tested case to console
+                    print(f"TESTING '{case}' with file '{file}'")
+                    # Open file in read mode
+                    with open(file, 'r') as htmlTestFile:
+                        soup = BeautifulSoup(htmlTestFile, "html.parser")
+                    # Extract table from soup
+                    table = soup.find('table')
+                    # Create object for test
+                    tableObj = ExtractTable(table)
+                    # Test object
+                    result = tableObj.getTableHeader()
+                    self.assertEqual(result,  testTableHeaders[case])
+        # b. Test a particular case
+        elif self.testAllHeaderTables in allCasesList:
+            filename = os.path.join(self.dirname, f'{self.tableHeaderFilesFolder}/tableHeader_{self.testAllHeaderTables}.html')
+            with open(filename, 'r') as htmlTestFile:
+                soup = BeautifulSoup(htmlTestFile, "html.parser")
+            # Print tested case to console
+            print(f"TESTING '{self.testAllHeaderTables}' with file '{filename}'")
+            # Extract table from soup
+            table = soup.find('table')
+            # Test function
+            tableObj = ExtractTable(table)
+            result = tableObj.getTableHeader()
+            self.assertEqual(result, testTableHeaders[self.testAllHeaderTables])
+        else:
+            raise AttributeError(f"{self.testAllHeaderTables} is not a valid choice. Choose 'ALL' or one of the following :\n{allCasesList}")
+
 
 if __name__ == "__main__":
   unittest.main()
