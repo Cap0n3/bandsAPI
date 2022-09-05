@@ -148,10 +148,10 @@ class test_Functions(unittest.TestCase):
                 # Open file
                 with open(file, 'r') as htmlTestFile:
                     soup = BeautifulSoup(htmlTestFile, "html.parser")
-                # Extract rows from soup
-                allRows = soup.find_all("tr")
+                # Extract table from soup
+                table = soup.find('table')
                 # Test method
-                tableObj = ExtractTable(allRows)
+                tableObj = ExtractTable(table)
                 result = tableObj.getTableHeader()
                 self.assertEqual(result,  testTableHeaders[case])
         # === Test one particular case === #
@@ -159,10 +159,10 @@ class test_Functions(unittest.TestCase):
             filename = os.path.join(self.dirname, f'{self.tableHeaderFilesFolder}/tableHeader_{testParticularCase}.html')
             with open(filename, 'r') as htmlTestFile:
                 soup = BeautifulSoup(htmlTestFile, "html.parser")
-            # Extract rows from soup
-            allRows = soup.find_all("tr")
+            # Extract table from soup
+            table = soup.find('table')
             # Test function
-            tableObj = ExtractTable(allRows)
+            tableObj = ExtractTable(table)
             result = tableObj.getTableHeader()
             self.assertEqual(result, testTableHeaders[testParticularCase])
 

@@ -20,14 +20,14 @@ import re
 # For Windows (relative path) 
 dirname = os.path.dirname(__file__)
 # filename = os.path.join(dirname, 'Test_Table_Header/11_tableHeader_case11.html')
-filename = os.path.join(dirname, 'Test_Tables/debugTable_case7.html')
+filename = os.path.join(dirname, 'Test_Tables/debugTable_case1.html')
 # Open html file
 with open(filename, 'r') as htmlTestFile:
     soup = BeautifulSoup(htmlTestFile, "html.parser")
-allRows = soup.find_all("tr")
+# Get table tag in soup
+table = soup.find('table')
 
 # Note : DON'T FORGET TO COMMENT/UNCOMMENT FUNCTION CALL AT THE END
-
 
 # ========================== #
 # ====== Logging init ====== #
@@ -52,8 +52,10 @@ file_handler.setFormatter(log_format)
 logger.setLevel(logging.DEBUG)
 
 class ExtractTable:
-    def __init__(self, allRows):
-        self.allRows = allRows
+    def __init__(self, table):
+        self.table = table
+        # Extract rows (<tr>) from table soup
+        self.allRows = self.table.find_all("tr")
     
     # ===================================== #
     # ========= UTILITY FUNCTIONS ========= #
@@ -499,7 +501,7 @@ class ExtractTable:
 
             
 # ====== UNCOMMENT TO TEST HERE ====== #
-tableObj = ExtractTable(allRows)
+tableObj = ExtractTable(table)
 # tableHeaderList = tableObj.getTableHeader()
 # tableBodyList = tableObj.getTableBody()
 fullTable = tableObj.getTableList()
