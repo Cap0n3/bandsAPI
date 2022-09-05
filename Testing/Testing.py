@@ -130,41 +130,41 @@ class test_Functions(unittest.TestCase):
             return int(num[0])
         
         # === Test all cases (all files) === #
-        if testParticularCase == None :
-            # Get list of files in dir (and sort them)
-            files = [f for f in sorted(os.listdir(self.tableHeaderFilesFolder))]
-            # Add complete path for all file in list
-            allFiles = map(lambda file: os.path.join(self.tableHeaderFilesFolder, file), files)
-            # Filter out folders from list
-            filteredObj = filter(lambda file: os.path.isfile(file), allFiles)
-            allFiles = list(filteredObj)
-            # Sort files by case in list (they aren't sorted properly by sorted() above)
-            allFiles.sort(key=sortByCase)
-            # Get keys (case number) in list
-            allCasesList = list(testTableHeaders.keys())
-            # Loop throught files and test each one
-            for file, case in zip(allFiles, allCasesList):
-                print(f'\n[*] TEST FILE {file} FOR {case}\n')
-                # Open file
-                with open(file, 'r') as htmlTestFile:
-                    soup = BeautifulSoup(htmlTestFile, "html.parser")
-                # Extract table from soup
-                table = soup.find('table')
-                # Test method
-                tableObj = ExtractTable(table)
-                result = tableObj.getTableHeader()
-                self.assertEqual(result,  testTableHeaders[case])
-        # === Test one particular case === #
-        elif testParticularCase != None:
-            filename = os.path.join(self.dirname, f'{self.tableHeaderFilesFolder}/tableHeader_{testParticularCase}.html')
-            with open(filename, 'r') as htmlTestFile:
-                soup = BeautifulSoup(htmlTestFile, "html.parser")
-            # Extract table from soup
-            table = soup.find('table')
-            # Test function
-            tableObj = ExtractTable(table)
-            result = tableObj.getTableHeader()
-            self.assertEqual(result, testTableHeaders[testParticularCase])
+        # if testParticularCase == None :
+        #     # Get list of files in dir (and sort them)
+        #     files = [f for f in sorted(os.listdir(self.tableHeaderFilesFolder))]
+        #     # Add complete path for all file in list
+        #     allFiles = map(lambda file: os.path.join(self.tableHeaderFilesFolder, file), files)
+        #     # Filter out folders from list
+        #     filteredObj = filter(lambda file: os.path.isfile(file), allFiles)
+        #     allFiles = list(filteredObj)
+        #     # Sort files by case in list (they aren't sorted properly by sorted() above)
+        #     allFiles.sort(key=sortByCase)
+        #     # Get keys (case number) in list
+        #     allCasesList = list(testTableHeaders.keys())
+        #     # Loop throught files and test each one
+        #     for file, case in zip(allFiles, allCasesList):
+        #         print(f'\n[*] TEST FILE {file} FOR {case}\n')
+        #         # Open file
+        #         with open(file, 'r') as htmlTestFile:
+        #             soup = BeautifulSoup(htmlTestFile, "html.parser")
+        #         # Extract table from soup
+        #         table = soup.find('table')
+        #         # Test method
+        #         tableObj = ExtractTable(table)
+        #         result = tableObj.getTableHeader()
+        #         self.assertEqual(result,  testTableHeaders[case])
+        # # === Test one particular case === #
+        # elif testParticularCase != None:
+        #     filename = os.path.join(self.dirname, f'{self.tableHeaderFilesFolder}/tableHeader_{testParticularCase}.html')
+        #     with open(filename, 'r') as htmlTestFile:
+        #         soup = BeautifulSoup(htmlTestFile, "html.parser")
+        #     # Extract table from soup
+        #     table = soup.find('table')
+        #     # Test function
+        #     tableObj = ExtractTable(table)
+        #     result = tableObj.getTableHeader()
+        #     self.assertEqual(result, testTableHeaders[testParticularCase])
 
 if __name__ == "__main__":
   unittest.main()
