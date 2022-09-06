@@ -10,7 +10,7 @@ import os
 import logging
 import sys
 from bs4 import BeautifulSoup
-from collections import namedtuple
+from collections import namedtuple, OrderedDict
 import json
 import re
 
@@ -21,13 +21,13 @@ dirname = os.path.dirname(__file__)
 # =========================================================== #
 # ================== UNCOMMENT TO TEST HERE ================== #
 # =========================================================== #
-# # filename = os.path.join(dirname, 'Test_Table_Header/11_tableHeader_case11.html')
-# filename = os.path.join(dirname, 'Test_Tables/debugTable_case1.html')
-# # Open html file
-# with open(filename, 'r') as htmlTestFile:
-#     soup = BeautifulSoup(htmlTestFile, "html.parser")
-# # Get table tag in soup
-# table = soup.find('table')
+# filename = os.path.join(dirname, 'Test_Table_Header/11_tableHeader_case11.html')
+filename = os.path.join(dirname, 'Test_Tables/debugTable_case0.html')
+# Open html file
+with open(filename, 'r') as htmlTestFile:
+    soup = BeautifulSoup(htmlTestFile, "html.parser")
+# Get table tag in soup
+table = soup.find('table')
 
 # Note : DON'T FORGET TO COMMENT/UNCOMMENT FUNCTION CALL AT THE END
 
@@ -338,14 +338,14 @@ class ExtractTable:
         
         Returns
         -------
-        `tuple[str, int, int, int, int]`
-            Tuple with  :
-            - Either "1D" or "2D" string 
-            - Header length (number of header rows)
-            - Total columns in table
-            - Total `<th>` cells in table
-            - Total `<td>` cells in table
+        `<class 'dict'>`
+            - `dimentions` : Either "1D" or "2D" string 
+            - `total_header_rows` : Header length (number of header rows)
+            - `total_columns` : Total columns in table
+            - `total_th_cells` : Total `<th>` cells in table
+            - `total_th_cells` : Total `<td>` cells in table
         '''
+        resultDict = {}
         totalHeaderRows = 0 # Row with only <th>
         totalTitledRow = 0 # Row with one <th> and then <td>
         totalThCells = 0
@@ -378,20 +378,28 @@ class ExtractTable:
                 # There's one <th> and the rest are <td>, it's a multidimensional table
                 totalTitledRow += 1
                 # logger.debug(f"Row {str(rowIndex)} - <th> count = {thCells}, <td> count = {tdCells} at  => it's a titled row !")
+        # === Poplulate result dictionnary === #
         # Final condition to decide type of table
         if totalHeaderRows > 0 and totalTitledRow == 0:
             # It's a one dimensionnal table
-            return ("1D", totalHeaderRows, totalColumns, totalThCells, totalTdCells)
+            resultDict['dimensions'] = "1D"
         elif totalHeaderRows > 0 and totalTitledRow > 0:
             # It's a two dimensionnal table
-            return ("2D", totalHeaderRows, totalColumns, totalThCells, totalTdCells)
+            resultDict['dimensions'] = "2D"
         elif totalThCells == 0 and totalTdCells > 0:
             # Case where only table body is given (uncommon ... mainly for testing)
-            return ("1D", totalHeaderRows, totalColumns, totalThCells, totalTdCells)
+            resultDict['dimensions'] = "1D"
         else:
             logger.warning(f'Table type is unknown ! Table rows :\n{self.allRows}')
             raise TypeError("Table type is unknown !")
+        # Populate remaining infos
+        resultDict['total_header_rows'] = totalHeaderRows
+        resultDict['total_columns'] = totalColumns
+        resultDict['total_th_cells'] = totalThCells
+        resultDict['total_td_cells'] = totalTdCells
 
+        return resultDict
+    
     def getTableHeader(self):
         '''
         This method returns header table in a list reprentation. The "table list reprentation" is a nested list that look like 
@@ -410,10 +418,10 @@ class ExtractTable:
         `list`
             Nested list representing table columns.
         '''
-        # Get header row length
-        funcTupleRes = self.getTableType()
-        logger.info(f"[TABLE INFO] Type : {funcTupleRes[0]}, Header length : {funcTupleRes[1]}, Total columns : {funcTupleRes[2]}")
-        headerRowLength = funcTupleRes[1]
+        # Get table type dict
+        tableType = self.getTableType()
+        logger.info(f"[TABLE INFO] Type : {tableType['dimensions']}, Header length : {tableType['total_header_rows']}, Total columns : {tableType['total_columns']}")
+        headerRowLength = tableType['total_header_rows']
         # Init table reprentation
         tableRepr = []
         headerFirstRow = ExtractTable.removeNewLines(self.allRows[0].contents)
@@ -465,9 +473,9 @@ class ExtractTable:
             Nested list representing table columns.
         '''
         tableBodyRepr = []
-        # Get header row length
-        funcTupleRes = self.getTableType()
-        headerRowLength = funcTupleRes[1]
+        # Get table type dict
+        tableType = self.getTableType()
+        headerRowLength = tableType['total_header_rows']
         for rowIndex, row in enumerate(self.allRows[headerRowLength:]):
             # Since we skipped header, row index is out whack so re-adjust rowIndex at correct index
             #rowIndex += headerRowLength
@@ -514,12 +522,47 @@ class ExtractTable:
             tableRepr.append(colHeaderLst)
         return tableRepr
 
+    def getTableDict(self):
+        resultDict = OrderedDict()
+        # Get table header in list format
+        tableHeaderList = self.getTableHeader()
+        logger.debug(f"TABLE HEADER : \n{tableHeaderList}")
+        # Get table body in list format
+        tableBodyList = self.getTableBody()
+        logger.debug(f"TABLE BODY : \n{tableBodyList}")
+        # Check that tables are same length (right number of columns)
+        assert len(tableHeaderList) == len(tableBodyList), "Table header & body don't have the same number of columns !"
+        # Get table general infos
+        tableType = self.getTableType()
+        logger.info(f"[INFO] Table type : {tableType}")
+        # It's a one dimensional table
+        if tableType['dimensions'] == "1D":
+            # === 1. Prepare dict keys with column header === #
+            # IMPORTANT : it's an ordered dict, it preserve insertion order to later easily identify columns.
+            # a. It's a simple table header with one header row
+            if tableType['total_header_rows'] == 1:
+                logger.debug("[*] Table header has only row.")
+                for col in tableHeaderList:
+                    # Prepare dict (insert keys)
+                    resultDict[col[0]] = ""
+            # b. It's a more complex table header with one multiple header rows
+            elif tableType['total_header_rows'] > 1:
+                logger.debug(f"[*] Table header has {tableType['total_header_rows']} rows.")
+                pass
+            # === 2. Insert data from table body in dict === #
+            # Since insertion order in dict was preserved we can easily for right column 
+            for key, col in zip(resultDict, tableBodyList):
+                colElementList = [el for el in col]
+                resultDict[key] = colElementList
+            
+            return dict(resultDict)
+        # It's a two dimensional table           
+        elif tableType['dimensions'] == "2D":
+            pass
             
 # ====== UNCOMMENT TO TEST HERE ====== #
-# tableObj = ExtractTable(table)
+tableObj = ExtractTable(table)
 # tableHeaderList = tableObj.getTableHeader()
 # tableBodyList = tableObj.getTableBody()
 # fullTable = tableObj.getTableList()
-# print(tableHeaderList)
-# print(tableBodyList)
-# print(fullTable)
+print(tableObj.getTableDict())

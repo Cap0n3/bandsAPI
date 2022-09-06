@@ -166,6 +166,7 @@ class test_ExtractTable(unittest.TestCase):
         # Set folder path to test table body
         self.tableBodyFilesFolder = os.path.join(self.dirname, "Test_Wiki_Table/Test_Table_Body")
     
+    #@unittest.SkipTest
     def test_getTableHeader(self):
         # ========= PARAMS ========= # 
         # Test cases (expected results), all files in Test_Table_Header folder should be here !
@@ -218,6 +219,7 @@ class test_ExtractTable(unittest.TestCase):
         else:
             raise AttributeError(f"{self.testAllTableHeaders} is not a valid choice. Choose 'ALL' or one of the following :\n{allCasesList}")
 
+    #@unittest.SkipTest
     def test_getTableBody(self):
         # ========= PARAMS ========= # 
         # Test cases (expected results), all files in Test_Table_Body folder should be here !
@@ -262,5 +264,6 @@ class test_ExtractTable(unittest.TestCase):
             self.assertEqual(result, testTableBody[self.testAllTableBodies])
         else:
             raise AttributeError(f"{self.testAllTableBodies} is not a valid choice. Choose 'ALL' or one of the following :\n{allCasesList}")
+
 if __name__ == "__main__":
   unittest.main()
