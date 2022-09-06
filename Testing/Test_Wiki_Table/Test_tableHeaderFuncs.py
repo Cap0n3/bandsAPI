@@ -315,7 +315,7 @@ class ExtractTable:
     def getTableType(self):
         '''
         This method role is to determine table type and give some useful infos about table. 
-        Type can be either simple or multidimensional.
+        Type can be either simple (1D - One dimension) or multidimensional (2D - Two dimensions).
         
         Here's a simple table:
         
@@ -338,12 +338,18 @@ class ExtractTable:
         
         Returns
         -------
-        `tuple[str, int, int]`
-            Tuple with either "simple" or "multidimensional" string, header length (number of header rows) and total columns in table.
+        `tuple[str, int, int, int, int]`
+            Tuple with  :
+            - Either "1D" or "2D" string 
+            - Header length (number of header rows)
+            - Total columns in table
+            - Total `<th>` cells in table
+            - Total `<td>` cells in table
         '''
         totalHeaderRows = 0 # Row with only <th>
-        titledRow = 0 # Row with one <th> and then <td>
-
+        totalTitledRow = 0 # Row with one <th> and then <td>
+        totalThCells = 0
+        totalTdCells = 0
         # Go through 10 first rows to get type of table
         for rowIndex, row in enumerate(self.allRows):
             thCells = 0
@@ -360,21 +366,28 @@ class ExtractTable:
             for content in rowContents:
                 if content.name == "th":
                     thCells += 1
+                    totalThCells += 1
                 elif content.name == "td":
                     tdCells += 1
+                    totalTdCells += 1
             if contentCount == thCells:
                 # There's only <th> in row (it's a header)
                 totalHeaderRows += 1
                 # logger.debug(f"Row {str(rowIndex)} - <th> count = {thCells}, <td> count = {tdCells} at  => it's a header row !")
             elif thCells == 1 and tdCells == (contentCount - 1):
                 # There's one <th> and the rest are <td>, it's a multidimensional table
-                titledRow += 1
+                totalTitledRow += 1
                 # logger.debug(f"Row {str(rowIndex)} - <th> count = {thCells}, <td> count = {tdCells} at  => it's a titled row !")
         # Final condition to decide type of table
-        if totalHeaderRows > 0 and titledRow == 0:
-            return ("simple", totalHeaderRows, totalColumns)
-        elif totalHeaderRows > 0 and titledRow > 0:
-            return ("multidimensional", totalHeaderRows, totalColumns)
+        if totalHeaderRows > 0 and totalTitledRow == 0:
+            # It's a one dimensionnal table
+            return ("1D", totalHeaderRows, totalColumns, totalThCells, totalTdCells)
+        elif totalHeaderRows > 0 and totalTitledRow > 0:
+            # It's a two dimensionnal table
+            return ("2D", totalHeaderRows, totalColumns, totalThCells, totalTdCells)
+        elif totalThCells == 0 and totalTdCells > 0:
+            # Case where only table body is given (uncommon ... mainly for testing)
+            return ("1D", totalHeaderRows, totalColumns, totalThCells, totalTdCells)
         else:
             logger.warning(f'Table type is unknown ! Table rows :\n{self.allRows}')
             raise TypeError("Table type is unknown !")
