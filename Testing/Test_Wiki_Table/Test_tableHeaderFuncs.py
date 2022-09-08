@@ -22,7 +22,7 @@ dirname = os.path.dirname(__file__)
 # ================== UNCOMMENT TO TEST HERE ================== #
 # =========================================================== #
 # filename = os.path.join(dirname, 'Test_Table_Header/11_tableHeader_case11.html')
-filename = os.path.join(dirname, 'Test_Tables/debugTable_case0.html')
+filename = os.path.join(dirname, 'Test_Tables/debugTable_case6.html')
 # Open html file
 with open(filename, 'r') as htmlTestFile:
     soup = BeautifulSoup(htmlTestFile, "html.parser")
@@ -47,7 +47,7 @@ file_handler = logging.FileHandler(f"{dirname}/ExtractTableLog.log", mode='w') #
 logger.addHandler(file_handler)
 
 # Set format of log
-log_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+log_format = logging.Formatter(fmt='[%(asctime)s] - %(name)s - {%(levelname)s} - (%(funcName)s, #%(lineno)d) - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 file_handler.setFormatter(log_format)
 
 # Set min log levels I wanna see
@@ -524,35 +524,58 @@ class ExtractTable:
 
     def getTableDict(self):
         resultDict = OrderedDict()
-        # Get table header in list format
+        # Get table header & body in list format
         tableHeaderList = self.getTableHeader()
-        logger.debug(f"TABLE HEADER : \n{tableHeaderList}")
-        # Get table body in list format
         tableBodyList = self.getTableBody()
+        logger.debug(f"TABLE HEADER : \n{tableHeaderList}")
         logger.debug(f"TABLE BODY : \n{tableBodyList}")
         # Check that tables are same length (right number of columns)
         assert len(tableHeaderList) == len(tableBodyList), "Table header & body don't have the same number of columns !"
         # Get table general infos
         tableType = self.getTableType()
-        logger.info(f"[INFO] Table type : {tableType}")
+        logger.info(f"Table type : {tableType}")
         # It's a one dimensional table
         if tableType['dimensions'] == "1D":
             # === 1. Prepare dict keys with column header === #
             # IMPORTANT : it's an ordered dict, it preserve insertion order to later easily identify columns.
             # a. It's a simple table header with one header row
             if tableType['total_header_rows'] == 1:
-                logger.debug("[*] Table header has only row.")
-                for col in tableHeaderList:
+                logger.debug("Table header has only one row.")
+                for colList in tableHeaderList:
                     # Prepare dict (insert keys)
-                    resultDict[col[0]] = ""
+                    resultDict[colList[0]] = ""
             # b. It's a more complex table header with one multiple header rows
             elif tableType['total_header_rows'] > 1:
-                logger.debug(f"[*] Table header has {tableType['total_header_rows']} rows.")
-                pass
+                logger.debug(f"Table header has {tableType['total_header_rows']} rows.")
+                for colList in tableHeaderList:
+                    # Remove duplicates from column list (rowspans)
+                    col = []
+                    [col.append(i) for i in colList if i not in col]
+                    # If there's only one element (column title) then create key
+                    if len(col) == 1:
+                        logger.debug(f"Header column list has only one element : {col}")
+                        # Prepare dict (insert keys)
+                        resultDict[colList[0]] = ""
+                        logger.debug(f"Dictionnary key '{colList[0]}' created !")
+                    elif len(col) == 2:
+                        logger.debug(f"Header column list has two elements : {col}")
+                        # Concatenate two elements to create dict key like label (Company) : ""
+                        resultDict[f"{colList[0]} ({colList[1]})"] = ""
+                        logger.debug(f"Dictionnary key '{colList[0]} ({colList[1]})' created !")
+                    elif len(col) > 2:
+                        logger.debug(f"Header column list has {len(col)} elements : {col}")
+                        # Place elements in parenthesis (except for the first one)
+                        otherElements = [i for i in colList[1:]]
+                        formattedStr = ", ".join(otherElements)
+                        # Concatenate two elements to create dict key like Album (Release, Record, ...) : ""
+                        resultDict[f"{colList[0]} ({formattedStr})"] = ""
+                        logger.debug(f"Dictionnary key '{colList[0]} ({formattedStr})' created !")
+                        
+
             # === 2. Insert data from table body in dict === #
             # Since insertion order in dict was preserved we can easily for right column 
-            for key, col in zip(resultDict, tableBodyList):
-                colElementList = [el for el in col]
+            for key, colList in zip(resultDict, tableBodyList):
+                colElementList = [el for el in colList]
                 resultDict[key] = colElementList
             
             return dict(resultDict)
