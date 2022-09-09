@@ -22,7 +22,7 @@ dirname = os.path.dirname(__file__)
 # ================== UNCOMMENT TO TEST HERE ================== #
 # =========================================================== #
 # filename = os.path.join(dirname, 'Test_Table_Header/11_tableHeader_case11.html')
-filename = os.path.join(dirname, 'Test_Tables/debugTable_case6.html')
+filename = os.path.join(dirname, 'Test_Tables/debugTable_case8.html')
 # Open html file
 with open(filename, 'r') as htmlTestFile:
     soup = BeautifulSoup(htmlTestFile, "html.parser")
@@ -537,7 +537,7 @@ class ExtractTable:
         # It's a one dimensional table
         if tableType['dimensions'] == "1D":
             # === 1. Prepare dict keys with column header === #
-            # IMPORTANT : it's an ordered dict, it preserve insertion order to later easily identify columns.
+            # IMPORTANT : it's an ordered dict, it will preserve insertion order to later easily identify & populate columns with data.
             # a. It's a simple table header with one header row
             if tableType['total_header_rows'] == 1:
                 logger.debug("Table header has only one row.")
@@ -570,14 +570,15 @@ class ExtractTable:
                         # Concatenate two elements to create dict key like Album (Release, Record, ...) : ""
                         resultDict[f"{colList[0]} ({formattedStr})"] = ""
                         logger.debug(f"Dictionnary key '{colList[0]} ({formattedStr})' created !")
-                        
+                logger.info(f"Created keys in dictionnary : {dict(resultDict)}")        
 
             # === 2. Insert data from table body in dict === #
             # Since insertion order in dict was preserved we can easily for right column 
             for key, colList in zip(resultDict, tableBodyList):
                 colElementList = [el for el in colList]
                 resultDict[key] = colElementList
-            
+                logger.debug(f"Inserted column list : {resultDict[key]}")
+            logger.info(f"Created dictionnary : {dict(resultDict)}")
             return dict(resultDict)
         # It's a two dimensional table           
         elif tableType['dimensions'] == "2D":
@@ -588,4 +589,5 @@ tableObj = ExtractTable(table)
 # tableHeaderList = tableObj.getTableHeader()
 # tableBodyList = tableObj.getTableBody()
 # fullTable = tableObj.getTableList()
-print(tableObj.getTableDict())
+tableDict = tableObj.getTableDict()
+print(json.dumps(tableDict, indent=4))
