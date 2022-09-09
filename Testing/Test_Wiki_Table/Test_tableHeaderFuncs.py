@@ -14,7 +14,6 @@ from collections import namedtuple, OrderedDict
 import json
 import re
 
-
 # For Windows (relative path) 
 dirname = os.path.dirname(__file__)
 
@@ -22,7 +21,7 @@ dirname = os.path.dirname(__file__)
 # ================== UNCOMMENT TO TEST HERE ================== #
 # =========================================================== #
 # filename = os.path.join(dirname, 'Test_Table_Header/11_tableHeader_case11.html')
-filename = os.path.join(dirname, 'Test_Tables/debugTable_case5.html')
+filename = os.path.join(dirname, 'Test_Tables/debugTable_case9.html')
 # Open html file
 with open(filename, 'r') as htmlTestFile:
     soup = BeautifulSoup(htmlTestFile, "html.parser")
@@ -607,6 +606,18 @@ class ExtractTable:
                 logger.debug(f"Inserted column list : {orderedResDict[key]}")
             logger.info(f"Created dictionnary : {dict(orderedResDict)}")
             return dict(orderedResDict)
+        
+        def test_insertColData(orderedResDict, bodyList, index):
+            # Since insertion order in ordred dict was preserved we can easily fill according column
+            # Get length of rows in table
+            logger.debug(f"Insert elements at row {index}")
+            for key, colList in zip(orderedResDict, bodyList):
+                colElementList = [el for el in colList]
+                logger.debug(f" {key} : {colElementList[index]}")
+                orderedResDict[key] = colElementList[index]
+                logger.debug(f"Inserted column list : {orderedResDict[key]}")
+            logger.info(f"Created dictionnary : {dict(orderedResDict)}")
+            return dict(orderedResDict)
         # =========================== #
         
         # Get table header & body in list format
@@ -630,14 +641,23 @@ class ExtractTable:
         elif tableType['dimensions'] == "2D":
             resultKeyDict = OrderedDict()
             logger.debug("This a 2D table")
-            # Create an ordered dict keys with left column <th> cells in table body
+            # === 1. Create an ordered dict keys with left column <th> cells in table body === #
             firstCol = tableBodyList[0]
-            for element in firstCol:
+            for index, element in enumerate(firstCol):
                 resultKeyDict[element] = ""
-            # Create normal header ordred dict
+            # === 2. Prepare sub keys with table header & pop its first column === #
             headerOrdKeyDict = createDictKeys(tableHeaderList, tableType["total_header_rows"])
+            # Pop first column from key ordred dict (it's the first column, we don't want it in final dict since it's already a key)
+            headerOrdKeyDict.popitem(last=False)
+            # === 3. Go through keys and pass row index to get a single element (keys are equal to table body rows here) === #
+            for rowIndex, key in enumerate(resultKeyDict.keys()):
+                # Create row with header and row data (except for first column)
+                rowDict = test_insertColData(headerOrdKeyDict, tableBodyList[1:], rowIndex)
+                # Insert row at corresponding key
+                resultKeyDict[key] = rowDict
             
-            
+            return dict(resultKeyDict)
+       
 # ====== UNCOMMENT TO TEST HERE ====== #
 tableObj = ExtractTable(table)
 # tableHeaderList = tableObj.getTableHeader()
