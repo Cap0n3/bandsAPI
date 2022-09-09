@@ -22,7 +22,7 @@ dirname = os.path.dirname(__file__)
 # ================== UNCOMMENT TO TEST HERE ================== #
 # =========================================================== #
 # filename = os.path.join(dirname, 'Test_Table_Header/11_tableHeader_case11.html')
-filename = os.path.join(dirname, 'Test_Tables/debugTable_case8.html')
+filename = os.path.join(dirname, 'Test_Tables/debugTable_case5.html')
 # Open html file
 with open(filename, 'r') as htmlTestFile:
     soup = BeautifulSoup(htmlTestFile, "html.parser")
@@ -523,7 +523,92 @@ class ExtractTable:
         return tableRepr
 
     def getTableDict(self):
-        resultDict = OrderedDict()
+        # ====== UTILITY FUNCS ====== #
+        def createDictKeys(headerList, headerRows):
+            '''
+            Creates ordered dictionnary and add keys according to table header list. It can handle spans (rowspan & colspan) present in header list.
+            
+            > Note : For rowspans, it's simply remove any duplicated info in column lists (created by other method in this class) and for colspans, nothing special
+            (see content of header lists returned by `getTableHeader()` method to better understand).
+
+            Parameters
+            ----------
+            `headerList` : `list`
+                Nested list of column in table header (returned by `getTableHeader()` method)
+            `headerRows` : `int`
+                Number of header rows
+            
+            Returns
+            -------
+            `OrderedDict`
+                An ordered dict that preserves order of insertion (essential to later link columns to right data in columns)
+
+            '''
+            # IMPORTANT : Ordered dict will preserve insertion order to later easily identify & populate proper columns with according data.
+            resDict = OrderedDict()
+            # a. It's a simple table header with one header row
+            if headerRows == 1:
+                logger.debug("Table header has only one row.")
+                for colList in headerList:
+                    # Prepare dict (insert keys)
+                    resDict[colList[0]] = ""
+                    logger.debug(f"Created key : {colList[0]}")
+                return resDict
+            # b. It's a more complex table header with one multiple header rows
+            elif headerRows > 1:
+                logger.debug(f"Table header has {headerRows} rows.")
+                for colList in headerList:
+                    # Remove duplicates from column list (rowspans)
+                    col = []
+                    [col.append(i) for i in colList if i not in col]
+                    # If there's only one element (column title) then create key
+                    if len(col) == 1:
+                        logger.debug(f"Header column list has only one element : {col}")
+                        # Prepare dict (insert keys)
+                        resDict[colList[0]] = ""
+                        logger.debug(f"Dictionnary key '{colList[0]}' created !")
+                    elif len(col) == 2:
+                        logger.debug(f"Header column list has two elements : {col}")
+                        # Concatenate two elements to create dict key like label (Company) : ""
+                        resDict[f"{colList[0]} ({colList[1]})"] = ""
+                        logger.debug(f"Dictionnary key '{colList[0]} ({colList[1]})' created !")
+                    elif len(col) > 2:
+                        logger.debug(f"Header column list has {len(col)} elements : {col}")
+                        # Place elements in parenthesis (except for the first one)
+                        otherElements = [i for i in colList[1:]]
+                        formattedStr = ", ".join(otherElements)
+                        # Concatenate two elements to create dict key like Album (Release, Record, ...) : ""
+                        resDict[f"{colList[0]} ({formattedStr})"] = ""
+                        logger.debug(f"Dictionnary key '{colList[0]} ({formattedStr})' created !")
+                logger.info(f"Created keys in dictionnary : {dict(resDict)}")
+                return resDict
+        
+        def insertColData(orderedResDict, bodyList):
+            '''
+            Inserts list of data in corresponding key in ordred dictionnary (arg) and return a normal dictionnary with full
+            table (header, body) converted.
+
+            Parameters
+            ----------
+            `orderedResDict` : `OrderedDict`
+                Ordered dictionnary with table header turned into keys (returned by `createDictKeys()` function)
+            `bodyList` : `list`
+                Nested list of all table body data (returned by getTableBody() method)
+            
+            Returns
+            -------
+            `Dict`
+                Full table (header + body) converted to a normal dictionnary
+            '''
+            # Since insertion order in ordred dict was preserved we can easily fill according column 
+            for key, colList in zip(orderedResDict, bodyList):
+                colElementList = [el for el in colList]
+                orderedResDict[key] = colElementList
+                logger.debug(f"Inserted column list : {orderedResDict[key]}")
+            logger.info(f"Created dictionnary : {dict(orderedResDict)}")
+            return dict(orderedResDict)
+        # =========================== #
+        
         # Get table header & body in list format
         tableHeaderList = self.getTableHeader()
         tableBodyList = self.getTableBody()
@@ -536,53 +621,22 @@ class ExtractTable:
         logger.info(f"Table type : {tableType}")
         # It's a one dimensional table
         if tableType['dimensions'] == "1D":
-            # === 1. Prepare dict keys with column header === #
-            # IMPORTANT : it's an ordered dict, it will preserve insertion order to later easily identify & populate columns with data.
-            # a. It's a simple table header with one header row
-            if tableType['total_header_rows'] == 1:
-                logger.debug("Table header has only one row.")
-                for colList in tableHeaderList:
-                    # Prepare dict (insert keys)
-                    resultDict[colList[0]] = ""
-            # b. It's a more complex table header with one multiple header rows
-            elif tableType['total_header_rows'] > 1:
-                logger.debug(f"Table header has {tableType['total_header_rows']} rows.")
-                for colList in tableHeaderList:
-                    # Remove duplicates from column list (rowspans)
-                    col = []
-                    [col.append(i) for i in colList if i not in col]
-                    # If there's only one element (column title) then create key
-                    if len(col) == 1:
-                        logger.debug(f"Header column list has only one element : {col}")
-                        # Prepare dict (insert keys)
-                        resultDict[colList[0]] = ""
-                        logger.debug(f"Dictionnary key '{colList[0]}' created !")
-                    elif len(col) == 2:
-                        logger.debug(f"Header column list has two elements : {col}")
-                        # Concatenate two elements to create dict key like label (Company) : ""
-                        resultDict[f"{colList[0]} ({colList[1]})"] = ""
-                        logger.debug(f"Dictionnary key '{colList[0]} ({colList[1]})' created !")
-                    elif len(col) > 2:
-                        logger.debug(f"Header column list has {len(col)} elements : {col}")
-                        # Place elements in parenthesis (except for the first one)
-                        otherElements = [i for i in colList[1:]]
-                        formattedStr = ", ".join(otherElements)
-                        # Concatenate two elements to create dict key like Album (Release, Record, ...) : ""
-                        resultDict[f"{colList[0]} ({formattedStr})"] = ""
-                        logger.debug(f"Dictionnary key '{colList[0]} ({formattedStr})' created !")
-                logger.info(f"Created keys in dictionnary : {dict(resultDict)}")        
-
-            # === 2. Insert data from table body in dict === #
-            # Since insertion order in dict was preserved we can easily for right column 
-            for key, colList in zip(resultDict, tableBodyList):
-                colElementList = [el for el in colList]
-                resultDict[key] = colElementList
-                logger.debug(f"Inserted column list : {resultDict[key]}")
-            logger.info(f"Created dictionnary : {dict(resultDict)}")
-            return dict(resultDict)
+            logger.debug("This a 1D table")
+            # === 1. Create ordered dictionnary & its keys from table header === #
+            orderedKeyDict = createDictKeys(tableHeaderList, tableType["total_header_rows"])
+            # === 2. Insert data from table body in dict & return === #
+            return insertColData(orderedKeyDict, tableBodyList)  
         # It's a two dimensional table           
         elif tableType['dimensions'] == "2D":
-            pass
+            resultKeyDict = OrderedDict()
+            logger.debug("This a 2D table")
+            # Create an ordered dict keys with left column <th> cells in table body
+            firstCol = tableBodyList[0]
+            for element in firstCol:
+                resultKeyDict[element] = ""
+            # Create normal header ordred dict
+            headerOrdKeyDict = createDictKeys(tableHeaderList, tableType["total_header_rows"])
+            
             
 # ====== UNCOMMENT TO TEST HERE ====== #
 tableObj = ExtractTable(table)
