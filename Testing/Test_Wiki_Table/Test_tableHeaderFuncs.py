@@ -21,7 +21,7 @@ dirname = os.path.dirname(__file__)
 # ================== UNCOMMENT TO TEST HERE ================== #
 # =========================================================== #
 # filename = os.path.join(dirname, 'Test_Table_Header/11_tableHeader_case11.html')
-filename = os.path.join(dirname, 'Test_Tables/debugTable_case9.html')
+filename = os.path.join(dirname, 'Test_Tables/debugTable_error_case11.html')
 # Open html file
 with open(filename, 'r') as htmlTestFile:
     soup = BeautifulSoup(htmlTestFile, "html.parser")
@@ -513,13 +513,17 @@ class ExtractTable:
         # Get table body list
         tableBody = self.getTableBody()
         # Check that tables are same length (right number of columns)
-        assert len(tableHeader) == len(tableBody), "Table header & body don't have the same number of columns !"
-        # Join all column lists to create full table reprentation
-        tableRepr = []
-        for colHeaderLst, colBodyLst in zip(tableHeader, tableBody):
-            colHeaderLst.extend(colBodyLst)
-            tableRepr.append(colHeaderLst)
-        return tableRepr
+        logger.debug(f"Header total columns : {len(tableHeader)}, Body total columns : {len(tableBody)}") 
+        if len(tableHeader) == len(tableBody):
+            # Join all column lists to create full table reprentation
+            tableRepr = []
+            for colHeaderLst, colBodyLst in zip(tableHeader, tableBody):
+                colHeaderLst.extend(colBodyLst)
+                tableRepr.append(colHeaderLst)
+            return tableRepr 
+        else:
+            logger.error("Table header & body don't have the same number of columns !")
+            raise AssertionError("Table header & body don't have the same number of columns !")
 
     def getTableDict(self):
         # ====== UTILITY FUNCS ====== #
@@ -562,27 +566,27 @@ class ExtractTable:
                     [col.append(i) for i in colList if i not in col]
                     # If there's only one element (column title) then create key
                     if len(col) == 1:
-                        logger.debug(f"Header column list has only one element : {col}")
+                        logger.debug(f"[*] Header column list has only one element : {col}")
                         # Prepare dict (insert keys)
                         resDict[colList[0]] = ""
-                        logger.debug(f"Dictionnary key '{colList[0]}' created !")
+                        logger.debug(f"[*] Dictionnary key '{colList[0]}' created !")
                     elif len(col) == 2:
-                        logger.debug(f"Header column list has two elements : {col}")
+                        logger.debug(f"[*] Header column list has two elements : {col}")
                         # Concatenate two elements to create dict key like label (Company) : ""
                         resDict[f"{colList[0]} ({colList[1]})"] = ""
-                        logger.debug(f"Dictionnary key '{colList[0]} ({colList[1]})' created !")
+                        logger.debug(f"[*] Dictionnary key '{colList[0]} ({colList[1]})' created !")
                     elif len(col) > 2:
-                        logger.debug(f"Header column list has {len(col)} elements : {col}")
+                        logger.debug(f"[*] Header column list has {len(col)} elements : {col}")
                         # Place elements in parenthesis (except for the first one)
                         otherElements = [i for i in colList[1:]]
                         formattedStr = ", ".join(otherElements)
                         # Concatenate two elements to create dict key like Album (Release, Record, ...) : ""
                         resDict[f"{colList[0]} ({formattedStr})"] = ""
-                        logger.debug(f"Dictionnary key '{colList[0]} ({formattedStr})' created !")
+                        logger.debug(f"[*] Dictionnary key '{colList[0]} ({formattedStr})' created !")
                 logger.info(f"Created keys in dictionnary : {dict(resDict)}")
                 return resDict
         
-        def insertColData(orderedResDict, bodyList):
+        def insertColData(orderedResDict, bodyList, rowIndex = None):
             '''
             Inserts list of data in corresponding key in ordred dictionnary (arg) and return a normal dictionnary with full
             table (header, body) converted.
@@ -593,6 +597,9 @@ class ExtractTable:
                 Ordered dictionnary with table header turned into keys (returned by `createDictKeys()` function)
             `bodyList` : `list`
                 Nested list of all table body data (returned by getTableBody() method)
+            `rowIndex` : `int`
+                Optional argument to indicate whether it's a 1D or 2D table. For 2D tables, we only need one element from column where
+                with 1D table we need all the elements in column. Set to None if it's a 1D table or give row index if it's a 2D table.
             
             Returns
             -------
@@ -602,29 +609,24 @@ class ExtractTable:
             # Since insertion order in ordred dict was preserved we can easily fill according column 
             for key, colList in zip(orderedResDict, bodyList):
                 colElementList = [el for el in colList]
-                orderedResDict[key] = colElementList
-                logger.debug(f"Inserted column list : {orderedResDict[key]}")
-            logger.info(f"Created dictionnary : {dict(orderedResDict)}")
-            return dict(orderedResDict)
-        
-        def test_insertColData(orderedResDict, bodyList, index):
-            # Since insertion order in ordred dict was preserved we can easily fill according column
-            # Get length of rows in table
-            logger.debug(f"Insert elements at row {index}")
-            for key, colList in zip(orderedResDict, bodyList):
-                colElementList = [el for el in colList]
-                logger.debug(f" {key} : {colElementList[index]}")
-                orderedResDict[key] = colElementList[index]
-                logger.debug(f"Inserted column list : {orderedResDict[key]}")
-            logger.info(f"Created dictionnary : {dict(orderedResDict)}")
+                if rowIndex != None:
+                    # Get only one element from column at specific row index (2D Tables)
+                    orderedResDict[key] = colElementList[rowIndex]
+                    logger.debug(f"[*] {key} : {colElementList[rowIndex]}")
+                else:
+                    # Get all row data
+                    orderedResDict[key] = colElementList
+                    logger.debug(f"[*] {key} : {colElementList}")
+                logger.debug(f"[*] Inserted column list : {orderedResDict[key]}")
+            logger.debug(f"Dictionnary returned : {dict(orderedResDict)}")
             return dict(orderedResDict)
         # =========================== #
         
         # Get table header & body in list format
         tableHeaderList = self.getTableHeader()
         tableBodyList = self.getTableBody()
-        logger.debug(f"TABLE HEADER : \n{tableHeaderList}")
-        logger.debug(f"TABLE BODY : \n{tableBodyList}")
+        logger.debug(f"Table header : {tableHeaderList}")
+        logger.debug(f"Table body : {tableBodyList}")
         # Check that tables are same length (right number of columns)
         assert len(tableHeaderList) == len(tableBodyList), "Table header & body don't have the same number of columns !"
         # Get table general infos
@@ -636,32 +638,41 @@ class ExtractTable:
             # === 1. Create ordered dictionnary & its keys from table header === #
             orderedKeyDict = createDictKeys(tableHeaderList, tableType["total_header_rows"])
             # === 2. Insert data from table body in dict & return === #
-            return insertColData(orderedKeyDict, tableBodyList)  
+            finalDict = insertColData(orderedKeyDict, tableBodyList)  
+            logger.info(f"Created dictionnary (1D, final) : {finalDict}")
+            return finalDict  
         # It's a two dimensional table           
         elif tableType['dimensions'] == "2D":
             resultKeyDict = OrderedDict()
             logger.debug("This a 2D table")
             # === 1. Create an ordered dict keys with left column <th> cells in table body === #
             firstCol = tableBodyList[0]
-            for index, element in enumerate(firstCol):
+            logger.debug(f"First column data : {firstCol}")
+            for element in firstCol:
                 resultKeyDict[element] = ""
+                logger.debug(f"Inserted following key in dict : {element}")
             # === 2. Prepare sub keys with table header & pop its first column === #
             headerOrdKeyDict = createDictKeys(tableHeaderList, tableType["total_header_rows"])
+            logger.debug(f"Created ordered dict with sub keys : {headerOrdKeyDict}")
             # Pop first column from key ordred dict (it's the first column, we don't want it in final dict since it's already a key)
-            headerOrdKeyDict.popitem(last=False)
+            poppedHeader = headerOrdKeyDict.popitem(last=False)
+            logger.debug(f"Popped first header from dict (column data are keys in main dict) : {poppedHeader}")
             # === 3. Go through keys and pass row index to get a single element (keys are equal to table body rows here) === #
             for rowIndex, key in enumerate(resultKeyDict.keys()):
                 # Create row with header and row data (except for first column)
-                rowDict = test_insertColData(headerOrdKeyDict, tableBodyList[1:], rowIndex)
+                rowDict = insertColData(headerOrdKeyDict, tableBodyList[1:], rowIndex)
                 # Insert row at corresponding key
                 resultKeyDict[key] = rowDict
-            
-            return dict(resultKeyDict)
+            # Convert ordered dictionnary to normal dict & return it
+            finalConvertedDict = dict(resultKeyDict)
+            logger.info(f"Created dictionnary (2D, final) : {finalConvertedDict}")
+            return finalConvertedDict
        
 # ====== UNCOMMENT TO TEST HERE ====== #
 tableObj = ExtractTable(table)
 # tableHeaderList = tableObj.getTableHeader()
 # tableBodyList = tableObj.getTableBody()
-# fullTable = tableObj.getTableList()
-tableDict = tableObj.getTableDict()
-print(json.dumps(tableDict, indent=4))
+fullTable = tableObj.getTableList()
+print(fullTable)
+#tableDict = tableObj.getTableDict()
+#print(json.dumps(tableDict, indent=4))
