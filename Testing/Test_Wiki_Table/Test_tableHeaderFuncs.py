@@ -21,7 +21,7 @@ dirname = os.path.dirname(__file__)
 # ================== UNCOMMENT TO TEST HERE ================== #
 # =========================================================== #
 # filename = os.path.join(dirname, 'Test_Table_Header/11_tableHeader_case11.html')
-filename = os.path.join(dirname, 'Test_Tables/debugTable_error_case11.html')
+filename = os.path.join(dirname, 'Test_Tables/debugTable_case10.html')
 # Open html file
 with open(filename, 'r') as htmlTestFile:
     soup = BeautifulSoup(htmlTestFile, "html.parser")

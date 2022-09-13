@@ -158,6 +158,7 @@ class test_ExtractTable(unittest.TestCase):
         # Put to "ALL" to test all cases OR give case to test a particular file (ex : "case1" or "case5")
         self.testAllTableHeaders = "ALL"     # To test table headers
         self.testAllTableBodies = "ALL"     # To test table bodies
+        self.testAllTables = "ALL"     # To test full tables
         # ====================================================== # 
         # Get current folder
         self.dirname = os.path.dirname(__file__)
@@ -165,6 +166,8 @@ class test_ExtractTable(unittest.TestCase):
         self.tableHeaderFilesFolder = os.path.join(self.dirname, "Test_Wiki_Table/Test_Table_Header")
         # Set folder path to test table body
         self.tableBodyFilesFolder = os.path.join(self.dirname, "Test_Wiki_Table/Test_Table_Body")
+        # Set folder path to test full tables
+        self.tablesFilesFolder = os.path.join(self.dirname, "Test_Wiki_Table/Test_Tables")
     
     #@unittest.SkipTest
     def test_getTableHeader(self):
@@ -187,7 +190,7 @@ class test_ExtractTable(unittest.TestCase):
         }
         # ========= TEST ========== #
         allFiles, allCasesList =test_ExtractTable.sortFilesAndCases(self.tableHeaderFilesFolder, testTableHeaders)
-        # a. Test ALL header tables
+        # CHOICE A) Test ALL header tables
         if self.testAllTableHeaders == "ALL":
             for file, case in zip(allFiles, testTableHeaders):
                 with self.subTest(msg=f"ERROR ! An error occured with test '{case}'", case_table=testTableHeaders[case], tested_file=file):
@@ -203,7 +206,7 @@ class test_ExtractTable(unittest.TestCase):
                     # Test object
                     result = tableObj.getTableHeader()
                     self.assertEqual(result,  testTableHeaders[case])
-        # b. Test a particular case
+        # CHOICE B) Test a particular case
         elif self.testAllTableHeaders in allCasesList:
             filename = os.path.join(self.dirname, f'{self.tableHeaderFilesFolder}/tableHeader_{self.testAllTableHeaders}.html')
             with open(filename, 'r') as htmlTestFile:
@@ -233,7 +236,7 @@ class test_ExtractTable(unittest.TestCase):
         }
         # ========= TEST ========== #
         allFiles, allCasesList =test_ExtractTable.sortFilesAndCases(self.tableBodyFilesFolder, testTableBody)
-        # a. Test ALL header tables
+        # CHOICE A) Test ALL header tables
         if self.testAllTableBodies == "ALL":
             for file, case in zip(allFiles, testTableBody):
                 with self.subTest(msg=f"ERROR ! An error occured with test '{case}'", case_table=testTableBody[case], tested_file=file):
@@ -249,7 +252,7 @@ class test_ExtractTable(unittest.TestCase):
                     # Test object
                     result = tableObj.getTableBody()
                     self.assertEqual(result,  testTableBody[case])
-        # b. Test a particular case
+        # CHOICE b) Test a particular case
         elif self.testAllTableBodies in allCasesList:
             filename = os.path.join(self.dirname, f'{self.tableBodyFilesFolder}/tableBody_{self.testAllTableBodies}.html')
             with open(filename, 'r') as htmlTestFile:
@@ -264,6 +267,55 @@ class test_ExtractTable(unittest.TestCase):
             self.assertEqual(result, testTableBody[self.testAllTableBodies])
         else:
             raise AttributeError(f"{self.testAllTableBodies} is not a valid choice. Choose 'ALL' or one of the following :\n{allCasesList}")
+
+    #@unittest.SkipTest
+    def test_getTableList(self):
+        testTables = {
+            "case0" : [['Year', '1990', '1991', '1992'], ['Album', 'Bullhead', 'Eggog', 'Lysol'], ['Label', 'Whatever Records', 'Boner Record', 'Atlantic Records']],
+            "case1" : [['Year', '1991', '1991', '1992'], ['Album', 'Bullhead', 'Eggog', 'Lysol'], ['Label', 'Boner Record', 'Phyllis Record', 'Atlantic Records']],
+            "case2" : [['Year', '1991', '1991', '1992'], ['Album', 'Bullhead', 'Eggog', 'Lysol'], ['Label', 'Boner Record', 'Boner Record', 'Atlantic Records']],
+            "case3" : [['Year', '1991', '1991', '1992'], ['Album', 'Bullhead', 'Eggog', 'Lysol'], ['Label', 'Boner Record', 'Boner Record', 'Atlantic Records'], ['Note', '2.3', '3.5', '5']],
+            "case4" : [['Year', '1991', '1991', '1992'], ['Album', 'Bullhead', 'Eggog', 'Lysol'], ['Label', 'Boner Record', 'Boner Record', 'Atlantic Records'], ['Note', '2.3', '3.5', '3.5']],
+            "case5" : [['Year', 'Year', '1991', '1991', '1992'], ['Album', 'Album', 'Bullhead', 'Eggog', 'Lysol'], ['Label', 'Label', 'Boner Record', 'Boner Record', 'Atlantic Records'], ['Note', 'Sku', '2.3', '3.5', '3.5']],
+            "case6" : [['Year', 'Year', 'Year', '1991', '1991', '1992'], ['Album', 'Sku1', 'Sku3', 'Bullhead', 'Eggog', 'Lysol'], ['Label', 'Label', 'Label', 'Boner Record', 'Boner Record', 'Atlantic Records'], ['Note', 'Sku2', 'Sku4', '2.3', '3.5', '3.5']],
+            "case7" : [['Title', 'Title', 'Down Below', 'This Is Not the Way Home', 'The Honeymoon is Over', 'Three Legged Dog', 'Over Easy', "Where There's Smoke"], ['Year', 'Year', '1990', '1991', '1993', '1995', '1998', '2001'], ['Peak chart positions', 'AUS', '133', '62', '4', '1', '13', '25'], ['Peak chart positions', 'NZ', '-', '-', '33', '20', '-', '-'], ['Label', 'Label', 'Red Eye Records', 'Red Eye Records', 'Red Eye Records', 'Red Eye Records', 'Polydor Records', 'Polydor Records']],            
+            "case8" : [['Title', 'Name', 'Down Below', 'This Is Not the Way Home', 'The Honeymoon is Over', 'Three Legged Dog', 'Over Easy', "Where There's Smoke"], ['Year', 'Year', '1990', '1991', '1993', '1995', '1998', '2001'], ['Peak chart positions', 'AUS', '133', '62', '4', '1', '13', '25'], ['Peak chart positions', 'NZ', '-', '-', '33', '20', '-', '-'], ['Label', 'Company', 'Red Eye Records', 'Red Eye Records', 'Red Eye Records', 'Red Eye Records', 'Polydor Records', 'Polydor Records']],            
+            "case9" : [['Title', 'Title', 'Down Below', 'This Is Not the Way Home', 'The Honeymoon is Over', 'Three Legged Dog', 'Over Easy', "Where There's Smoke"], ['Year', 'Year', '1990', '1991', '1993', '1995', '1998', '2001'], ['Peak chart positions', 'AUS', '133', '62', '4', '1', '13', '25'], ['Peak chart positions', 'NZ', '-', '-', '33', '20', '-', '-'], ['Label', 'Label', 'Red Eye Records', 'Red Eye Records', 'Red Eye Records', 'Red Eye Records', 'Polydor Records', 'Polydor Records']],            
+            #"case10" : [['Title', 'Title', 'Down Below', 'This Is Not the Way Home', 'The Honeymoon is Over', 'Three Legged Dog', 'Over Easy', "Where There's Smoke"], ['Album details', 'Album details', 'Released: 3 December 1990Formats: CD, LPLabel: Records', 'Released: 28 October 1991Formats: CD, LPLabel: Red Eye Records', 'Released: 31 May 1993Formats: CD, LP, CassetteLabel: Red Eye Records', 'Released: April 1995Formats: CD, LP, CassetteLabel: Red Eye Records', 'Released: July 1998Formats: CDLabel: Polydor Records', 'Released: September 2001Formats: CDLabel: Polydor Records'], ['Peak chart positions', 'AUS', '133', '62', '4', '1', '13', '25'], ['Peak chart positions', 'NZ', '-', '-', '33', '20', '-', '-'], ['Certifications', 'Certifications', '', 'AUS: Platinum', 'AUS: 3× Platinum', 'AUS: Platinum', '', '']],            
+        }
+        # ========= TEST ========== #
+        allFiles, allCasesList =test_ExtractTable.sortFilesAndCases(self.tablesFilesFolder, testTables)
+        # CHOICE A) Test ALL header tables
+        if self.testAllTables == "ALL":
+            for file, case in zip(allFiles, testTables):
+                with self.subTest(msg=f"ERROR ! An error occured with test '{case}'", case_table=testTables[case], tested_file=file):
+                    # Print tested case to console
+                    print(f"TESTING '{case}' with file '{file}'")
+                    # Open file in read mode
+                    with open(file, 'r') as htmlTestFile:
+                        soup = BeautifulSoup(htmlTestFile, "html.parser")
+                    # Extract table from soup
+                    table = soup.find('table')
+                    # Create object for test
+                    tableObj = ExtractTable(table)
+                    # Test object
+                    result = tableObj.getTableHeader()
+                    self.assertEqual(result,  testTables[case])
+        # CHOICE B) Test a particular case
+        elif self.testAllTables in allCasesList:
+            filename = os.path.join(self.dirname, f'{self.tablesFilesFolder}/tableHeader_{self.testAllTables}.html')
+            with open(filename, 'r') as htmlTestFile:
+                soup = BeautifulSoup(htmlTestFile, "html.parser")
+            # Print tested case to console
+            print(f"TESTING '{self.testAllTables}' with file '{filename}'")
+            # Extract table from soup
+            table = soup.find('table')
+            # Test function
+            tableObj = ExtractTable(table)
+            result = tableObj.getTableHeader()
+            self.assertEqual(result, testTables[self.testAllTables])
+        else:
+            raise AttributeError(f"{self.testAllTables} is not a valid choice. Choose 'ALL' or one of the following :\n{allCasesList}")
 
 if __name__ == "__main__":
   unittest.main()
