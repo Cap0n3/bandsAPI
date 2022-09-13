@@ -96,7 +96,7 @@ class test_ExtractTable(unittest.TestCase):
         # Put to "ALL" to test all cases OR give case to test a particular file (ex : "case1" or "case5")
         self.testAllTableHeaders = "ALL"     # To test table headers
         self.testAllTableBodies = "ALL"     # To test table bodies
-        self.testAllTables = "ALL"     # To test full tables
+        self.testAllTables = "case1"     # To test full tables
         # ====================================================== #
         # Get current folder
         self.dirname = os.path.dirname(__file__)
@@ -169,12 +169,46 @@ class test_ExtractTable(unittest.TestCase):
 
     def oneOrAllCases(self, caseToTest, srcFolder, params, methodToUse):
         '''
-        Utility method that gives the possibility of testing one or all the cases in parameters for each testing methods.
-        If a new method in ExtractTable is created and have to be tested, don't forget to update the condition tree to include
-        the new method.
+        Utility method that gives the possibility of testing one OR all the cases in parameters for each testing methods. It'll assert 
+        every cases or one particular case. This function was writtent to allow a DRYer code and more re-usability in different tests.
 
+        > Note : If a new method in ExtractTable is created and have to be tested, don't forget to update the condition tree in returnResults()
+        to include the new method.
+
+        Parameters
+        ----------
+        `caseToTest` : `<class 'str'>`
+            String representing case to test. Can be set to `ALL` or any particular case like `case0`, `case1`, etc ...
+        
+        `srcFolder` : `<class 'str'>`
+            Absolute path of folder containing all tables to test.
+        
+        `params` : `<class 'dict'>`
+            Dictonnary of results expected for tables (parametrization)
+
+        `methodToUse` : `<class 'dict'>`
+            Method to use for the testing (one of ExtractTable methods)
         '''
+
+        # ======= UTILS METHODS ====== #
         def returnResults(_tableObj, _methodToUse):
+            '''
+            Function to select which method will be used for testing. It can be edited to include new methods if needed.
+            > Note : Mostly created to stay DRY.
+
+            Parameters
+            ----------
+            `_tableObj` : `<class 'ExtractTable'>`
+                ExtractTable object
+            
+            `_methodToUse` : `<class 'str'>`
+                Method to use for testing
+            
+            Returns
+            -------
+            `<class 'str'>`
+                First portion of file name (before the underscore)
+            '''
             # PLEASE UPDATE HERE IF NEW METHOD IS CREATED !
             if _methodToUse == "getTableHeader":
                 res = _tableObj.getTableHeader()
@@ -185,6 +219,30 @@ class test_ExtractTable(unittest.TestCase):
             else:
                 raise AttributeError("Method not recognized ! Please verify entered method or update condition in testOneOrAllCases() to include a new method !")
             return res
+
+        def extractFilename(pathStr):
+            '''
+            Utility function to dynamically get the beginning of file name from an absolute path.
+            For instance, if we pass this string to function : `/Users/kim/myDev/Testing/Test_Wiki_Table/Test_Tables/debugTable_case0.html`
+            It would only return `debugTable`.
+ 
+            Parameters
+            ----------
+            `pathStr` : `<class 'str'>`
+                String representing absolute path.
+
+            Returns
+            -------
+            `<class 'str'>`
+                First portion of file name (before the underscore)
+            '''
+            # Split last portion of path
+            fileName = pathStr.split("/")[-1]
+            # Extract matching part and position in string
+            pattern = r'_case\d\.html'
+            match = re.search(pattern, fileName)
+            # Return only first part of file name
+            return fileName[:match.start()]
 
         allFiles, allCasesList = test_ExtractTable.sortFilesAndCases(srcFolder, params)
         # CHOICE A) Test ALL header tables
@@ -205,7 +263,9 @@ class test_ExtractTable(unittest.TestCase):
                     self.assertEqual(result, params[case])
         # CHOICE B) Test a particular case
         elif caseToTest in allCasesList:
-            filename = os.path.join(self.dirname, f'{srcFolder}/tableHeader_{caseToTest}.html')
+            # Give any file path in allFiles to get first part of file name
+            fileNamePart = extractFilename(allFiles[0])
+            filename = os.path.join(self.dirname, f'{srcFolder}/{fileNamePart}_{caseToTest}.html')
             with open(filename, 'r') as htmlTestFile:
                 soup = BeautifulSoup(htmlTestFile, "html.parser")
             # Print tested case to console
@@ -214,7 +274,7 @@ class test_ExtractTable(unittest.TestCase):
             table = soup.find('table')
             # Test function
             tableObj = ExtractTable(table)
-            result = tableObj.methodToUse()
+            result = returnResults(tableObj, methodToUse)
             self.assertEqual(result, params[caseToTest])
         else:
             raise AttributeError(f"{caseToTest} is not a valid choice. Choose 'ALL' or one of the following :\n{allCasesList}")
@@ -223,7 +283,7 @@ class test_ExtractTable(unittest.TestCase):
     # ============ TESTING ============ #
     # ================================= #
     
-    @unittest.SkipTest
+    #@unittest.SkipTest
     def test_getTableHeader(self):
         # ========= PARAMS ========= # 
         # Test cases (expected results), all files in Test_Table_Header folder should be here !
@@ -243,40 +303,9 @@ class test_ExtractTable(unittest.TestCase):
             "case12" : [['Album', 'Album', 'Album'], ['Details', 'Details', 'Infos'], ['CD Sales', 'EU', 'EU'], ['Vinyl Sales', 'EU', 'EU'], ['Certifications', 'Awards', 'Rewards']],
         }
         # ========= TEST ========== #
-        allFiles, allCasesList =test_ExtractTable.sortFilesAndCases(self.tableHeaderFilesFolder, testTableHeaders)
-        # CHOICE A) Test ALL header tables
-        if self.testAllTableHeaders == "ALL":
-            for file, case in zip(allFiles, testTableHeaders):
-                with self.subTest(msg=f"ERROR ! An error occured with test '{case}'", case_table=testTableHeaders[case], tested_file=file):
-                    # Print tested case to console
-                    print(f"TESTING '{case}' with file '{file}'")
-                    # Open file in read mode
-                    with open(file, 'r') as htmlTestFile:
-                        soup = BeautifulSoup(htmlTestFile, "html.parser")
-                    # Extract table from soup
-                    table = soup.find('table')
-                    # Create object for test
-                    tableObj = ExtractTable(table)
-                    # Test object
-                    result = tableObj.getTableHeader()
-                    self.assertEqual(result,  testTableHeaders[case])
-        # CHOICE B) Test a particular case
-        elif self.testAllTableHeaders in allCasesList:
-            filename = os.path.join(self.dirname, f'{self.tableHeaderFilesFolder}/tableHeader_{self.testAllTableHeaders}.html')
-            with open(filename, 'r') as htmlTestFile:
-                soup = BeautifulSoup(htmlTestFile, "html.parser")
-            # Print tested case to console
-            print(f"TESTING '{self.testAllTableHeaders}' with file '{filename}'")
-            # Extract table from soup
-            table = soup.find('table')
-            # Test function
-            tableObj = ExtractTable(table)
-            result = tableObj.getTableHeader()
-            self.assertEqual(result, testTableHeaders[self.testAllTableHeaders])
-        else:
-            raise AttributeError(f"{self.testAllTableHeaders} is not a valid choice. Choose 'ALL' or one of the following :\n{allCasesList}")
+        self.oneOrAllCases(self.testAllTableHeaders, self.tableHeaderFilesFolder, testTableHeaders, "getTableHeader")
 
-    @unittest.SkipTest
+    #@unittest.SkipTest
     def test_getTableBody(self):
         # ========= PARAMS ========= # 
         # Test cases (expected results), all files in Test_Table_Body folder should be here !
@@ -289,38 +318,7 @@ class test_ExtractTable(unittest.TestCase):
             "case5" : [['1991', '1992', '1992'], ['Bullhead', 'Bullhead', 'Lysol'], ['Whatever Records', 'Whatever Records', 'Whatever Records']],
         }
         # ========= TEST ========== #
-        allFiles, allCasesList =test_ExtractTable.sortFilesAndCases(self.tableBodyFilesFolder, testTableBody)
-        # CHOICE A) Test ALL header tables
-        if self.testAllTableBodies == "ALL":
-            for file, case in zip(allFiles, testTableBody):
-                with self.subTest(msg=f"ERROR ! An error occured with test '{case}'", case_table=testTableBody[case], tested_file=file):
-                    # Print tested case to console
-                    print(f"TESTING '{case}' with file '{file}'")
-                    # Open file in read mode
-                    with open(file, 'r') as htmlTestFile:
-                        soup = BeautifulSoup(htmlTestFile, "html.parser")
-                    # Extract table from soup
-                    table = soup.find('table')
-                    # Create object for test
-                    tableObj = ExtractTable(table)
-                    # Test object
-                    result = tableObj.getTableBody()
-                    self.assertEqual(result,  testTableBody[case])
-        # CHOICE b) Test a particular case
-        elif self.testAllTableBodies in allCasesList:
-            filename = os.path.join(self.dirname, f'{self.tableBodyFilesFolder}/tableBody_{self.testAllTableBodies}.html')
-            with open(filename, 'r') as htmlTestFile:
-                soup = BeautifulSoup(htmlTestFile, "html.parser")
-            # Print tested case to console
-            print(f"TESTING '{self.testAllTableBodies}' with file '{filename}'")
-            # Extract table from soup
-            table = soup.find('table')
-            # Test function
-            tableObj = ExtractTable(table)
-            result = tableObj.getTableBody()
-            self.assertEqual(result, testTableBody[self.testAllTableBodies])
-        else:
-            raise AttributeError(f"{self.testAllTableBodies} is not a valid choice. Choose 'ALL' or one of the following :\n{allCasesList}")
+        self.oneOrAllCases(self.testAllTableBodies, self.tableBodyFilesFolder, testTableBody, "getTableBody")
 
     #@unittest.SkipTest
     def test_getTableList(self):
@@ -337,7 +335,7 @@ class test_ExtractTable(unittest.TestCase):
             "case9" : [['Title', 'Title', 'Down Below', 'This Is Not the Way Home', 'The Honeymoon is Over', 'Three Legged Dog', 'Over Easy', "Where There's Smoke"], ['Year', 'Year', '1990', '1991', '1993', '1995', '1998', '2001'], ['Peak chart positions', 'AUS', '133', '62', '4', '1', '13', '25'], ['Peak chart positions', 'NZ', '-', '-', '33', '20', '-', '-'], ['Label', 'Label', 'Red Eye Records', 'Red Eye Records', 'Red Eye Records', 'Red Eye Records', 'Polydor Records', 'Polydor Records']],            
             "case10" : [['Title', 'Title', 'Down Below', 'This Is Not the Way Home', 'The Honeymoon is Over', 'Three Legged Dog', 'Over Easy', "Where There's Smoke"], ['Album details', 'Album details', 'Released: 3 December 1990Formats: CD, LPLabel: Records', 'Released: 28 October 1991Formats: CD, LPLabel: Red Eye Records', 'Released: 31 May 1993Formats: CD, LP, CassetteLabel: Red Eye Records', 'Released: April 1995Formats: CD, LP, CassetteLabel: Red Eye Records', 'Released: July 1998Formats: CDLabel: Polydor Records', 'Released: September 2001Formats: CDLabel: Polydor Records'], ['Peak chart positions', 'AUS', '133', '62', '4', '1', '13', '25'], ['Peak chart positions', 'NZ', '-', '-', '33', '20', '-', '-'], ['Certifications', 'Certifications', '', 'AUS: Platinum', 'AUS: 3× Platinum', 'AUS: Platinum', '', '']],            
         }
-        # Test
+        # ========= TEST ========== #
         self.oneOrAllCases(self.testAllTables, self.tablesFilesFolder, testTables, "getTableList")
 
 if __name__ == "__main__":

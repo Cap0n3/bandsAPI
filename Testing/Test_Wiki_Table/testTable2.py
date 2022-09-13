@@ -73,7 +73,7 @@ def createHeaderCells(_allRows):
     `_allRows` : `<class 'bs4.element.ResultSet'>`
         BS4 result set, look like this : [<tr><td>Year</td><td>Album</td><td>Label</td></tr>, etc...]
      
-     Returns
+    Returns
     -------
     `tuple[dict, int]`
         Dictionnary of table representation & how many <tr> there is before table body (where useful data are) is reached.
