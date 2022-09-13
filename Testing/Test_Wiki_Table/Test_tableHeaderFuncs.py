@@ -21,12 +21,12 @@ dirname = os.path.dirname(__file__)
 # ================== UNCOMMENT TO TEST HERE ================== #
 # =========================================================== #
 # filename = os.path.join(dirname, 'Test_Table_Header/11_tableHeader_case11.html')
-filename = os.path.join(dirname, 'Test_Tables/debugTable_case10.html')
-# Open html file
-with open(filename, 'r') as htmlTestFile:
-    soup = BeautifulSoup(htmlTestFile, "html.parser")
-# Get table tag in soup
-table = soup.find('table')
+# filename = os.path.join(dirname, 'Test_Tables/debugTable_case10.html')
+# # Open html file
+# with open(filename, 'r') as htmlTestFile:
+#     soup = BeautifulSoup(htmlTestFile, "html.parser")
+# # Get table tag in soup
+# table = soup.find('table')
 
 # Note : DON'T FORGET TO COMMENT/UNCOMMENT FUNCTION CALL AT THE END
 
@@ -669,10 +669,10 @@ class ExtractTable:
             return finalConvertedDict
        
 # ====== UNCOMMENT TO TEST HERE ====== #
-tableObj = ExtractTable(table)
+# tableObj = ExtractTable(table)
 # tableHeaderList = tableObj.getTableHeader()
 # tableBodyList = tableObj.getTableBody()
-fullTable = tableObj.getTableList()
-print(fullTable)
+# fullTable = tableObj.getTableList()
+# print(fullTable)
 #tableDict = tableObj.getTableDict()
 #print(json.dumps(tableDict, indent=4))
