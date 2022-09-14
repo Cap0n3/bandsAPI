@@ -669,10 +669,11 @@ class ExtractTable:
             return finalConvertedDict
        
 # ====== UNCOMMENT TO TEST HERE ====== #
-# tableObj = ExtractTable(table)
+#tableObj = ExtractTable(table)
 # tableHeaderList = tableObj.getTableHeader()
 # tableBodyList = tableObj.getTableBody()
 # fullTable = tableObj.getTableList()
 # print(fullTable)
 #tableDict = tableObj.getTableDict()
 #print(json.dumps(tableDict, indent=4))
+#print(tableDict)

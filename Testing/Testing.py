@@ -96,7 +96,7 @@ class test_ExtractTable(unittest.TestCase):
         # Put to "ALL" to test all cases OR give case to test a particular file (ex : "case1" or "case5")
         self.testAllTableHeaders = "ALL"     # To test table headers
         self.testAllTableBodies = "ALL"     # To test table bodies
-        self.testAllTables = "case1"     # To test full tables
+        self.testAllTables = "ALL"     # To test full tables
         # ====================================================== #
         # Get current folder
         self.dirname = os.path.dirname(__file__)
@@ -216,6 +216,8 @@ class test_ExtractTable(unittest.TestCase):
                 res = _tableObj.getTableBody()
             elif _methodToUse == "getTableList":
                 res = _tableObj.getTableList()
+            elif _methodToUse == "getTableDict":
+                res = _tableObj.getTableDict()
             else:
                 raise AttributeError("Method not recognized ! Please verify entered method or update condition in testOneOrAllCases() to include a new method !")
             return res
@@ -283,7 +285,7 @@ class test_ExtractTable(unittest.TestCase):
     # ============ TESTING ============ #
     # ================================= #
     
-    #@unittest.SkipTest
+    @unittest.SkipTest
     def test_getTableHeader(self):
         # ========= PARAMS ========= # 
         # Test cases (expected results), all files in Test_Table_Header folder should be here !
@@ -305,7 +307,7 @@ class test_ExtractTable(unittest.TestCase):
         # ========= TEST ========== #
         self.oneOrAllCases(self.testAllTableHeaders, self.tableHeaderFilesFolder, testTableHeaders, "getTableHeader")
 
-    #@unittest.SkipTest
+    @unittest.SkipTest
     def test_getTableBody(self):
         # ========= PARAMS ========= # 
         # Test cases (expected results), all files in Test_Table_Body folder should be here !
@@ -320,7 +322,7 @@ class test_ExtractTable(unittest.TestCase):
         # ========= TEST ========== #
         self.oneOrAllCases(self.testAllTableBodies, self.tableBodyFilesFolder, testTableBody, "getTableBody")
 
-    #@unittest.SkipTest
+    @unittest.SkipTest
     def test_getTableList(self):
         testTables = {
             "case0" : [['Year', '1990', '1991', '1992'], ['Album', 'Bullhead', 'Eggog', 'Lysol'], ['Label', 'Whatever Records', 'Boner Record', 'Atlantic Records']],
@@ -337,6 +339,24 @@ class test_ExtractTable(unittest.TestCase):
         }
         # ========= TEST ========== #
         self.oneOrAllCases(self.testAllTables, self.tablesFilesFolder, testTables, "getTableList")
+
+    #@unittest.SkipTest
+    def test_getTableDict(self):
+        testTables = {
+            "case0" : {'Year': ['1990', '1991', '1992'], 'Album': ['Bullhead', 'Eggog', 'Lysol'], 'Label': ['Whatever Records', 'Boner Record', 'Atlantic Records']},
+            "case1" : {'Year': ['1991', '1991', '1992'], 'Album': ['Bullhead', 'Eggog', 'Lysol'], 'Label': ['Boner Record', 'Phyllis Record', 'Atlantic Records']},
+            "case2" : {'Year': ['1991', '1991', '1992'], 'Album': ['Bullhead', 'Eggog', 'Lysol'], 'Label': ['Boner Record', 'Boner Record', 'Atlantic Records']},
+            "case3" : {'Year': ['1991', '1991', '1992'], 'Album': ['Bullhead', 'Eggog', 'Lysol'], 'Label': ['Boner Record', 'Boner Record', 'Atlantic Records'], 'Note': ['2.3', '3.5', '5']},
+            "case4" : {'Year': ['1991', '1991', '1992'], 'Album': ['Bullhead', 'Eggog', 'Lysol'], 'Label': ['Boner Record', 'Boner Record', 'Atlantic Records'], 'Note': ['2.3', '3.5', '3.5']},
+            "case5" : {'Year': ['1991', '1991', '1992'], 'Album': ['Bullhead', 'Eggog', 'Lysol'], 'Label': ['Boner Record', 'Boner Record', 'Atlantic Records'], 'Note (Sku)': ['2.3', '3.5', '3.5']},
+            "case6" : {'Year': ['1991', '1991', '1992'], 'Album (Sku1, Sku3)': ['Bullhead', 'Eggog', 'Lysol'], 'Label': ['Boner Record', 'Boner Record', 'Atlantic Records'], 'Note (Sku2, Sku4)': ['2.3', '3.5', '3.5']},
+            "case7" : {'Title': ['Down Below', 'This Is Not the Way Home', 'The Honeymoon is Over', 'Three Legged Dog', 'Over Easy', "Where There's Smoke"], 'Year': ['1990', '1991', '1993', '1995', '1998', '2001'], 'Peak chart positions (AUS)': ['133', '62', '4', '1', '13', '25'], 'Peak chart positions (NZ)': ['-', '-', '33', '20', '-', '-'], 'Label': ['Red Eye Records', 'Red Eye Records', 'Red Eye Records', 'Red Eye Records', 'Polydor Records', 'Polydor Records']},
+            "case8" : {'Title (Name)': ['Down Below', 'This Is Not the Way Home', 'The Honeymoon is Over', 'Three Legged Dog', 'Over Easy', "Where There's Smoke"], 'Year': ['1990', '1991', '1993', '1995', '1998', '2001'], 'Peak chart positions (AUS)': ['133', '62', '4', '1', '13', '25'], 'Peak chart positions (NZ)': ['-', '-', '33', '20', '-', '-'], 'Label (Company)': ['Red Eye Records', 'Red Eye Records', 'Red Eye Records', 'Red Eye Records', 'Polydor Records', 'Polydor Records']},
+            "case9" : {'Down Below': {'Year': '1990', 'Peak chart positions (AUS)': '133', 'Peak chart positions (NZ)': '-', 'Label': 'Red Eye Records'}, 'This Is Not the Way Home': {'Year': '1991', 'Peak chart positions (AUS)': '62', 'Peak chart positions (NZ)': '-', 'Label': 'Red Eye Records'}, 'The Honeymoon is Over': {'Year': '1993', 'Peak chart positions (AUS)': '4', 'Peak chart positions (NZ)': '33', 'Label': 'Red Eye Records'}, 'Three Legged Dog': {'Year': '1995', 'Peak chart positions (AUS)': '1', 'Peak chart positions (NZ)': '20', 'Label': 'Red Eye Records'}, 'Over Easy': {'Year': '1998', 'Peak chart positions (AUS)': '13', 'Peak chart positions (NZ)': '-', 'Label': 'Polydor Records'}, "Where There's Smoke": {'Year': '2001', 'Peak chart positions (AUS)': '25', 'Peak chart positions (NZ)': '-', 'Label': 'Polydor Records'}},
+            "case10" : {'Down Below': {'Album details': 'Released: 3 December 1990Formats: CD, LPLabel: Records', 'Peak chart positions (AUS)': '133', 'Peak chart positions (NZ)': '-', 'Certifications': ''}, 'This Is Not the Way Home': {'Album details': 'Released: 28 October 1991Formats: CD, LPLabel: Red Eye Records', 'Peak chart positions (AUS)': '62', 'Peak chart positions (NZ)': '-', 'Certifications': 'AUS: Platinum'}, 'The Honeymoon is Over': {'Album details': 'Released: 31 May 1993Formats: CD, LP, CassetteLabel: Red Eye Records', 'Peak chart positions (AUS)': '4', 'Peak chart positions (NZ)': '33', 'Certifications': 'AUS: 3× Platinum'}, 'Three Legged Dog': {'Album details': 'Released: April 1995Formats: CD, LP, CassetteLabel: Red Eye Records', 'Peak chart positions (AUS)': '1', 'Peak chart positions (NZ)': '20', 'Certifications': 'AUS: Platinum'}, 'Over Easy': {'Album details': 'Released: July 1998Formats: CDLabel: Polydor Records', 'Peak chart positions (AUS)': '13', 'Peak chart positions (NZ)': '-', 'Certifications': ''}, "Where There's Smoke": {'Album details': 'Released: September 2001Formats: CDLabel: Polydor Records', 'Peak chart positions (AUS)': '25', 'Peak chart positions (NZ)': '-', 'Certifications': ''}},
+        }
+        # ========= TEST ========== #
+        self.oneOrAllCases(self.testAllTables, self.tablesFilesFolder, testTables, "getTableDict")
 
 if __name__ == "__main__":
   unittest.main()
