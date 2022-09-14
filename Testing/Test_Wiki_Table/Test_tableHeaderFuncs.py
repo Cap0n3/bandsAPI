@@ -21,7 +21,7 @@ dirname = os.path.dirname(__file__)
 # ================== UNCOMMENT TO TEST HERE ================== #
 # =========================================================== #
 # filename = os.path.join(dirname, 'Test_Table_Header/11_tableHeader_case11.html')
-# filename = os.path.join(dirname, 'Test_Tables/debugTable_case10.html')
+# filename = os.path.join(dirname, 'Test_Tables/debugTable_case9.html')
 # # Open html file
 # with open(filename, 'r') as htmlTestFile:
 #     soup = BeautifulSoup(htmlTestFile, "html.parser")
@@ -497,12 +497,24 @@ class ExtractTable:
 
     def getTableList(self):
         '''
-        This method returns a table (header and body) in a list reprentation. The "table list reprentation" is a nested list that look like 
+        This method returns a table (header and body) in a list reprentation. 
+        
+        The "table list reprentation" is a nested list that look like 
         this `[['Year', '1991','1992'], ['Album', 'Bullhead', 'Eggnog'], ['Label', 'Boner Records', 'Atlantic Records']]`. Here first element
         of nested lists represents column title, it can be duplicated if there was either a rowspan or a colspan attribute.
 
-        Note : Duplicated information represents rowspans/colspans.
+        Duplicated data in the same column represents rowspans. For instance, this column 'Year' have a rowspan of 2 with data '1991' :
         
+        `['Year', '1991', '1991', '1992']`
+        
+        Duplicated data across multiple columns represents colspan. For instance, here column header `Chart` have a colspan of 2 :
+
+       `[['Chart', 'USA', '90'], ['Chart', 'UK', '10']]`
+
+        > Note : in this example the table header would have two rows. This method by itself do not indicate whether data is a header cell or a normal cell.
+        To have a more accurate representation of table header and body, it's better to use either `getTableDict()` or to combine manually `getTableHeader()`
+        with `getTableBody()`.
+
         Returns
         -------
         `list`
@@ -525,8 +537,35 @@ class ExtractTable:
             logger.error("Table header & body don't have the same number of columns !")
             raise AssertionError("Table header & body don't have the same number of columns !")
 
-    def getTableDict(self):
+    def getTableDict(self, dictType="normal"):
+        '''
+        Method to convert a html table to a 1D or 2D dictionnary. For instance, a 1D table like this :
+
+        | Year | Album | Label |
+        |------|-------|-------|
+        | 1997 |  VS   |  EMI  |
+
+        Would be converted to a dictionnary looking like this (body elements will be contained in a list) :
+
+        `{'Year' : ['1997'], 'Album' : ['VS'], 'Label' : ['EMI']}`
+
+        Returned dictionnary can be either standard or an ordered dictionnary to preserve order of columns of table.
+        
+        > IMPORTANT : Please note that that nested dictionnary (sub keys) in 2D table result won't be ordered but main dictionnary will be.
+        
+        Parameters
+        ----------
+        `dictType` : `<class 'str'>`
+            Type of dictionnary that will be returned, can be either "normal" or "ordered"
+        
+        Returns
+        -------
+        `dict` or `OrderedDict`
+            Dictionnary representation of table
+        '''
+        # =========================== #
         # ====== UTILITY FUNCS ====== #
+        # =========================== #
         def createDictKeys(headerList, headerRows):
             '''
             Creates ordered dictionnary and add keys according to table header list. It can handle spans (rowspan & colspan) present in header list.
@@ -606,7 +645,7 @@ class ExtractTable:
             `Dict`
                 Full table (header + body) converted to a normal dictionnary
             '''
-            # Since insertion order in ordred dict was preserved we can easily fill according column 
+            # Since insertion order in ordred dict was preserved we can easily fill according column
             for key, colList in zip(orderedResDict, bodyList):
                 colElementList = [el for el in colList]
                 if rowIndex != None:
@@ -619,9 +658,24 @@ class ExtractTable:
                     logger.debug(f"[*] {key} : {colElementList}")
                 logger.debug(f"[*] Inserted column list : {orderedResDict[key]}")
             logger.debug(f"Dictionnary returned : {dict(orderedResDict)}")
-            return dict(orderedResDict)
-        # =========================== #
+            return orderedResDict
         
+        def finalCondition(_finalDict, dimensions):
+            # Final condition to determine type of dict to be returned
+            if dictType == "normal":
+                # Convert ordered dictionnary to normal dict & return it
+                logger.info(f"Created {dimensions} dictionnary (normal) : {dict(_finalDict)}")
+                return dict(_finalDict)
+            elif dictType == "ordered":
+                logger.info(f"Created {dimensions} dictionnary (ordered) : {_finalDict}")
+                return _finalDict
+            else:
+                logger.error(f"Dictionnary type '{dictType}' is not valid !")
+                raise TypeError("Dictionnary type is not valid ! It can be either 'normal' or 'ordered' !")
+
+        # =========================== #
+        # ======= METHOD CODE ======= #
+        # =========================== #
         # Get table header & body in list format
         tableHeaderList = self.getTableHeader()
         tableBodyList = self.getTableBody()
@@ -638,19 +692,20 @@ class ExtractTable:
             # === 1. Create ordered dictionnary & its keys from table header === #
             orderedKeyDict = createDictKeys(tableHeaderList, tableType["total_header_rows"])
             # === 2. Insert data from table body in dict & return === #
-            finalDict = insertColData(orderedKeyDict, tableBodyList)  
-            logger.info(f"Created dictionnary (1D, final) : {finalDict}")
-            return finalDict  
+            finalDict = insertColData(orderedKeyDict, tableBodyList)
+            # Final condition to determine type of dict to be returned
+            return finalCondition(finalDict, tableType['dimensions']) 
         # It's a two dimensional table           
         elif tableType['dimensions'] == "2D":
-            resultKeyDict = OrderedDict()
+            finalKeyDict = OrderedDict()
             logger.debug("This a 2D table")
             # === 1. Create an ordered dict keys with left column <th> cells in table body === #
             firstCol = tableBodyList[0]
             logger.debug(f"First column data : {firstCol}")
             for element in firstCol:
-                resultKeyDict[element] = ""
+                finalKeyDict[element] = ""
                 logger.debug(f"Inserted following key in dict : {element}")
+            logger.debug(f"Keys Inserted ! Dictionnary : {finalKeyDict}")
             # === 2. Prepare sub keys with table header & pop its first column === #
             headerOrdKeyDict = createDictKeys(tableHeaderList, tableType["total_header_rows"])
             logger.debug(f"Created ordered dict with sub keys : {headerOrdKeyDict}")
@@ -658,22 +713,21 @@ class ExtractTable:
             poppedHeader = headerOrdKeyDict.popitem(last=False)
             logger.debug(f"Popped first header from dict (column data are keys in main dict) : {poppedHeader}")
             # === 3. Go through keys and pass row index to get a single element (keys are equal to table body rows here) === #
-            for rowIndex, key in enumerate(resultKeyDict.keys()):
+            for rowIndex, key in enumerate(finalKeyDict.keys()):
                 # Create row with header and row data (except for first column)
                 rowDict = insertColData(headerOrdKeyDict, tableBodyList[1:], rowIndex)
                 # Insert row at corresponding key
-                resultKeyDict[key] = rowDict
-            # Convert ordered dictionnary to normal dict & return it
-            finalConvertedDict = dict(resultKeyDict)
-            logger.info(f"Created dictionnary (2D, final) : {finalConvertedDict}")
-            return finalConvertedDict
-       
+                finalKeyDict[key] = dict(rowDict)
+                logger.debug(f"[*] At key \"{key}\" inserted {dict(rowDict)}")
+            logger.debug(f"WTF : {finalKeyDict}")
+            # Final condition to determine type of dict to be returned
+            return finalCondition(finalKeyDict, tableType['dimensions'])
+
+    def getTableJson(self, indent = 4):
+        tableDict = self.getTableDict()
+        return json.dumps(tableDict, indent=indent)
+        
+
 # ====== UNCOMMENT TO TEST HERE ====== #
-#tableObj = ExtractTable(table)
-# tableHeaderList = tableObj.getTableHeader()
-# tableBodyList = tableObj.getTableBody()
-# fullTable = tableObj.getTableList()
-# print(fullTable)
-#tableDict = tableObj.getTableDict()
-#print(json.dumps(tableDict, indent=4))
-#print(tableDict)
+# tableObj = ExtractTable(table)
+# print(tableObj.getTableDict(dictType="ordered"))
