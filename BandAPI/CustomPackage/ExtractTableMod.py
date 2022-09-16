@@ -1,61 +1,54 @@
-'''
-This file is a test file to develop the ExtractTable class which will be used in 
-main BandWiki class. 
-
-> Important ! The code below main should be exactly like in BandWiki.py.
-'''
-
-from inspect import formatannotation
 import os
-import logging
-import sys
+from Utils.customLogging import moduleLogging
 from bs4 import BeautifulSoup
 from collections import namedtuple, OrderedDict
 import json
-import re
+import bs4
 
-# For Windows (relative path) 
-dirname = os.path.dirname(__file__)
-
-# =========================================================== #
-# ================== UNCOMMENT TO TEST HERE ================== #
-# =========================================================== #
-# filename = os.path.join(dirname, 'Test_Table_Header/11_tableHeader_case11.html')
-# filename = os.path.join(dirname, 'Test_Tables/debugTable_case9.html')
-# # Open html file
-# with open(filename, 'r') as htmlTestFile:
-#     soup = BeautifulSoup(htmlTestFile, "html.parser")
-# # Get table tag in soup
-# table = soup.find('table')
-
-# Note : DON'T FORGET TO COMMENT/UNCOMMENT FUNCTION CALL AT THE END
-
-# ========================== #
-# ====== Logging init ====== #
-# ========================== #
-
-# logging.basicConfig(level=logging.NOTSET)
-# logger = logging.getLogger(__name__)
-
-# Init custom logger
-logger = logging.getLogger(__name__)
-
-# Init & add handler
-stream_handler = logging.StreamHandler(sys.stdout) # To console
-file_handler = logging.FileHandler(f"{dirname}/ExtractTableLog.log", mode='w') # To file
-logger.addHandler(file_handler)
-
-# Set format of log
-log_format = logging.Formatter(fmt='[%(asctime)s] - %(name)s - {%(levelname)s} - (%(funcName)s, #%(lineno)d) - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
-file_handler.setFormatter(log_format)
-
-# Set min log levels I wanna see
-logger.setLevel(logging.DEBUG)
+# Set up logging for module
+logger = moduleLogging()
 
 class ExtractTable:
+    '''
+    Class that is capable of converting an html table in a list or a dictionnary or give informations about passed table. It accepts 
+    as parameters either relative path to an html file (with only one table inside) or directly table's beautiful soup (bs4).
+
+    Usage
+    -----
+    Convert an html file with one table inside to an ordered or a standard dictionnary :
+
+    ```python
+    tableRelativePath = "myTables/myTable1.html"
+    tableObj = ExtractTable(tableRelativePath)
+
+    # Get ordered dict (to keep original order of columns)
+    myOrdDict = tableObj.getTableDict(dictType="ordered")
+
+    # Get dict (default)
+    myDict = tableObj.getTableDict()
+    ```
+
+
+    '''
     def __init__(self, table):
-        self.table = table
-        # Extract rows (<tr>) from table soup
+        # 1. Determine if passed arg is of type beautiful soup
+        if isinstance(table, bs4.BeautifulSoup):
+            logger.info("Passed argument type is 'bs4.BeautifulSoup'")
+            self.table = table
+        # 2. Determine if passed arg is an html file
+        elif isinstance(table, str):
+            logger.info(f"Passed argument type is 'str'. Passed argument : '{table}'")
+            # Get absolute path
+            filename = os.path.join(dirname, table)
+            # Open html file
+            with open(filename, 'r') as htmlTestFile:
+                soup = BeautifulSoup(htmlTestFile, "html.parser")
+            # Get table tag in soup
+            self.table = soup.find('table')
+        else:
+            logger.error(f"{type(table)} argument type was a valid type !")
+            raise TypeError(f"{type(table)} argument type is not a valid type ! Type of class can be either 'str' or 'bs4.BeautifulSoup'")
+        # 3. Extract rows (<tr>) from table soup
         self.allRows = self.table.find_all("tr")
     
     # ===================================== #
@@ -342,7 +335,7 @@ class ExtractTable:
             - `total_header_rows` : Header length (number of header rows)
             - `total_columns` : Total columns in table
             - `total_th_cells` : Total `<th>` cells in table
-            - `total_th_cells` : Total `<td>` cells in table
+            - `total_td_cells` : Total `<td>` cells in table
         '''
         resultDict = {}
         totalHeaderRows = 0 # Row with only <th>
@@ -726,8 +719,3 @@ class ExtractTable:
     def getTableJson(self, indent = 4):
         tableDict = self.getTableDict()
         return json.dumps(tableDict, indent=indent)
-        
-
-# ====== UNCOMMENT TO TEST HERE ====== #
-# tableObj = ExtractTable(table)
-# print(tableObj.getTableDict(dictType="ordered"))

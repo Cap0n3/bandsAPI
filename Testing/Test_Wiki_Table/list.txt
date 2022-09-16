@@ -1,6 +1,0 @@
-[
-    [<td>Year</td>, <td>Album</td>, <td>Label</td>], 
-    [<td rowspan="2">1991</td>, <td>Bullhead</td>, <td rowspan="2">Boner Record</td>], 
-    [<td>Eggog</td>], 
-    [<td>1992</td>, <td>Lysol</td>, <td>Atlantic Records</td>]
-]

@@ -14,7 +14,7 @@ sys.path.insert(0, parentdir)
 
 # Import class & functions
 from BandAPI.BandWiki import BandWiki
-from Test_Wiki_Table.Test_tableHeaderFuncs import ExtractTable
+from BandAPI.CustomPackage.ExtractTableMod import ExtractTable
 
 #================#
 #=== Settings ===#
