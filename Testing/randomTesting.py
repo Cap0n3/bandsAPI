@@ -20,12 +20,12 @@ filename = os.path.join(dirname, 'Test_Wiki_Table/Test_Tables/debugTable_case0.h
 with open(filename, 'r') as htmlTestFile:
     soup = BeautifulSoup(htmlTestFile, "html.parser")
 
-# Get table tag in soup
+# Get table tag in soup (Test 1)
 tableSoup = soup.find('table')
 
-# Relative path
-relPath = "Test_Wiki_Table/Test_Tables/debugTable_case0.html"
+# Absolute path (Test 2)
+absPath = filename
 
 # ========= TESTING ========= #
-tableObj = ExtractTable(tableSoup)
+tableObj = ExtractTable(absPath)
 print(tableObj.getTableDict())

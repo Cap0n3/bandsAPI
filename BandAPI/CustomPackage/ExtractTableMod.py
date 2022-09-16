@@ -11,15 +11,15 @@ logger = moduleLogging()
 class ExtractTable:
     '''
     Class that is capable of converting an html table in a list or a dictionnary or give informations about passed table. It accepts 
-    as parameters either relative path to an html file (with only one table inside) or directly table's beautiful soup (bs4).
+    as parameters either absolute path to an html file (with only one table inside) or directly table's beautiful soup (bs4.element.Tag).
 
     Usage
     -----
     Convert an html file with one table inside to an ordered or a standard dictionnary :
 
     ```python
-    tableRelativePath = "myTables/myTable1.html"
-    tableObj = ExtractTable(tableRelativePath)
+    tableAbsolutePath = "/Users/Kim/Project/myTables/myTable1.html"
+    tableObj = ExtractTable(tableAbsolutePath)
 
     # Get ordered dict (to keep original order of columns)
     myOrdDict = tableObj.getTableDict(dictType="ordered")
@@ -38,8 +38,8 @@ class ExtractTable:
         # 2. Determine if passed arg is an html file
         elif isinstance(table, str):
             logger.info(f"Passed argument type is 'str'. Passed argument : '{table}'")
-            # Get absolute path
-            filename = os.path.join(dirname, table)
+            # Absolute path or file
+            filename = table
             # Open html file
             with open(filename, 'r') as htmlTestFile:
                 soup = BeautifulSoup(htmlTestFile, "html.parser")
