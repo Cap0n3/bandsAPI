@@ -1,5 +1,5 @@
 import os
-from Utils.customLogging import moduleLogging
+from .Utils.customLogging import moduleLogging
 from bs4 import BeautifulSoup
 from collections import namedtuple, OrderedDict
 import json
@@ -32,8 +32,8 @@ class ExtractTable:
     '''
     def __init__(self, table):
         # 1. Determine if passed arg is of type beautiful soup
-        if isinstance(table, bs4.BeautifulSoup):
-            logger.info("Passed argument type is 'bs4.BeautifulSoup'")
+        if isinstance(table, bs4.element.Tag):
+            logger.info("Passed argument type is 'bs4.element.Tag'")
             self.table = table
         # 2. Determine if passed arg is an html file
         elif isinstance(table, str):
